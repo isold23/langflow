@@ -126,6 +126,7 @@ import { IFixIcon } from "../icons/IFixIt";
 import { MetaIcon } from "../icons/Meta";
 import { MidjourneyIcon } from "../icons/Midjorney";
 import { MongoDBIcon } from "../icons/MongoDB";
+import { MilvusIcon } from "../icons/Milvus";
 import { NotionIcon } from "../icons/Notion";
 import { OpenAiIcon } from "../icons/OpenAi";
 import { PineconeIcon } from "../icons/Pinecone";
@@ -250,6 +251,7 @@ export const nodeIconsLucide: iconsType = {
   Meta: MetaIcon,
   Midjorney: MidjourneyIcon,
   MongoDBAtlasVectorSearch: MongoDBIcon,
+  Milvus: MilvusIcon,
   NotionDirectoryLoader: NotionIcon,
   ChatOpenAI: OpenAiIcon,
   AzureChatOpenAI: OpenAiIcon,

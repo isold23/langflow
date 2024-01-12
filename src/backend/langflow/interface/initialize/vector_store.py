@@ -8,6 +8,7 @@ from langchain.vectorstores import (
     Weaviate,
     SupabaseVectorStore,
     MongoDBAtlasVectorSearch,
+    Milvus,
 )
 from langchain.schema import Document
 import os
@@ -248,6 +249,25 @@ def initialize_elasticsearch(class_object: Type[ElasticsearchStore], params: dic
         params["documents"] = params.pop("texts")
     return class_object.from_documents(**params)
 
+def initialize_milvus(class_object: Type[Milvus], params: dict):
+    """Initialize milvus and return the class object"""
+
+    collection_name = params.pop("collection_name", None)
+    if not collection_name:
+        raise ValueError("collection_name must be provided in the params")
+    
+    if not docs_in_params(params):
+        existing_index_params = {
+            "collection_name": collection_name,
+            "embedding": params.pop("embedding"),
+        }
+
+        return class_object.from_existing_index(**existing_index_params)
+    # If there are docs in the params, create a new index
+    if "texts" in params:
+        params["documents"] = params.pop("texts")
+    return class_object.from_documents(**params)
+
 
 vecstore_initializer: Dict[str, Callable[[Type[Any], dict], Any]] = {
     "Pinecone": initialize_pinecone,
@@ -258,4 +278,5 @@ vecstore_initializer: Dict[str, Callable[[Type[Any], dict], Any]] = {
     "FAISS": initialize_faiss,
     "SupabaseVectorStore": initialize_supabase,
     "MongoDBAtlasVectorSearch": initialize_mongodb,
+    "Milvus": initialize_milvus,
 }

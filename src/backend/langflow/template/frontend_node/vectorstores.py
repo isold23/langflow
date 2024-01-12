@@ -89,6 +89,27 @@ class VectorStoreFrontendNode(FrontendNode):
             )
             extra_fields.extend((extra_field, extra_field2))
 
+        elif self.template.type_name == "Milvus":
+            milvus_fields = [
+                TemplateField(
+                    name="milvus_server_host",
+                    field_type="str",
+                    required=False,
+                    show=True,
+                    advanced=True,
+                    display_name="Chroma Server Host",
+                ),
+                TemplateField(
+                    name="mivus_server_http_port",
+                    field_type="str",
+                    required=False,
+                    show=True,
+                    advanced=True,
+                    display_name="Chroma Server HTTP Port",
+                ),
+            ]
+            extra_fields.extend((milvus_fields))
+
         elif self.template.type_name == "Chroma":
             # New bool field for persist parameter
             chroma_fields = [

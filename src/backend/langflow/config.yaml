@@ -266,6 +266,8 @@ retrievers:
   # ZepRetriever:
   #   documentation: "https://python.langchain.com/docs/modules/data_connection/retrievers/integrations/zep_memorystore"
 vectorstores:
+  Milvus:
+    documentation: "https://python.langchain.com/docs/modules/data_connection/vectorstores/integrations/milvus"
   # Chroma:
   #   documentation: "https://python.langchain.com/docs/modules/data_connection/vectorstores/integrations/chroma"
   Qdrant:
