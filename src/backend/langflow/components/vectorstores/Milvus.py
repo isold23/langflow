@@ -1,7 +1,7 @@
 from typing import Optional, List
 from langflow import CustomComponent
 
-from langchain.vectorstores.Milvus import Milvus
+from langchain_community.vectorstores import Milvus
 from langchain.schema import Document
 from langchain.vectorstores.base import VectorStore
 from langchain.embeddings.base import Embeddings
