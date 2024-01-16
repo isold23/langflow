@@ -606,7 +606,7 @@ export default function FormModal({
                       <span>
                         👋{" "}
                         <span className="langflow-chat-span">
-                          Langflow Chat
+                          XiannanAI Chat
                         </span>
                       </span>
                       <br />
