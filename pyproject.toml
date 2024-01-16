@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "langflow"
+name = "LLMPlatform"
 version = "0.6.4"
 description = "A Python package with a built-in web application"
 authors = ["Logspace <contact@logspace.ai>"]

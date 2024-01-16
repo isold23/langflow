@@ -24,11 +24,11 @@ export default function FlowPage(): JSX.Element {
           )}
         <a
           target={"_blank"}
-          href="https://logspace.ai/"
+          href="https://xiaonan.ai/"
           className="logspace-page-icon"
         >
-          {version && <div className="mt-1">⛓️ Langflow v{version}</div>}
-          <div className={version ? "mt-2" : "mt-1"}>Created by Logspace</div>
+          {version && <div className="mt-1">⛓️ LLMPlatform v{version}</div>}
+          <div className={version ? "mt-2" : "mt-1"}>Created by Xiaonan</div>
         </a>
       </div>
     </>
