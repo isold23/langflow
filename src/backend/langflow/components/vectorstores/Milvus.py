@@ -42,7 +42,7 @@ class MilvusComponent(CustomComponent):
         Builds the Vector Store or BaseRetriever object.
 
         Args:
-        - embedding (Embeddings): The embeddings to use for the Vector Store.
+        - embedding (Embeddings): The embeddings to use for the Vector Store.1
         - documents (Optional[Document]): The documents to use for the Vector Store.
         - collection_name (str): The name of the milvus collection.
 
