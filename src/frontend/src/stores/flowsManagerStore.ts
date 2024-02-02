@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import { cloneDeep } from "lodash";
 import { Edge, Node, Viewport, XYPosition } from "reactflow";
 import { create } from "zustand";
 import {
@@ -328,13 +329,19 @@ const useFlowsManagerStore = create<FlowsManagerStoreType>((set, get) => ({
   takeSnapshot: () => {
     const currentFlowId = get().currentFlowId;
     // push the current graph to the past state
-    const newState = useFlowStore.getState();
+    const flowStore = useFlowStore.getState();
+    const newState = {
+      nodes: cloneDeep(flowStore.nodes),
+      edges: cloneDeep(flowStore.edges),
+    };
     const pastLength = past[currentFlowId]?.length ?? 0;
     if (
       pastLength > 0 &&
-      JSON.stringify(past[currentFlowId][pastLength - 1]) !==
+      JSON.stringify(past[currentFlowId][pastLength - 1]) ===
         JSON.stringify(newState)
-    ) {
+    )
+      return;
+    if (pastLength > 0) {
       past[currentFlowId] = past[currentFlowId].slice(
         pastLength - defaultOptions.maxHistorySize + 1,
         pastLength
