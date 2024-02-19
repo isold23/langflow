@@ -149,9 +149,6 @@ def add_extra_fields(frontend_node, field_config, function_args):
     if not function_args:
         return
 
-    # sort function_args which is a list of dicts
-    function_args.sort(key=lambda x: x["name"])
-
     for extra_field in function_args:
         if "name" not in extra_field or extra_field["name"] == "self":
             continue
@@ -231,6 +228,7 @@ def sanitize_template_config(template_config):
         "beta",
         "documentation",
         "output_types",
+        "icon",
     }
     for key in template_config.copy():
         if key not in attributes:

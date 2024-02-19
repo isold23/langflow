@@ -18,16 +18,13 @@ class VectaraComponent(CustomComponent):
     field_config = {
         "vectara_customer_id": {
             "display_name": "Vectara Customer ID",
-            "required": True,
         },
         "vectara_corpus_id": {
             "display_name": "Vectara Corpus ID",
-            "required": True,
         },
         "vectara_api_key": {
             "display_name": "Vectara API Key",
             "password": True,
-            "required": True,
         },
         "documents": {"display_name": "Documents", "info": "If provided, will be upserted to corpus (optional)"},
         "files_url": {
@@ -48,7 +45,7 @@ class VectaraComponent(CustomComponent):
 
         if documents is not None:
             return Vectara.from_documents(
-                documents=documents,
+                documents=documents,  # type: ignore
                 embedding=FakeEmbeddings(size=768),
                 vectara_customer_id=vectara_customer_id,
                 vectara_corpus_id=vectara_corpus_id,
