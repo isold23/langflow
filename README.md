@@ -1,87 +1,48 @@
-<!-- Title -->
+<!-- markdownlint-disable MD030 -->
 
-# ⛓️ Langflow
+# [![Langflow](https://github.com/logspace-ai/langflow/blob/dev/docs/static/img/hero.png)](https://www.langflow.org)
+### [Langflow](https://www.langflow.org) is a new, visual way to build, iterate and deploy AI apps.
 
-~ An effortless way to experiment and prototype [LangChain](https://github.com/hwchase17/langchain) pipelines ~
-
-<p>
-<img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/logspace-ai/langflow" />
-<img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/logspace-ai/langflow" />
-<img alt="" src="https://img.shields.io/github/repo-size/logspace-ai/langflow" />
-<img alt="GitHub Issues" src="https://img.shields.io/github/issues/logspace-ai/langflow" />
-<img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/logspace-ai/langflow" />
-<img alt="Github License" src="https://img.shields.io/github/license/logspace-ai/langflow" />
-</p>
-
-<p>
-<a href="https://discord.gg/EqksyE2EX9"><img alt="Discord Server" src="https://dcbadge.vercel.app/api/server/EqksyE2EX9?compact=true&style=flat"/></a>
-<a href="https://huggingface.co/spaces/Logspace/Langflow"><img src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg" alt="HuggingFace Spaces"></a>
-</p>
-
-<a href="https://github.com/logspace-ai/langflow">
-    <img width="100%" src="https://github.com/logspace-ai/langflow/blob/dev/img/langflow-demo.gif?raw=true"></a>
-
-<p>
-</p>
-
-# Table of Contents
-
-- [⛓️ Langflow](#️-langflow)
-- [Table of Contents](#table-of-contents)
-- [📦 Installation](#-installation)
-  - [Locally](#locally)
-  - [HuggingFace Spaces](#huggingface-spaces)
-- [🖥️ Command Line Interface (CLI)](#️-command-line-interface-cli)
-  - [Usage](#usage)
-    - [Environment Variables](#environment-variables)
-- [Deployment](#deployment)
-  - [Deploy Langflow on Google Cloud Platform](#deploy-langflow-on-google-cloud-platform)
-  - [Deploy on Railway](#deploy-on-railway)
-  - [Deploy on Render](#deploy-on-render)
-- [🎨 Creating Flows](#-creating-flows)
-- [👋 Contributing](#-contributing)
-- [📄 License](#-license)
+# ⚡️ Documentation and Community
+- [Documentation](https://docs.langflow.org)
+- [Discord](https://discord.com/invite/EqksyE2EX9)
 
 # 📦 Installation
 
-### <b>Locally</b>
-
-You can install Langflow from pip:
+You can install Langflow with pip:
 
 ```shell
-# This installs the package without dependencies for local models
-pip install langflow
+# Make sure you have Python 3.10 installed on your system.
+# Install the pre-release version
+python -m pip install langflow --pre --force-reinstall
+
+# or stable version
+python -m pip install langflow -U
 ```
 
-To use local models (e.g llama-cpp-python) run:
+Then, run Langflow with:
 
 ```shell
-pip install langflow[local]
+python -m langflow run
 ```
 
-This will install the following dependencies:
+You can also preview Langflow in [HuggingFace Spaces](https://huggingface.co/spaces/Logspace/Langflow-Preview). [Clone the space using this link](https://huggingface.co/spaces/Logspace/Langflow-Preview?duplicate=true), to create your own Langflow workspace in minutes.
 
-- [CTransformers](https://github.com/marella/ctransformers)
-- [llama-cpp-python](https://github.com/abetlen/llama-cpp-python)
-- [sentence-transformers](https://github.com/UKPLab/sentence-transformers)
+# 🎨 Creating Flows
 
-You can still use models from projects like LocalAI
+Creating flows with Langflow is easy. Simply drag components from the sidebar onto the canvas and connect them to start building your application.
 
-Next, run:
+Explore by editing prompt parameters, grouping components into a single high-level component, and building your own Custom Components.
 
-```shell
-python -m langflow
+Once you’re done, you can export your flow as a JSON file.
+
+Load the flow with:
+
+```python
+from langflow.load import run_flow_from_json
+
+results = run_flow_from_json("path/to/flow.json", input_value="Hello, World!")
 ```
-
-or
-
-```shell
-langflow run # or langflow --help
-```
-
-### HuggingFace Spaces
-
-You can also check it out on [HuggingFace Spaces](https://huggingface.co/spaces/Logspace/Langflow) and run it in your browser! You can even clone it and have your own copy of Langflow to play with.
 
 # 🖥️ Command Line Interface (CLI)
 
@@ -117,7 +78,7 @@ Each option is detailed below:
 - `--backend-only`: This parameter, with a default value of `False`, allows running only the backend server without the frontend. It can also be set using the `LANGFLOW_BACKEND_ONLY` environment variable.
 - `--store`: This parameter, with a default value of `True`, enables the store features, use `--no-store` to deactivate it. It can be configured using the `LANGFLOW_STORE` environment variable.
 
-These parameters are important for users who need to customize the behavior of Langflow, especially in development or specialized deployment scenarios. You may want to update the documentation to include these parameters for completeness and clarity.
+These parameters are important for users who need to customize the behavior of Langflow, especially in development or specialized deployment scenarios.
 
 ### Environment Variables
 
@@ -145,36 +106,17 @@ Alternatively, click the **"Open in Cloud Shell"** button below to launch Google
 <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render" />
 </a>
 
-# 🎨 Creating Flows
-
-Creating flows with Langflow is easy. Simply drag sidebar components onto the canvas and connect them together to create your pipeline. Langflow provides a range of [LangChain components](https://python.langchain.com/docs/integrations/components) to choose from, including LLMs, prompt serializers, agents, and chains.
-
-Explore by editing prompt parameters, link chains and agents, track an agent's thought process, and export your flow.
-
-Once you're done, you can export your flow as a JSON file to use with LangChain.
-To do so, click the "Export" button in the top right corner of the canvas, then
-in Python, you can load the flow with:
-
-```python
-from langflow import load_flow_from_json
-
-flow = load_flow_from_json("path/to/flow.json")
-# Now you can use it like any chain
-flow("Hey, have you heard of Langflow?")
-```
-
 # 👋 Contributing
 
 We welcome contributions from developers of all levels to our open-source project on GitHub. If you'd like to contribute, please check our [contributing guidelines](./CONTRIBUTING.md) and help make Langflow more accessible.
 
 ---
 
-Join our [Discord](https://discord.com/invite/EqksyE2EX9) server to ask questions, make suggestions and showcase your projects! 🦾
-
-<p>
-</p>
-
 [![Star History Chart](https://api.star-history.com/svg?repos=logspace-ai/langflow&type=Timeline)](https://star-history.com/#logspace-ai/langflow&Date)
+
+# 🌟 Contributors
+
+[![langflow contributors](https://contrib.rocks/image?repo=logspace-ai/langflow)](https://github.com/logspace-ai/langflow/graphs/contributors)
 
 # 📄 License
 

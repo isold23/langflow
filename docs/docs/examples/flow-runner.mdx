@@ -3,9 +3,6 @@ description: Custom Components
 hide_table_of_contents: true
 ---
 
-import ZoomableImage from "/src/theme/ZoomableImage.js";
-import Admonition from "@theme/Admonition";
-
 # FlowRunner Component
 
 The CustomComponent class allows us to create components that interact with Langflow itself. In this example, we will make a component that runs other flows available in "My Collection".
@@ -14,10 +11,11 @@ The CustomComponent class allows us to create components that interact with Lang
   alt="Document Processor Component"
   sources={{
     light: "img/flow_runner.png",
+    dark: "img/flow_runner.png",
   }}
   style={{
     width: "30%",
-    margin: "0 auto",
+    margin: "20px auto",
     display: "flex",
     justifyContent: "center",
   }}
@@ -34,7 +32,7 @@ We will cover how to:
 <summary>Example Code</summary>
 
 ```python
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 from langchain.schema import Document
 
 class FlowRunner(CustomComponent):
@@ -74,7 +72,7 @@ class FlowRunner(CustomComponent):
 <CH.Scrollycoding rows={20} className={""}>
 
 ```python
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 
 
 class MyComponent(CustomComponent):
@@ -94,7 +92,7 @@ The typical structure of a Custom Component is composed of _`display_name`_ and 
 ---
 
 ```python
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 
 
 # focus
@@ -117,7 +115,7 @@ Let's start by defining our component's _`display_name`_ and _`description`_.
 ---
 
 ```python
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 # focus
 from langchain.schema import Document
 
@@ -139,7 +137,7 @@ Second, we will import _`Document`_ from the [_langchain.schema_](https://docs.l
 ---
 
 ```python
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 # focus
 from langchain.schema import Document
 
@@ -166,7 +164,7 @@ Now, let's add the [parameters](focus://11[20:55]) and the [return type](focus:/
 ---
 
 ```python focus=13:14
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 from langchain.schema import Document
 
 
@@ -188,7 +186,7 @@ We can now start writing the _`build`_ method. Let's list available flows in "My
 ---
 
 ```python focus=15:18
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 from langchain.schema import Document
 
 
@@ -221,7 +219,7 @@ And retrieve a flow that matches the selected name (we'll make a dropdown input 
 ---
 
 ```python
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 from langchain.schema import Document
 
 
@@ -249,7 +247,7 @@ You can load this flow using _`get_flow`_ and set a _`tweaks`_ dictionary to cus
 ---
 
 ```python
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 from langchain.schema import Document
 
 
@@ -286,7 +284,7 @@ The content of a document can be extracted using the _`page_content`_ attribute,
 ---
 
 ```python focus=9:16
-from langflow import CustomComponent
+from langflow.custom import CustomComponent
 from langchain.schema import Document
 
 
@@ -339,6 +337,7 @@ Done! This is what our script and custom component looks like:
     alt="Document Processor Code"
     sources={{
         light: "img/flow_runner_code.png",
+        dark: "img/flow_runner_code.png",
     }}
     style={{
         maxWidth: "100%",
@@ -353,6 +352,7 @@ Done! This is what our script and custom component looks like:
     alt="Document Processor Component"
     sources={{
         light: "img/flow_runner.png",
+        dark: "img/flow_runner.png",
     }}
     style={{
         width: "40%",
@@ -363,3 +363,6 @@ Done! This is what our script and custom component looks like:
     />
 
 </div>
+
+import ZoomableImage from "/src/theme/ZoomableImage.js";
+import Admonition from "@theme/Admonition";

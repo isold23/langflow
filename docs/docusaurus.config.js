@@ -14,6 +14,7 @@ module.exports = {
   organizationName: "logspace-ai",
   projectName: "langflow",
   trailingSlash: false,
+  staticDirectories: ["static"],
   customFields: {
     mendableAnonKey: process.env.MENDABLE_ANON_KEY,
   },
@@ -41,6 +42,10 @@ module.exports = {
           sidebarPath: require.resolve("./sidebars.js"),
           path: "docs",
           // sidebarPath: 'sidebars.js',
+        },
+        gtag: {
+          trackingID: 'G-XHC7G628ZP',
+          anonymizeIP: true,
         },
         theme: {
           customCss: [
@@ -90,7 +95,7 @@ module.exports = {
           },
           {
             position: "right",
-            href: "https://twitter.com/logspace_ai",
+            href: "https://twitter.com/langflow_ai",
             position: "right",
             className: "header-twitter-link",
             target: "_blank",
