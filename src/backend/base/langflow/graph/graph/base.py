@@ -1,5 +1,7 @@
 import asyncio
+import uuid
 from collections import defaultdict, deque
+from functools import partial
 from itertools import chain
 from typing import TYPE_CHECKING, Callable, Coroutine, Dict, Generator, List, Optional, Type, Union
 
@@ -16,6 +18,7 @@ from langflow.graph.vertex.types import ChatVertex, FileToolVertex, LLMVertex, R
 from langflow.interface.tools.constants import FILE_TOOLS
 from langflow.schema import Record
 from langflow.schema.schema import INPUT_FIELD_NAME, InputType
+from langflow.services.deps import get_chat_service
 
 if TYPE_CHECKING:
     from langflow.graph.schema import ResultData
@@ -164,13 +167,14 @@ class Graph:
             raise ValueError("Run ID not set")
         return self._run_id
 
-    def set_run_id(self, run_id: str):
+    def set_run_id(self, run_id: str | uuid.UUID):
         """
         Sets the ID of the current run.
 
         Args:
             run_id (str): The run ID.
         """
+        run_id = str(run_id)
         for vertex in self.vertices:
             self.state_manager.subscribe(run_id, vertex.update_graph_state)
         self._run_id = run_id
@@ -296,17 +300,26 @@ class Graph:
         # run the async function in a sync way
         # this could be used in a FastAPI endpoint
         # so we should take care of the event loop
-        loop = asyncio.get_event_loop()
-        return loop.run_until_complete(
-            self.arun(
-                inputs=inputs,
-                inputs_components=input_components,
-                types=types,
-                outputs=outputs,
-                session_id=session_id,
-                stream=stream,
-            )
+        coro = self.arun(
+            inputs=inputs,
+            inputs_components=input_components,
+            types=types,
+            outputs=outputs,
+            session_id=session_id,
+            stream=stream,
         )
+
+        try:
+            # Attempt to get the running event loop; if none, an exception is raised
+            loop = asyncio.get_running_loop()
+            if loop.is_closed():
+                raise RuntimeError("The running event loop is closed.")
+        except RuntimeError:
+            # If there's no running event loop or it's closed, use asyncio.run
+            return asyncio.run(coro)
+
+        # If there's an existing, open event loop, use it to run the async function
+        return loop.run_until_complete(coro)
 
     async def arun(
         self,
@@ -739,31 +752,53 @@ class Graph:
     async def process(self, start_component_id: Optional[str] = None) -> "Graph":
         """Processes the graph with vertices in each layer run in parallel."""
 
-        self.sort_vertices(start_component_id=start_component_id)
-        vertices_layers = self.sorted_vertices_layers
+        first_layer = self.sort_vertices(start_component_id=start_component_id)
         vertex_task_run_count: Dict[str, int] = {}
-        for layer_index, layer in enumerate(vertices_layers):
+        to_process = deque(first_layer)
+        layer_index = 0
+        chat_service = get_chat_service()
+        run_id = uuid.uuid4()
+        self.set_run_id(run_id)
+        while to_process:
+            current_batch = list(to_process)  # Copy current deque items to a list
+            to_process.clear()  # Clear the deque for new items
             tasks = []
-            for vertex_id in layer:
+            for vertex_id in current_batch:
                 vertex = self.get_vertex(vertex_id)
+                lock = chat_service._cache_locks[self.run_id]
+                set_cache_coro = partial(chat_service.set_cache, flow_id=self.run_id)
                 task = asyncio.create_task(
-                    vertex.build(),
+                    self.build_vertex(
+                        lock=lock,
+                        set_cache_coro=set_cache_coro,
+                        vertex_id=vertex_id,
+                        user_id=None,
+                        inputs_dict={},
+                    ),
                     name=f"{vertex.display_name} Run {vertex_task_run_count.get(vertex_id, 0)}",
                 )
                 tasks.append(task)
                 vertex_task_run_count[vertex_id] = vertex_task_run_count.get(vertex_id, 0) + 1
+
             logger.debug(f"Running layer {layer_index} with {len(tasks)} tasks")
-            await self._execute_tasks(tasks)
+            next_runnable_vertices = await self._execute_tasks(tasks)
+            to_process.extend(next_runnable_vertices)
+
         logger.debug("Graph processing complete")
         return self
 
-    async def _execute_tasks(self, tasks):
+    async def _execute_tasks(self, tasks: List[asyncio.Task]) -> List[str]:
         """Executes tasks in parallel, handling exceptions for each task."""
         results = []
         for i, task in enumerate(asyncio.as_completed(tasks)):
             try:
                 result = await task
-                results.append(result)
+                if isinstance(result, tuple) and len(result) == 7:
+                    # Get the next runnable vertices
+                    next_runnable_vertices = result[0]
+                    results.extend(next_runnable_vertices)
+                else:
+                    raise ValueError(f"Invalid result: {result}")
             except Exception as e:
                 # Log the exception along with the task name for easier debugging
                 # task_name = task.get_name()
@@ -909,7 +944,7 @@ class Graph:
             return ChatVertex
         elif node_name in ["ShouldRunNext"]:
             return RoutingVertex
-        elif node_name in ["SharedState", "Notify", "GetNotified"]:
+        elif node_name in ["SharedState", "Notify", "Listen"]:
             return StateVertex
         elif node_base_type in lazy_load_vertex_dict.VERTEX_TYPE_MAP:
             return lazy_load_vertex_dict.VERTEX_TYPE_MAP[node_base_type]
@@ -1121,6 +1156,34 @@ class Graph:
 
         return vertices_layers
 
+    def sort_layer_by_dependency(self, vertices_layers: List[List[str]]) -> List[List[str]]:
+        """Sorts the vertices in each layer by dependency, ensuring no vertex depends on a subsequent vertex."""
+        sorted_layers = []
+
+        for layer in vertices_layers:
+            sorted_layer = self._sort_single_layer_by_dependency(layer)
+            sorted_layers.append(sorted_layer)
+
+        return sorted_layers
+
+    def _sort_single_layer_by_dependency(self, layer: List[str]) -> List[str]:
+        """Sorts a single layer by dependency using a stable sorting method."""
+        # Build a map of each vertex to its index in the layer for quick lookup.
+        index_map = {vertex: index for index, vertex in enumerate(layer)}
+        # Create a sorted copy of the layer based on dependency order.
+        sorted_layer = sorted(layer, key=lambda vertex: self._max_dependency_index(vertex, index_map), reverse=True)
+
+        return sorted_layer
+
+    def _max_dependency_index(self, vertex_id: str, index_map: Dict[str, int]) -> int:
+        """Finds the highest index a given vertex's dependencies occupy in the same layer."""
+        vertex = self.get_vertex(vertex_id)
+        max_index = -1
+        for successor in vertex.successors:  # Assuming vertex.successors is a list of successor vertex identifiers.
+            if successor.id in index_map:
+                max_index = max(max_index, index_map[successor.id])
+        return max_index
+
     def sort_vertices(
         self,
         stop_component_id: Optional[str] = None,
@@ -1142,6 +1205,9 @@ class Graph:
         vertices_layers = self.layered_topological_sort(vertices)
         vertices_layers = self.sort_by_avg_build_time(vertices_layers)
         # vertices_layers = self.sort_chat_inputs_first(vertices_layers)
+        # Now we should sort each layer in a way that we make sure
+        # vertex V does not depend on vertex V+1
+        vertices_layers = self.sort_layer_by_dependency(vertices_layers)
         self.increment_run_count()
         self._sorted_vertices_layers = vertices_layers
         first_layer = vertices_layers[0]
