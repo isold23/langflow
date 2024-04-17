@@ -50,6 +50,7 @@ def upgrade() -> None:
             "user",
             sa.Column("id", sqlmodel.sql.sqltypes.GUID(), nullable=False),
             sa.Column("username", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+            sa.Column("group", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
             sa.Column("password", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
             sa.Column("is_active", sa.Boolean(), nullable=False),
             sa.Column("is_superuser", sa.Boolean(), nullable=False),
