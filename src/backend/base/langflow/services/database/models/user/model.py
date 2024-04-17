@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 class User(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True, unique=True)
     username: str = Field(index=True, unique=True)
+    group: str = Field(index=True, unique=True)
     password: str = Field()
     profile_image: Optional[str] = Field(default=None, nullable=True)
     is_active: bool = Field(default=False)
