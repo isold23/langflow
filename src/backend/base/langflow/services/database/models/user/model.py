@@ -14,6 +14,12 @@ class User(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True, unique=True)
     username: str = Field(index=True, unique=True)
     usergroup: str = Field(nullable=True, default=None)
+    '''
+    4: admin
+    2: group admin
+    1: user
+    '''
+    userrole: int = Field(default=1)
     password: str = Field()
     profile_image: Optional[str] = Field(default=None, nullable=True)
     is_active: bool = Field(default=False)
