@@ -23,7 +23,7 @@ export default function SignUp(): JSX.Element {
 
   const [isDisabled, setDisableBtn] = useState<boolean>(true);
 
-  const { password, cnfPassword, username } = inputState;
+  const { password, cnfPassword, username, usergroup } = inputState;
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const navigate = useNavigate();
@@ -108,6 +108,30 @@ export default function SignUp(): JSX.Element {
 
               <Form.Message match="valueMissing" className="field-invalid">
                 Please enter your username
+              </Form.Message>
+            </Form.Field>
+          </div>
+          <div className="mb-3 w-full">
+            <Form.Field name="usergroup">
+              <Form.Label className="data-[invalid]:label-invalid">
+                Usergroup <span className="font-medium text-destructive">*</span>
+              </Form.Label>
+
+              <Form.Control asChild>
+                <Input
+                  type="usergroup"
+                  onChange={({ target: { value } }) => {
+                    handleInput({ target: { name: "usergroup", value } });
+                  }}
+                  value={usergroup}
+                  className="w-full"
+                  required
+                  placeholder="Usergroup"
+                />
+              </Form.Control>
+
+              <Form.Message match="valueMissing" className="field-invalid">
+                Please enter your usergroup
               </Form.Message>
             </Form.Field>
           </div>

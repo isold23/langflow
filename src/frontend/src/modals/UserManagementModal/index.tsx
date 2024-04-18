@@ -31,6 +31,7 @@ export default function UserManagementModal({
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState(data?.password ?? "");
   const [username, setUserName] = useState(data?.username ?? "");
+  const [usergroup, setUserGroup] = useState(data?.usergroup ?? "");
   const [confirmPassword, setConfirmPassword] = useState(data?.password ?? "");
   const [isActive, setIsActive] = useState(data?.is_active ?? false);
   const [isSuperUser, setIsSuperUser] = useState(data?.is_superuser ?? false);
@@ -111,6 +112,36 @@ export default function UserManagementModal({
               </Form.Control>
               <Form.Message match="valueMissing" className="field-invalid">
                 Please enter your username
+              </Form.Message>
+            </Form.Field>
+
+            <Form.Field name="usergroup">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Form.Label className="data-[invalid]:label-invalid">
+                  Usergroup{" "}
+                  <span className="font-medium text-destructive">*</span>
+                </Form.Label>
+              </div>
+              <Form.Control asChild>
+                <input
+                  onChange={({ target: { value } }) => {
+                    handleInput({ target: { name: "usergroup", value } });
+                    setUserGroup(value);
+                  }}
+                  value={usergroup}
+                  className="primary-input"
+                  required
+                  placeholder="Usergroup"
+                />
+              </Form.Control>
+              <Form.Message match="valueMissing" className="field-invalid">
+                Please enter your usergroup
               </Form.Message>
             </Form.Field>
 
