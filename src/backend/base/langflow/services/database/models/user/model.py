@@ -19,7 +19,7 @@ class User(SQLModel, table=True):
     2: group admin
     1: user
     '''
-    userrole: int = Field(default=1)
+    userrole: int = Field(nullable=True, default=1)
     password: str = Field()
     profile_image: Optional[str] = Field(default=None, nullable=True)
     is_active: bool = Field(default=False)
