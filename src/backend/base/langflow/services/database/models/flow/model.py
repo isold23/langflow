@@ -135,6 +135,7 @@ class FlowCreate(FlowBase):
 class FlowRead(FlowBase):
     id: UUID
     user_id: Optional[UUID] = Field()
+    usergroup: Optional[str] = Field()
 
 
 class FlowUpdate(SQLModel):
