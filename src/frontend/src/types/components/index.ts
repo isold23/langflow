@@ -317,6 +317,7 @@ export type signUpInputStateType = {
   cnfPassword: string;
   username: string;
   usergroup: string;
+  userrole: int;
 };
 
 export type inputHandlerEventType = {

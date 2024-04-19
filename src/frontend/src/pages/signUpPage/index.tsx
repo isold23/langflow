@@ -42,10 +42,11 @@ export default function SignUp(): JSX.Element {
   }, [password, cnfPassword, username, handleInput]);
 
   function handleSignup(): void {
-    const { username, password } = inputState;
+    const { username, password, usergroup } = inputState;
     const newUser: UserInputType = {
       username: username.trim(),
       password: password.trim(),
+      usergroup: usergroup.trim(),
     };
     addUser(newUser)
       .then((user) => {

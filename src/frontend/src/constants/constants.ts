@@ -554,6 +554,8 @@ export const CONTROL_INPUT_STATE = {
   password: "",
   cnfPassword: "",
   username: "",
+  usergroup: "",
+  userrole: 1,
 };
 
 export const CONTROL_PATCH_USER_STATE = {
