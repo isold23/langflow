@@ -129,6 +129,7 @@ class Flow(FlowBase, table=True):
 
 class FlowCreate(FlowBase):
     user_id: Optional[UUID] = None
+    usergroup: Optional[str] = None
 
 
 class FlowRead(FlowBase):
