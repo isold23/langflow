@@ -31,6 +31,7 @@ def create_flow(
     """Create a new flow."""
     if flow.user_id is None:
         flow.user_id = current_user.id
+        flow.usergroup = current_user.usergroup
 
     db_flow = Flow.model_validate(flow, from_attributes=True)
     db_flow.updated_at = datetime.utcnow()
