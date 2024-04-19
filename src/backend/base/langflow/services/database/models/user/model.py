@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class User(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True, unique=True)
     username: str = Field(index=True, unique=True)
-    usergroup: Optional[str] = Field(nullable=True, default=None)
+    usergroup: str = Field(nullable=True, default="")
     '''
     4: admin
     2: group admin
