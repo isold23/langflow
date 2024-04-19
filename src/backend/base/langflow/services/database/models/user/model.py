@@ -42,6 +42,7 @@ class User(SQLModel, table=True):
 class UserCreate(SQLModel):
     username: str = Field()
     usergroup: str = Field()
+    userrole: str = Field()
     password: str = Field()
 
 
@@ -49,6 +50,7 @@ class UserRead(SQLModel):
     id: UUID = Field(default_factory=uuid4)
     username: str = Field()
     usergroup: str = Field()
+    userrole: str = Field()
     profile_image: Optional[str] = Field()
     is_active: bool = Field()
     is_superuser: bool = Field()
@@ -60,6 +62,7 @@ class UserRead(SQLModel):
 class UserUpdate(SQLModel):
     username: Optional[str] = None
     usergroup: Optional[str] = None
+    userrole: Optional[str] = None
     profile_image: Optional[str] = None
     password: Optional[str] = None
     is_active: Optional[bool] = None
