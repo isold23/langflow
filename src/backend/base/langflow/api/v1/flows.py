@@ -53,11 +53,18 @@ def read_flows(
     try:
         auth_settings = settings_service.auth_settings
         if auth_settings.AUTO_LOGIN:
-            flows = session.exec(
-                select(Flow).where(
-                    (Flow.user_id == None) | (Flow.user_id == current_user.id)  # noqa
-                )
-            ).all()
+            if current_user.userrole == 2:
+                flows = session.exec(
+                    select(Flow).where(
+                        (Flow.user_id == None) | (Flow.usergroup == current_user.usergroup)  # noqa
+                    )
+                ).all()
+            else:
+                flows = session.exec(
+                    select(Flow).where(
+                        (Flow.user_id == None) | (Flow.user_id == current_user.id)  # noqa
+                    )
+                ).all()
         else:
             flows = current_user.flows
 
