@@ -109,6 +109,8 @@ export type LoginAuthType = {
 
 export type changeUser = {
   username?: string;
+  usergroup?: string;
+  userrole?: number;
   is_active?: boolean;
   is_superuser?: boolean;
   password?: string;
@@ -123,6 +125,8 @@ export type resetPasswordType = {
 export type Users = {
   id: string;
   username: string;
+  usergroup: string;
+  userrole: number;
   is_active: boolean;
   is_superuser: boolean;
   profile_image: string;
