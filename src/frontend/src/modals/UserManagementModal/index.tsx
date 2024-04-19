@@ -163,7 +163,7 @@ export default function UserManagementModal({
                 <input
                   onChange={({ target: { value } }) => {
                     handleInput({ target: { name: "userrole", value } });
-                    setUserGroup(value);
+                    setUserRole(value);
                   }}
                   value={userrole}
                   className="primary-input"
