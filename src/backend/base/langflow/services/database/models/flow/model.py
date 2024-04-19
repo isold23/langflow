@@ -111,7 +111,7 @@ class Flow(FlowBase, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True, unique=True)
     data: Optional[Dict] = Field(default=None, sa_column=Column(JSON))
     user_id: Optional[UUID] = Field(index=True, foreign_key="user.id", nullable=True)
-    usergroup: str = Field(nullable=True, default=None)
+    usergroup: Optional[str] = Field(nullable=True, default=None)
     user: "User" = Relationship(back_populates="flows")
 
     def to_record(self):
@@ -136,7 +136,6 @@ class FlowRead(FlowBase):
     id: UUID
     user_id: Optional[UUID] = Field()
     usergroup: Optional[str] = Field()
-
 
 class FlowUpdate(SQLModel):
     name: Optional[str] = None
