@@ -23,7 +23,7 @@ export default function SignUp(): JSX.Element {
 
   const [isDisabled, setDisableBtn] = useState<boolean>(true);
 
-  const { password, cnfPassword, username, usergroup } = inputState;
+  const { password, cnfPassword, username, usergroup, userrole } = inputState;
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const navigate = useNavigate();
