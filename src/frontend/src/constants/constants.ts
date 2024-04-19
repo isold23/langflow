@@ -572,6 +572,7 @@ export const CONTROL_LOGIN_STATE = {
 export const CONTROL_NEW_USER = {
   username: "",
   usergroup: "",
+  userrole: 1,
   password: "",
   is_active: false,
   is_superuser: false,

@@ -32,6 +32,7 @@ export default function UserManagementModal({
   const [password, setPassword] = useState(data?.password ?? "");
   const [username, setUserName] = useState(data?.username ?? "");
   const [usergroup, setUserGroup] = useState(data?.usergroup ?? "");
+  const [userrole, setUserRole] = useState(data?.userrole ?? 1);
   const [confirmPassword, setConfirmPassword] = useState(data?.password ?? "");
   const [isActive, setIsActive] = useState(data?.is_active ?? false);
   const [isSuperUser, setIsSuperUser] = useState(data?.is_superuser ?? false);
@@ -142,6 +143,36 @@ export default function UserManagementModal({
               </Form.Control>
               <Form.Message match="valueMissing" className="field-invalid">
                 Please enter your usergroup
+              </Form.Message>
+            </Form.Field>
+
+            <Form.Field name="userrole">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Form.Label className="data-[invalid]:label-invalid">
+                  Userrole{" "}
+                  <span className="font-medium text-destructive">*</span>
+                </Form.Label>
+              </div>
+              <Form.Control asChild>
+                <input
+                  onChange={({ target: { value } }) => {
+                    handleInput({ target: { name: "userrole", value } });
+                    setUserGroup(value);
+                  }}
+                  value={userrole}
+                  className="primary-input"
+                  required
+                  placeholder="Userrole"
+                />
+              </Form.Control>
+              <Form.Message match="valueMissing" className="field-invalid">
+                Please enter your userrole
               </Form.Message>
             </Form.Field>
 

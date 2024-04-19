@@ -294,6 +294,7 @@ export default function AdminPage() {
                       <TableHead className="h-10">Id</TableHead>
                       <TableHead className="h-10">Username</TableHead>
                       <TableHead className="h-10">Group</TableHead>
+                      <TableHead className="h-10">Role</TableHead>
                       <TableHead className="h-10">Active</TableHead>
                       <TableHead className="h-10">Superuser</TableHead>
                       <TableHead className="h-10">Created At</TableHead>
@@ -321,6 +322,13 @@ export default function AdminPage() {
                             <ShadTooltip content={user.usergroup}>
                               <span className="cursor-default">
                                 {user.usergroup}
+                              </span>
+                            </ShadTooltip>
+                          </TableCell>
+                          <TableCell className="truncate py-2">
+                            <ShadTooltip content={user.userrole}>
+                              <span className="cursor-default">
+                                {user.userrole}
                               </span>
                             </ShadTooltip>
                           </TableCell>
