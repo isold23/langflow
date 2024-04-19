@@ -42,11 +42,12 @@ export default function SignUp(): JSX.Element {
   }, [password, cnfPassword, username, handleInput]);
 
   function handleSignup(): void {
-    const { username, password, usergroup } = inputState;
+    const { username, password, usergroup, userrole } = inputState;
     const newUser: UserInputType = {
       username: username.trim(),
       password: password.trim(),
       usergroup: usergroup.trim(),
+      userrole: userrole,
     };
     addUser(newUser)
       .then((user) => {
@@ -128,6 +129,30 @@ export default function SignUp(): JSX.Element {
                   className="w-full"
                   required
                   placeholder="Usergroup"
+                />
+              </Form.Control>
+
+              <Form.Message match="valueMissing" className="field-invalid">
+                Please enter your usergroup
+              </Form.Message>
+            </Form.Field>
+          </div>
+          <div className="mb-3 w-full">
+            <Form.Field name="userrole">
+              <Form.Label className="data-[invalid]:label-invalid">
+                Userrole <span className="font-medium text-destructive">*</span>
+              </Form.Label>
+
+              <Form.Control asChild>
+                <Input
+                  type="userrole"
+                  onChange={({ target: { value } }) => {
+                    handleInput({ target: { name: "userrole", value } });
+                  }}
+                  value={userrole}
+                  className="w-full"
+                  required
+                  placeholder="Userrole"
                 />
               </Form.Control>
 
