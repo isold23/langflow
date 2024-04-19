@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class User(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True, unique=True)
     username: str = Field(index=True, unique=True)
-    usergroup: str = Field(nullable=True, default="")
+    usergroup: str = Field(default="langflow", nullable=True)
     '''
     4: admin
     2: group admin
