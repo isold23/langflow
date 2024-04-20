@@ -55,12 +55,14 @@ def read_flows(
         print(current_user)
         if auth_settings.AUTO_LOGIN:
             if current_user.userrole == 2:
+                print("33333333333333333333333")
                 flows = session.exec(
                     select(Flow).where(
                         (Flow.user_id == None) | (Flow.usergroup == current_user.usergroup)  # noqa
                     )
                 ).all()
             else:
+                print("444444444444444444")
                 flows = session.exec(
                     select(Flow).where(
                         (Flow.user_id == None) | (Flow.user_id == current_user.id)  # noqa
@@ -68,7 +70,9 @@ def read_flows(
                 ).all()
         else:
             flows = current_user.flows
-
+        print("55555555555555555555555555")
+        print(flows.count)
+        print("55555555555555555555555555")
         flows = validate_is_component(flows)  # type: ignore
         flow_ids = [flow.id for flow in flows]
         # with the session get the flows that DO NOT have a user_id
