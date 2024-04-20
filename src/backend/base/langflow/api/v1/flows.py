@@ -52,11 +52,12 @@ def read_flows(
     """Read all flows."""
     try:
         auth_settings = settings_service.auth_settings
+        print(current_user)
         if auth_settings.AUTO_LOGIN:
             if current_user.userrole == 2:
                 flows = session.exec(
                     select(Flow).where(
-                        (Flow.user_id == None) | (Flow.usergroup == current_user.usergroup)  # noqa
+                        (Flow.user_id == None) | (Flow.usergroup == current_user.us)  # noqa
                     )
                 ).all()
             else:
