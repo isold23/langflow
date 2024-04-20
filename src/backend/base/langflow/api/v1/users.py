@@ -91,7 +91,7 @@ def patch_user(
         if not user.is_superuser:
             raise HTTPException(status_code=400, detail="You can't change your password here")
         user_update.password = get_password_hash(user_update.password)
-
+    print("aaaaaaaaaaaaaaaaaaaaaaa")
     if user_db := get_user_by_id(session, user_id):
         print("000000000000000000")
         print(user_db)
