@@ -70,7 +70,21 @@ def read_flows(
                 ).all()
         else:
             print("666666666666666666666666")
-            flows = current_user.flows
+            #flows = current_user.flows
+            if current_user.userrole == 2:
+                print("77777777777")
+                flows = session.exec(
+                    select(Flow).where(
+                        (Flow.user_id == None) | (Flow.usergroup == current_user.usergroup)  # noqa
+                    )
+                ).all()
+            else:
+                print("8888888888888888888")
+                flows = session.exec(
+                    select(Flow).where(
+                        (Flow.user_id == None) | (Flow.user_id == current_user.id)  # noqa
+                    )
+                ).all()
         print("55555555555555555555555555")
         print(flows.count)
         print("55555555555555555555555555")
