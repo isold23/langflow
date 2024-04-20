@@ -60,6 +60,7 @@ class UserRead(SQLModel):
 
 
 class UserUpdate(SQLModel):
+    print("UserUpdateUserUpdateUserUpdateUserUpdateUserUpdate")
     username: Optional[str] = None
     usergroup: Optional[str] = None
     userrole: Optional[int] = None
