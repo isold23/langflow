@@ -93,6 +93,9 @@ def patch_user(
         user_update.password = get_password_hash(user_update.password)
 
     if user_db := get_user_by_id(session, user_id):
+        print("000000000000000000")
+        print(user_db)
+        print("000000000000000000")
         return update_user(user_db, user_update, session)
     else:
         raise HTTPException(status_code=404, detail="User not found")
