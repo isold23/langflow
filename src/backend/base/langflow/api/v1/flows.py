@@ -57,7 +57,7 @@ def read_flows(
             if current_user.userrole == 2:
                 flows = session.exec(
                     select(Flow).where(
-                        (Flow.user_id == None) | (Flow.usergroup == current_user.us)  # noqa
+                        (Flow.user_id == None) | (Flow.usergroup == current_user.usergroup)  # noqa
                     )
                 ).all()
             else:
