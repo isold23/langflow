@@ -50,6 +50,8 @@ export default function UserManagementModal({
       resetForm();
     } else {
       handleInput({ target: { name: "username", value: username } });
+      handleInput({ target: { name: "usergroup", value: usergroup } });
+      handleInput({ target: { name: "userrole", value: userrole } });
       handleInput({ target: { name: "is_active", value: isActive } });
       handleInput({ target: { name: "is_superuser", value: isSuperUser } });
     }
