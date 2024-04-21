@@ -52,7 +52,6 @@ def read_flows(
     """Read all flows."""
     try:
         auth_settings = settings_service.auth_settings
-        print(current_user)
         if auth_settings.AUTO_LOGIN:
             if current_user.userrole == 2:
                 flows = session.exec(
