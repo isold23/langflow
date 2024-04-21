@@ -29,6 +29,7 @@ def add_user(
     """
     Add a new user to the database.
     """
+    print("add_user#####################")
     new_user = User.model_validate(user, from_attributes=True)
     try:
         new_user.password = get_password_hash(user.password)
@@ -50,6 +51,7 @@ def read_current_user(
     """
     Retrieve the current user's data.
     """
+    print("read_current_user#####################")
     return current_user
 
 
@@ -63,6 +65,7 @@ def read_all_users(
     """
     Retrieve a list of users from the database with pagination.
     """
+    print("read_all_users#####################")
     query: SelectOfScalar = select(User).offset(skip).limit(limit)
     users = session.exec(query).fetchall()
 
@@ -85,7 +88,7 @@ def patch_user(
     """
     Update an existing user's data.
     """
-    print("#####################")
+    print("patch_user#####################")
     if not user.is_superuser and user.id != user_id:
         raise HTTPException(status_code=403, detail="You don't have the permission to update this user")
     if user_update.password:
@@ -112,6 +115,7 @@ def reset_password(
     """
     Reset a user's password.
     """
+    print("reset_passwordreset_passwordreset_password")
     if user_id != user.id:
         raise HTTPException(status_code=400, detail="You can't change another user's password")
 
@@ -136,6 +140,7 @@ def delete_user(
     """
     Delete a user from the database.
     """
+    print("delete_userdelete_userdelete_userdelete_user")
     if current_user.id == user_id:
         raise HTTPException(status_code=400, detail="You can't delete your own user account")
     elif not current_user.is_superuser:

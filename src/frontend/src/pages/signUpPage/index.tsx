@@ -157,7 +157,7 @@ export default function SignUp(): JSX.Element {
               </Form.Control>
 
               <Form.Message match="valueMissing" className="field-invalid">
-                Please enter your usergroup
+                Please enter your userrole
               </Form.Message>
             </Form.Field>
           </div>

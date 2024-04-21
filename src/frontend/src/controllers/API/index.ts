@@ -482,7 +482,9 @@ export async function deleteUser(user_id: string) {
 
 export async function updateUser(user_id: string, user: changeUser) {
   try {
+    console.log("--------------------------------------");
     const res = await api.patch(`${BASE_URL_API}users/${user_id}`, user);
+    console.log("--------------------------------------");
     if (res.status === 200) {
       return res.data;
     }
