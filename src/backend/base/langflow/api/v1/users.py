@@ -89,6 +89,7 @@ def patch_user(
     Update an existing user's data.
     """
     print("patch_user#####################")
+    print(user_update)
     if not user.is_superuser and user.id != user_id:
         raise HTTPException(status_code=403, detail="You don't have the permission to update this user")
     if user_update.password:
