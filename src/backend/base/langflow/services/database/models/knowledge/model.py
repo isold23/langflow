@@ -112,7 +112,7 @@ class Knowledge(KnowledgeBase, table=True):
     data: Optional[Dict] = Field(default=None, sa_column=Column(JSON))
     user_id: Optional[UUID] = Field(index=True, foreign_key="user.id", nullable=True)
     usergroup: Optional[str] = Field(nullable=True, default=None)
-    user: "User" = Relationship(back_populates="knowledge")
+    user: "User" = Relationship(back_populates="knowledges")
 
     def to_record(self):
         serialized = self.model_dump()
