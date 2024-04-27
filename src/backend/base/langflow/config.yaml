@@ -218,6 +218,7 @@ retrievers:
   # https://github.com/supabase-community/supabase-py/issues/482
   # ZepRetriever:
   #   documentation: "https://python.langchain.com/docs/modules/data_connection/retrievers/integrations/zep_memorystore"
+
 wrappers:
   RequestsWrapper:
     documentation: ""

@@ -45,7 +45,6 @@ class UserCreate(SQLModel):
     userrole: int = Field()
     password: str = Field()
 
-
 class UserRead(SQLModel):
     id: UUID = Field(default_factory=uuid4)
     username: str = Field()

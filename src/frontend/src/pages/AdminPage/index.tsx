@@ -293,8 +293,6 @@ export default function AdminPage() {
                     <TableRow>
                       <TableHead className="h-10">Id</TableHead>
                       <TableHead className="h-10">Username</TableHead>
-                      <TableHead className="h-10">Group</TableHead>
-                      <TableHead className="h-10">Role</TableHead>
                       <TableHead className="h-10">Active</TableHead>
                       <TableHead className="h-10">Superuser</TableHead>
                       <TableHead className="h-10">Created At</TableHead>

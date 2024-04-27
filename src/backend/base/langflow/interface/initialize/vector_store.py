@@ -11,7 +11,6 @@ from langchain_community.vectorstores import (
     Qdrant,
     SupabaseVectorStore,
     Weaviate,
-    Milvus,
 )
 from langchain_core.documents import Document
 
@@ -228,55 +227,12 @@ def initialize_qdrant(class_object: Type[Qdrant], params: dict):
     return class_object.from_documents(**params)
 
 
-def initialize_elasticsearch(class_object: Type[ElasticsearchStore], params: dict):
-    """Initialize elastic and return the class object"""
-    if "index_name" not in params:
-        raise ValueError("Elasticsearch Index must be provided in the params")
-    if "es_url" not in params:
-        raise ValueError("Elasticsearch URL must be provided in the params")
-    if not docs_in_params(params):
-        existing_index_params = {
-            "embedding": params.pop("embedding"),
-        }
-        if "index_name" in params:
-            existing_index_params["index_name"] = params.pop("index_name")
-        if "es_url" in params:
-            existing_index_params["es_url"] = params.pop("es_url")
-
-        return class_object.from_existing_index(**existing_index_params)
-    # If there are docs in the params, create a new index
-    if "texts" in params:
-        params["documents"] = params.pop("texts")
-    return class_object.from_documents(**params)
-
-def initialize_milvus(class_object: Type[Milvus], params: dict):
-    """Initialize milvus and return the class object"""
-
-    collection_name = params.pop("collection_name", None)
-    if not collection_name:
-        raise ValueError("collection_name must be provided in the params")
-    
-    if not docs_in_params(params):
-        existing_index_params = {
-            "collection_name": collection_name,
-            "embedding": params.pop("embedding"),
-        }
-
-        return class_object.from_existing_index(**existing_index_params)
-    # If there are docs in the params, create a new index
-    if "texts" in params:
-        params["documents"] = params.pop("texts")
-    return class_object.from_documents(**params)
-
-
 vecstore_initializer: Dict[str, Callable[[Type[Any], dict], Any]] = {
     "Pinecone": initialize_pinecone,
     "Chroma": initialize_chroma,
     "Qdrant": initialize_qdrant,
     "Weaviate": initialize_weaviate,
-    "ElasticsearchStore": initialize_elasticsearch,
     "FAISS": initialize_faiss,
     "SupabaseVectorStore": initialize_supabase,
     "MongoDBAtlasVectorSearch": initialize_mongodb,
-    "Milvus": initialize_milvus,
 }

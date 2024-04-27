@@ -131,7 +131,6 @@ class FlowCreate(FlowBase):
     user_id: Optional[UUID] = None
     usergroup: Optional[str] = None
 
-
 class FlowRead(FlowBase):
     id: UUID
     user_id: Optional[UUID] = Field()

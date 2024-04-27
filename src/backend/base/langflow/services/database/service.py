@@ -86,6 +86,7 @@ class DatabaseService(Service):
             "flow": models.Flow,
             "user": models.User,
             "apikey": models.ApiKey,
+            "knowledge": models.Knowledge,
             # Add other SQLModel classes here
         }
 
@@ -133,7 +134,7 @@ class DatabaseService(Service):
         alembic_cfg = Config(stdout=buffer)
         # alembic_cfg.attributes["connection"] = session
         alembic_cfg.set_main_option("script_location", str(self.script_location))
-        alembic_cfg.set_main_option("sqlalchemy.url", self.database_url)
+        alembic_cfg.set_main_option("sqlalchemy.url", self.database_url.replace('%', '%%'))
 
         should_initialize_alembic = False
         with Session(self.engine) as session:
@@ -228,7 +229,7 @@ class DatabaseService(Service):
 
         inspector = inspect(self.engine)
         table_names = inspector.get_table_names()
-        current_tables = ["flow", "user", "apikey"]
+        current_tables = ["flow", "user", "apikey", "knowledge"]
 
         if table_names and all(table in table_names for table in current_tables):
             logger.debug("Database and tables already exist")

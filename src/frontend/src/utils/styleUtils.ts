@@ -163,7 +163,6 @@ import { IFixIcon } from "../icons/IFixIt";
 import { MetaIcon } from "../icons/Meta";
 import { MidjourneyIcon } from "../icons/Midjorney";
 import { MongoDBIcon } from "../icons/MongoDB";
-import { MilvusIcon } from "../icons/Milvus";
 import { NotionIcon } from "../icons/Notion";
 import { OllamaIcon } from "../icons/Ollama";
 import { OpenAiIcon } from "../icons/OpenAi";
