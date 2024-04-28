@@ -61,6 +61,9 @@ def drop_and_create_table_if_schema_mismatch(db_path: str, table_name: str, mode
         if current_schema != desired_schema:
             # If they don't match, drop the existing table and create a new one
             conn.execute(f"DROP TABLE IF EXISTS {table_name}")
+            print("drop table-----------------------")
+            print(table_name)
+            print("drop table-----------------------")
             if "id" in desired_schema.keys():
                 # Create a sequence for the id column
                 try:
@@ -70,6 +73,9 @@ def drop_and_create_table_if_schema_mismatch(db_path: str, table_name: str, mode
                 desired_schema[INDEX_KEY] = f"INTEGER PRIMARY KEY DEFAULT NEXTVAL('seq_{table_name}')"
             columns_sql = ", ".join(f"{name} {data_type}" for name, data_type in desired_schema.items())
             create_table_sql = f"CREATE TABLE {table_name} ({columns_sql})"
+            print("CREATE table-----------------------")
+            print(table_name)
+            print("CREATE table-----------------------")
             conn.execute(create_table_sql)
 
 
