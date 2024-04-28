@@ -36,7 +36,7 @@ import { useStoreStore } from "../../stores/storeStore";
 import { storeComponent } from "../../types/store";
 import { cn } from "../../utils/utils";
 
-export default function StorePage(): JSX.Element {
+export default function KnowledgePage(): JSX.Element {
   const hasApiKey = useStoreStore((state) => state.hasApiKey);
   const validApiKey = useStoreStore((state) => state.validApiKey);
   const loadingApiKey = useStoreStore((state) => state.loadingApiKey);

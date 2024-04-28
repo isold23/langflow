@@ -13,6 +13,7 @@ import HomePage from "./pages/MainPage";
 import ComponentsComponent from "./pages/MainPage/components/components";
 import ProfileSettingsPage from "./pages/ProfileSettingsPage";
 import StorePage from "./pages/StorePage";
+import KnowledgePage from "./pages/KnowledgePage";
 import ViewPage from "./pages/ViewPage";
 import DeleteAccountPage from "./pages/deleteAccountPage";
 import LoginPage from "./pages/loginPage";
@@ -61,6 +62,17 @@ const Router = () => {
           <ProtectedRoute>
             <StoreGuard>
               <StorePage />
+            </StoreGuard>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/knowledge"
+        element={
+          <ProtectedRoute>
+            <StoreGuard>
+              <KnowledgePage />
             </StoreGuard>
           </ProtectedRoute>
         }

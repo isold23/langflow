@@ -102,17 +102,17 @@ export default function Header(): JSX.Element {
           </Link>
         )}
         {hasStore && (
-          <Link to="/store">
+          <Link to="/knowledge">
             <Button
               className="gap-2"
-              variant={location.pathname === "/store" ? "primary" : "secondary"}
+              variant={location.pathname === "/knowledge" ? "primary" : "secondary"}
               size="sm"
               onClick={() => {
                 checkForChanges(nodes);
               }}
               data-testid="button-store"
             >
-              <IconComponent name="Store" className="h-4 w-4" />
+              <IconComponent name="Database" className="h-4 w-4" />
               <div className="flex-1">Knowledge</div>
             </Button>
           </Link>
