@@ -173,7 +173,6 @@ export default function KnowledgePage(): JSX.Element {
 
   return (
     <PageLayout
-      betaIcon
       title={KNOWLEDGE_LIBRARY_TITLE}
       description={KNOWLEDGE_LIBRARY_DESC}
       button={

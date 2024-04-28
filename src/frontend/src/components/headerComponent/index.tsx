@@ -102,7 +102,7 @@ export default function Header(): JSX.Element {
             </Button>
           </Link>
         )}
-        {hasStore && (
+        {hasKnowledge && (
           <Link to="/knowledge">
             <Button
               className="gap-2"
