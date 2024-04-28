@@ -112,6 +112,9 @@ class Knowledge(KnowledgeBase, table=True):
     data: Optional[Dict] = Field(default=None, sa_column=Column(JSON))
     user_id: Optional[UUID] = Field(index=True, foreign_key="user.id", nullable=True)
     usergroup: Optional[str] = Field(nullable=True, default=None)
+    indexmodel: Optional[str] = Field(nullable=True, default="Embedding-2")
+    maxdata: Optional[int] = Field(nullable=True, default=3000)
+    fileprocessmodel: Optional[str] = Field(nullable=True, default="FastAI-turbo")
     user: "User" = Relationship(back_populates="knowledges")
 
     def to_record(self):

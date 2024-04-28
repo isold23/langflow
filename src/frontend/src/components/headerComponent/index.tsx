@@ -33,6 +33,7 @@ export default function Header(): JSX.Element {
   const navigate = useNavigate();
   const removeFlow = useFlowsManagerStore((store) => store.removeFlow);
   const hasStore = useStoreStore((state) => state.hasStore);
+  const hasKnowledge = useStoreStore((state) => state.hasStore);
   const { id } = useParams();
   const nodes = useFlowStore((state) => state.nodes);
 
