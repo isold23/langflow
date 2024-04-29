@@ -103,10 +103,10 @@ export default function Header(): JSX.Element {
           </Link>
         )}
         {hasKnowledge && (
-          <Link to="/knowledge">
+          <Link to="/knowledges">
             <Button
               className="gap-2"
-              variant={location.pathname === "/knowledge" ? "primary" : "secondary"}
+              variant={location.pathname === "/knowledges" ? "primary" : "secondary"}
               size="sm"
               onClick={() => {
                 checkForChanges(nodes);
