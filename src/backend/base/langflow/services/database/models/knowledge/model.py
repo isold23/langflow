@@ -115,6 +115,7 @@ class Knowledge(KnowledgeBase, table=True):
     
     indexmodel: Optional[str] = Field(nullable=True, default=None)
     '''
+    indexmodel: Optional[str] = Field(nullable=True, default="Embedding-2")
     maxlen: Optional[int] = Field(nullable=True, default=3000)
     fileprocessmodel: Optional[str] = Field(nullable=True, default="FastAI-turbo")
     '''
