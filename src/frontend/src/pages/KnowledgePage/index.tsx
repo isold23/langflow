@@ -29,7 +29,7 @@ import {
 import { KNOWLEDGE_LIBRARY_DESC, KNOWLEDGE_LIBRARY_TITLE } from "../../constants/constants";
 import { AuthContext } from "../../contexts/authContext";
 import { getStoreComponents, getStoreTags } from "../../controllers/API";
-import StoreApiKeyModal from "../../modals/StoreApiKeyModal";
+import KnowledgeModal from "../../modals/KnowledgeModal";
 import useAlertStore from "../../stores/alertStore";
 import useFlowsManagerStore from "../../stores/flowsManagerStore";
 import { useStoreStore } from "../../stores/storeStore";
@@ -177,8 +177,8 @@ export default function KnowledgePage(): JSX.Element {
       description={KNOWLEDGE_LIBRARY_DESC}
       button={
         <>
-          {StoreApiKeyModal && (
-            <StoreApiKeyModal disabled={loading}>
+          {KnowledgeModal && (
+            <KnowledgeModal disabled={loading}>
               <Button
                 data-testid="api-key-button-store"
                 disabled={loading}
@@ -191,7 +191,7 @@ export default function KnowledgePage(): JSX.Element {
                 <IconComponent name="Database" className="mr-2 w-4" />
                 Create Knowledge
               </Button>
-            </StoreApiKeyModal>
+            </KnowledgeModal>
           )}
         </>
       }
