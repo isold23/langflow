@@ -171,6 +171,29 @@ export default function KnowledgePage(): JSX.Element {
     setPageSize(12);
   }
 
+  function handleNewKnowledge({/*user: UserInputType*/}) {
+    {/* 
+    addUser(user)
+      .then((res) => {
+        updateUser(res["id"], {
+          is_active: user.is_active,
+          is_superuser: user.is_superuser,
+        }).then((res) => {
+          resetFilter();
+          setSuccessData({
+            title: USER_ADD_SUCCESS_ALERT,
+          });
+        });
+      })
+      .catch((error) => {
+        setErrorData({
+          title: USER_ADD_ERROR_ALERT,
+          list: [error.response.data.detail],
+        });
+      });
+      */}
+  }
+
   return (
     <PageLayout
       title={KNOWLEDGE_LIBRARY_TITLE}
@@ -178,17 +201,19 @@ export default function KnowledgePage(): JSX.Element {
       button={
         <>
           {KnowledgeModal && (
-            <KnowledgeModal disabled={loading}>
-              <Button
-                data-testid="api-key-button-store"
-                disabled={loading}
-                className={cn(
-                  `${!validApiKey ? "animate-pulse border-error" : ""}`,
-                  loading ? "cursor-not-allowed" : ""
-                )}
-                variant="primary"
-              >
-                <IconComponent name="Database" className="mr-2 w-4" />
+              <KnowledgeModal
+              title="New Knowledge Library"
+              titleHeader={"Add a new knowledge library"}
+              cancelText="Cancel"
+              confirmationText="Save"
+              icon={"UserPlus2"}
+              onConfirm={(index, user) => {
+                handleNewKnowledge(user);
+              }}
+              asChild
+            >
+              <Button variant="primary">
+                <IconComponent name="Database" className="main-page-nav-button" />
                 Create Knowledge
               </Button>
             </KnowledgeModal>
