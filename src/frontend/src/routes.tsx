@@ -68,7 +68,7 @@ const Router = () => {
       />
 
       <Route
-        path="/knowledge"
+        path="/knowledges"
         element={
           <ProtectedRoute>
             <StoreGuard>
