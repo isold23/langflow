@@ -115,7 +115,11 @@ export default function HomePage(): JSX.Element {
           }}
           asChild
         >
-          <Button variant="primary">New Knowledge</Button>
+           
+          <Button variant="primary">
+            <IconComponent name="Plus" className="main-page-nav-button" />
+            New Knowledge
+          </Button>
         </KnowledgeModal>
       </div>
       }
