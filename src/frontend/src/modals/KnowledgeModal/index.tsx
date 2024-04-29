@@ -139,7 +139,7 @@ export default function KnowledgeModal({
                   }}
                   value={usergroup}
                   className="primary-input"
-                  required
+            
                   placeholder="Usergroup"
                 />
               </Form.Control>
@@ -169,7 +169,7 @@ export default function KnowledgeModal({
                   }}
                   value={userrole}
                   className="primary-input"
-                  required
+                  
                   placeholder="Userrole"
                 />
               </Form.Control>
@@ -220,7 +220,7 @@ export default function KnowledgeModal({
                       }}
                       value={password}
                       className="primary-input"
-                      required={data ? false : true}
+                      
                       type={pwdVisible ? "text" : "password"}
                     />
                   </Form.Control>
@@ -281,7 +281,7 @@ export default function KnowledgeModal({
                       }}
                       value={confirmPassword}
                       className="primary-input"
-                      required={data ? false : true}
+                      
                       type={confirmPwdVisible ? "text" : "password"}
                     />
                   </Form.Control>
