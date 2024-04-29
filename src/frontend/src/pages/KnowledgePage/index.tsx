@@ -188,8 +188,8 @@ export default function KnowledgePage(): JSX.Element {
                 )}
                 variant="primary"
               >
-                <IconComponent name="Key" className="mr-2 w-4" />
-                API Key
+                <IconComponent name="Database" className="mr-2 w-4" />
+                Create Knowledge
               </Button>
             </StoreApiKeyModal>
           )}
