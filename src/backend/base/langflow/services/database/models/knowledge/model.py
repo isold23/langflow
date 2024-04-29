@@ -133,6 +133,9 @@ class Knowledge(KnowledgeBase, table=True):
 class KnowledgeCreate(KnowledgeBase):
     user_id: Optional[UUID] = None
     usergroup: Optional[str] = None
+    indexmodel: Optional[str] = None
+    maxlen: Optional[int] = None
+    fileprocessmodel: Optional[str] = None
 
 class KnowledgeRead(KnowledgeBase):
     id: UUID
