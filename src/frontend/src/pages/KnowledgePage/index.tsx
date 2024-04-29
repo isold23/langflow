@@ -38,9 +38,8 @@ export default function HomePage(): JSX.Element {
         })
           .then((id) => {
             setSuccessData({
-              title: `${
-                is_component ? "Component" : "Flow"
-              } uploaded successfully`,
+              title: `${is_component ? "Component" : "Flow"
+                } uploaded successfully`,
             });
             if (!is_component) navigate("/flow/" + id);
           })
@@ -73,7 +72,7 @@ export default function HomePage(): JSX.Element {
 
   const navigate = useNavigate();
 
-  function handleNewUser({/*user: UserInputType*/}) {
+  function handleNewUser({/*user: UserInputType*/ }) {
     {/** 
   
     addUser(user)
@@ -104,24 +103,24 @@ export default function HomePage(): JSX.Element {
       description={KNOWLEDGE_LIBRARY_DESC}
       button={
         <div>
-        <KnowledgeModal
-          title="New Knowledge"
-          titleHeader={"Add a new knowledge library"}
-          cancelText="Cancel"
-          confirmationText="Save"
-          icon={"UserPlus2"}
-          onConfirm={(index, user) => {
-            handleNewUser(user);
-          }}
-          asChild
-        >
-           
-          <Button variant="primary">
-            <IconComponent name="Plus" className="main-page-nav-button" />
-            New Knowledge
-          </Button>
-        </KnowledgeModal>
-      </div>
+          <KnowledgeModal
+            title="New Knowledge Library"
+            titleHeader={"Add a new knowledge library"}
+            cancelText="Cancel"
+            confirmationText="Save"
+            icon={"UserPlus2"}
+            onConfirm={(index, user) => {
+              handleNewUser(user);
+            }}
+            asChild
+          >
+
+            <Button variant="primary">
+              <IconComponent name="Plus" className="main-page-nav-button" />
+              New Knowledge
+            </Button>
+          </KnowledgeModal>
+        </div>
       }
     >
       <div className="flex h-full w-full space-y-8 lg:flex-row lg:space-x-8 lg:space-y-0">
