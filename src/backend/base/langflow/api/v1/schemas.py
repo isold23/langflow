@@ -296,6 +296,8 @@ class SimplifiedAPIRequest(BaseModel):
     tweaks: Optional[Tweaks] = Field(default=None, description="The tweaks")
     session_id: Optional[str] = Field(default=None, description="The session id")
 
-
 class KnowledgeListCreate(BaseModel):
     knowledges: List[KnowledgeCreate]
+
+class KnowledgeListRead(BaseModel):
+    knowledges: List[KnowledgeRead]
