@@ -13,6 +13,7 @@ from langflow.schema.schema import InputType, OutputType
 from langflow.services.database.models.api_key.model import ApiKeyRead
 from langflow.services.database.models.base import orjson_dumps
 from langflow.services.database.models.flow import FlowCreate, FlowRead
+from langflow.services.database.models.knowledge import KnowledgeCreate, KnowledgeRead
 from langflow.services.database.models.user import UserRead
 
 
@@ -294,3 +295,7 @@ class SimplifiedAPIRequest(BaseModel):
     )
     tweaks: Optional[Tweaks] = Field(default=None, description="The tweaks")
     session_id: Optional[str] = Field(default=None, description="The session id")
+
+
+class KnowledgeListCreate(BaseModel):
+    knowledges: List[KnowledgeCreate]
