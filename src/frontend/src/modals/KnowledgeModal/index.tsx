@@ -3,10 +3,10 @@ import { Eye, EyeOff } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Checkbox } from "../../components/ui/checkbox";
-import { CONTROL_NEW_USER } from "../../constants/constants";
+import { CONTROL_NEW_KNOWLEDGE } from "../../constants/constants";
 import { AuthContext } from "../../contexts/authContext";
 import {
-  UserInputType,
+  KnowledgeInputType,
   UserManagementType,
   inputHandlerEventType,
 } from "../../types/components";
@@ -36,7 +36,7 @@ export default function KnowledgeModal({
   const [confirmPassword, setConfirmPassword] = useState(data?.password ?? "");
   const [isActive, setIsActive] = useState(data?.is_active ?? false);
   const [isSuperUser, setIsSuperUser] = useState(data?.is_superuser ?? false);
-  const [inputState, setInputState] = useState<UserInputType>(CONTROL_NEW_USER);
+  const [inputState, setInputState] = useState<KnowledgeInputType>(CONTROL_NEW_KNOWLEDGE);
   const { userData } = useContext(AuthContext);
 
   function handleInput({

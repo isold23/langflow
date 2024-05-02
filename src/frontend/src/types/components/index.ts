@@ -399,6 +399,10 @@ export type UserInputType = {
   updated_at?: string;
 };
 
+export type KnowledgeInputType = {
+  knowledgename: string;
+};
+
 export type ApiKeyType = {
   title: string;
   cancelText: string;

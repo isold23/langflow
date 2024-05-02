@@ -601,6 +601,10 @@ export const CONTROL_NEW_USER = {
   is_superuser: false,
 };
 
+export const CONTROL_NEW_KNOWLEDGE = {
+  knowledgename: "",
+};
+
 export const tabsCode = [];
 
 export function tabsArray(codes: string[], method: number) {
