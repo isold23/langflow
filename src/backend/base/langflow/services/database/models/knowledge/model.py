@@ -149,5 +149,6 @@ class KnowledgeRead(KnowledgeBase):
 
 class KnowledgeUpdate(SQLModel):
     name: Optional[str] = None
+    knowledgename: Optional[str] = None
     description: Optional[str] = None
     data: Optional[Dict] = None
