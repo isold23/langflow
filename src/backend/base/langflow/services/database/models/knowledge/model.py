@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class KnowledgeBase(SQLModel):
-    name: str = Field(index=True)
+    knowledgename: str = Field(index=True)
     description: Optional[str] = Field(index=True, nullable=True, default=None)
     icon: Optional[str] = Field(default=None, nullable=True)
     icon_bg_color: Optional[str] = Field(default=None, nullable=True)
@@ -126,7 +126,7 @@ class Knowledge(KnowledgeBase, table=True):
         data = {
             "id": serialized.pop("id"),
             "data": serialized.pop("data"),
-            "name": serialized.pop("name"),
+            "knowledgename": serialized.pop("knowledgename"),
             "description": serialized.pop("description"),
             "updated_at": serialized.pop("updated_at"),
         }
