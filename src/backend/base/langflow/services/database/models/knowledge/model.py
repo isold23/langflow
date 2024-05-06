@@ -136,7 +136,7 @@ class Knowledge(KnowledgeBase, table=True):
 
 class KnowledgeCreate(KnowledgeBase):
     user_id: Optional[UUID] = None
-    usergroup: Optional[str] = None
+    knowledgename: Optional[str] = None
     '''
     indexmodel: Optional[str] = None
     maxlen: Optional[int] = None
@@ -144,6 +144,7 @@ class KnowledgeCreate(KnowledgeBase):
     '''
 class KnowledgeRead(KnowledgeBase):
     id: UUID
+    name: Optional[str] = Field()
     user_id: Optional[UUID] = Field()
     usergroup: Optional[str] = Field()
 

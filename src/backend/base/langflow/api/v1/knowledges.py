@@ -32,7 +32,7 @@ def create_knowledge(
     if knowledge.user_id is None:
         knowledge.user_id = current_user.id
         knowledge.usergroup = current_user.usergroup
-
+        
     db_knowledge = Knowledge.model_validate(knowledge, from_attributes=True)
     db_knowledge.updated_at = datetime.utcnow()
 
