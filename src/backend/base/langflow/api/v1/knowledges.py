@@ -28,7 +28,7 @@ def create_knowledge(
     knowledge: KnowledgeCreate,
     current_user: User = Depends(get_current_active_user),
 ):
-    print("*************************")
+    print("create_knowledge *************************")
     """Create a new knowledge."""
     if knowledge.user_id is None:
         knowledge.user_id = current_user.id
@@ -52,6 +52,7 @@ def read_knowledges(
     settings_service: "SettingsService" = Depends(get_settings_service),
 ):
     """Read all knowledges."""
+    print("read_knowledges *************************")
     try:
         auth_settings = settings_service.auth_settings
         if auth_settings.AUTO_LOGIN:
@@ -111,6 +112,7 @@ def read_knowledge(
     settings_service: "SettingsService" = Depends(get_settings_service),
 ):
     """Read a knowledge."""
+    print("read_knowledge *************************")
     auth_settings = settings_service.auth_settings
     stmt = select(Knowledge).where(Knowledge.id == knowledge_id)
     if auth_settings.AUTO_LOGIN:
@@ -135,7 +137,7 @@ def update_knowledge(
     settings_service=Depends(get_settings_service),
 ):
     """Update a knowledge."""
-
+    print("update_knowledge *************************")
     db_knowledge = read_knowledge(
         session=session,
         knowledge_id=knowledge_id,
@@ -166,6 +168,7 @@ def delete_knowledge(
     settings_service=Depends(get_settings_service),
 ):
     """Delete a knowledge."""
+    print("delete_knowledge *************************")
     knowledge = read_knowledge(
         session=session,
         knowledge_id=knowledge_id,
@@ -187,6 +190,7 @@ def create_knowledges(
     current_user: User = Depends(get_current_active_user),
 ):
     """Create multiple new knowledges."""
+    print("create_knowledges *************************")
     db_knowledges = []
     for knowledge in knowledge_list.knowledges:
         knowledge.user_id = current_user.id
@@ -207,6 +211,7 @@ async def upload_file(
     current_user: User = Depends(get_current_active_user),
 ):
     """Upload knowledges from a file."""
+    print("upload_file *************************")
     contents = await file.read()
     data = orjson.loads(contents)
     if "knowledges" in data:
@@ -228,5 +233,6 @@ async def download_file(
     current_user: User = Depends(get_current_active_user),
 ):
     """Download all knowledges as a file."""
+    print("download_file *************************")
     knowledges = read_knowledges(current_user=current_user, session=session, settings_service=settings_service)
     return KnowledgeListRead(knowledges=knowledges)
