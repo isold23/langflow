@@ -134,8 +134,8 @@ class Knowledge(KnowledgeBase, table=True):
         return record
 
 
-class KnowledgeCreate(KnowledgeBase):
-    user_id: Optional[UUID] = None
+class KnowledgeCreate(SQLModel):
+    #user_id: Optional[UUID] = None
     knowledgename: Optional[str] = None
     '''
     indexmodel: Optional[str] = None
