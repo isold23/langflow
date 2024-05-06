@@ -135,7 +135,8 @@ class Knowledge(KnowledgeBase, table=True):
 
 
 class KnowledgeCreate(SQLModel):
-    #user_id: Optional[UUID] = None
+    user_id: Optional[UUID] = None
+    usergroup: Optional[str] = None
     knowledgename: Optional[str] = None
     '''
     indexmodel: Optional[str] = None
