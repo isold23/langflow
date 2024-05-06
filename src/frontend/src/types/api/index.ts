@@ -117,6 +117,16 @@ export type changeUser = {
   profile_image?: string;
 };
 
+export type changeKnowledge = {
+  knowledgename?: string;
+  usergroup?: string;
+  userrole?: number;
+  is_active?: boolean;
+  is_superuser?: boolean;
+  password?: string;
+  profile_image?: string;
+};
+
 export type resetPasswordType = {
   password?: string;
   profile_image?: string;

@@ -20,7 +20,12 @@ import useAlertStore from "../../stores/alertStore";
 import useFlowsManagerStore from "../../stores/flowsManagerStore";
 import { downloadFlows } from "../../utils/reactflowUtils";
 import KnowledgeModal from "../../modals/KnowledgeModal";
-export default function HomePage(): JSX.Element {
+import { addKnowledge, updateKnowledge } from "../../controllers/API";
+
+import { Knowledges } from "../../types/api";
+import { KnowledgeInputType } from "../../types/components";
+
+export default function KnowledgePage(): JSX.Element {
   const uploadFlow = useFlowsManagerStore((state) => state.uploadFlow);
   const setCurrentFlowId = useFlowsManagerStore(
     (state) => state.setCurrentFlowId
@@ -76,14 +81,12 @@ export default function HomePage(): JSX.Element {
 
   const navigate = useNavigate();
 
-  function handleNewKnowledge({knowledge: KnowledgeInputType }) {
-    addUser(user)
+  function handleNewKnowledge(knowledge: KnowledgeInputType ) {
+    addKnowledge(knowledge)
       .then((res) => {
-        updateUser(res["id"], {
-          is_active: user.is_active,
-          is_superuser: user.is_superuser,
+        updateKnowledge(res["id"], {
+          knowledgename: knowledge.knowledgename,
         }).then((res) => {
-          resetFilter();
           setSuccessData({
             title: KNOWLEDGE_ADD_SUCCESS_ALERT,
           });
@@ -111,7 +114,7 @@ export default function HomePage(): JSX.Element {
             confirmationText="Save"
             icon={"UserPlus2"}
             onConfirm={(index, knowledge) => {
-              handleNewKnowledge(user);
+              handleNewKnowledge(knowledge);
             }}
             asChild
           >

@@ -14,6 +14,7 @@ import {
   changeUser,
   resetPasswordType,
   sendAllProps,
+  changeKnowledge,
 } from "../../types/api/index";
 import { KnowledgeInputType, UserInputType } from "../../types/components";
 import { FlowStyleType, FlowType } from "../../types/flow";
@@ -514,6 +515,17 @@ export async function addKnowledge(knowledge: KnowledgeInputType): Promise<Array
       throw new Error(res.data.detail);
     }
     return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function updateKnowledge(knowledge_id: string, knowledge: changeKnowledge) {
+  try {
+    const res = await api.patch(`${BASE_URL_API}knowledges/${knowledge_id}`, knowledge);
+    if (res.status === 200) {
+      return res.data;
+    }
   } catch (error) {
     throw error;
   }
