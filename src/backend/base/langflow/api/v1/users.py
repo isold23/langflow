@@ -29,6 +29,7 @@ def add_user(
     """
     Add a new user to the database.
     """
+    print("add_user***************************")
     new_user = User.model_validate(user, from_attributes=True)
     try:
         new_user.password = get_password_hash(user.password)
