@@ -37,42 +37,6 @@ export default function KnowledgePage(): JSX.Element {
   const pathname = location.pathname;
   const [openModal, setOpenModal] = useState(false);
   const is_component = pathname === "/components";
-  const dropdownOptions = [
-    {
-      name: "Import from JSON",
-      onBtnClick: () => {
-        uploadFlow({
-          newProject: true,
-          isComponent: is_component,
-        })
-          .then((id) => {
-            setSuccessData({
-              title: `${is_component ? "Component" : "Flow"
-                } uploaded successfully`,
-            });
-            if (!is_component) navigate("/flow/" + id);
-          })
-          .catch((error) => {
-            setErrorData({
-              title: CONSOLE_ERROR_MSG,
-              list: [error],
-            });
-          });
-      },
-    },
-  ];
-  const sidebarNavItems = [
-    {
-      title: "Flows",
-      href: "/flows",
-      icon: <Group className="w-5 stroke-[1.5]" />,
-    },
-    {
-      title: "Components",
-      href: "/components",
-      icon: <ToyBrick className="mx-[0.08rem] w-[1.1rem] stroke-[1.5]" />,
-    },
-  ];
 
   // Set a null id
   useEffect(() => {
