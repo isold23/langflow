@@ -8,13 +8,14 @@ import {
   Component,
   LoginType,
   Users,
+  Knowledges,
   VertexBuildTypeAPI,
   VerticesOrderTypeAPI,
   changeUser,
   resetPasswordType,
   sendAllProps,
 } from "../../types/api/index";
-import { UserInputType } from "../../types/components";
+import { KnowledgeInputType, UserInputType } from "../../types/components";
 import { FlowStyleType, FlowType } from "../../types/flow";
 import { StoreComponentResponse } from "../../types/store";
 import { FlowPoolType } from "../../types/zustand/flow";
@@ -497,6 +498,30 @@ export async function resetPassword(user_id: string, user: resetPasswordType) {
       `${BASE_URL_API}users/${user_id}/reset-password`,
       user
     );
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export async function addKnowledge(knowledge: KnowledgeInputType): Promise<Array<Knowledges>> {
+  try {
+    const res = await api.post(`${BASE_URL_API}knowledges/`, knowledge);
+    if (res.status !== 201) {
+      throw new Error(res.data.detail);
+    }
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deleteKnowledge(knowledge_id: string) {
+  try {
+    const res = await api.delete(`${BASE_URL_API}knowledges/${knowledge_id}`);
     if (res.status === 200) {
       return res.data;
     }

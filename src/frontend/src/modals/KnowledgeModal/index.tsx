@@ -7,7 +7,7 @@ import { CONTROL_NEW_KNOWLEDGE } from "../../constants/constants";
 import { AuthContext } from "../../contexts/authContext";
 import {
   KnowledgeInputType,
-  UserManagementType,
+  KnowledgeManagementType,
   inputHandlerEventType,
 } from "../../types/components";
 import { nodeIconsLucide } from "../../utils/styleUtils";
@@ -24,7 +24,7 @@ export default function KnowledgeModal({
   index,
   onConfirm,
   asChild,
-}: UserManagementType) {
+}: KnowledgeManagementType) {
   const Icon: any = nodeIconsLucide[icon];
   const [pwdVisible, setPwdVisible] = useState(false);
   const [confirmPwdVisible, setConfirmPwdVisible] = useState(false);
@@ -50,17 +50,11 @@ export default function KnowledgeModal({
       resetForm();
     } else {
       handleInput({ target: { name: "knowledgename", value: knowledgename } });
-      handleInput({ target: { name: "usergroup", value: usergroup } });
-      handleInput({ target: { name: "userrole", value: userrole } });
-      handleInput({ target: { name: "is_active", value: isActive } });
-      handleInput({ target: { name: "is_superuser", value: isSuperUser } });
     }
   }, [open]);
 
   function resetForm() {
-    setPassword("");
     setKnowledgeName("");
-    setConfirmPassword("");
   }
 
   return (
@@ -77,10 +71,6 @@ export default function KnowledgeModal({
       <BaseModal.Content>
         <Form.Root
           onSubmit={(event) => {
-            if (password !== confirmPassword) {
-              event.preventDefault();
-              return;
-            }
             resetForm();
             onConfirm(1, inputState);
             setOpen(false);
@@ -117,227 +107,10 @@ export default function KnowledgeModal({
                 Please enter your knowledge name
               </Form.Message>
             </Form.Field>
-
-            <Form.Field name="usergroup">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Form.Label className="data-[invalid]:label-invalid">
-                  Usergroup{" "}
-                  <span className="font-medium text-destructive">*</span>
-                </Form.Label>
-              </div>
-              <Form.Control asChild>
-                <input
-                  onChange={({ target: { value } }) => {
-                    handleInput({ target: { name: "usergroup", value } });
-                    setUserGroup(value);
-                  }}
-                  value={usergroup}
-                  className="primary-input"
-            
-                  placeholder="Usergroup"
-                />
-              </Form.Control>
-              <Form.Message match="valueMissing" className="field-invalid">
-                Please enter your usergroup
-              </Form.Message>
-            </Form.Field>
-
-            <Form.Field name="userrole">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Form.Label className="data-[invalid]:label-invalid">
-                  Userrole{" "}
-                  <span className="font-medium text-destructive">*</span>
-                </Form.Label>
-              </div>
-              <Form.Control asChild>
-                <input
-                  onChange={({ target: { value } }) => {
-                    handleInput({ target: { name: "userrole", value } });
-                    setUserRole(value);
-                  }}
-                  value={userrole}
-                  className="primary-input"
-                  
-                  placeholder="Userrole"
-                />
-              </Form.Control>
-              <Form.Message match="valueMissing" className="field-invalid">
-                Please enter your userrole
-              </Form.Message>
-            </Form.Field>
-
-            <div className="flex flex-row">
-              <div className="mr-3 basis-1/2">
-                <Form.Field
-                  name="password"
-                  serverInvalid={password != confirmPassword}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Form.Label className="data-[invalid]:label-invalid flex">
-                      Password{" "}
-                      <span className="ml-1 mr-1 font-medium text-destructive">
-                        *
-                      </span>
-                      {pwdVisible && (
-                        <Eye
-                          onClick={() => setPwdVisible(!pwdVisible)}
-                          className="h-5 cursor-pointer"
-                          strokeWidth={1.5}
-                        />
-                      )}
-                      {!pwdVisible && (
-                        <EyeOff
-                          onClick={() => setPwdVisible(!pwdVisible)}
-                          className="h-5 cursor-pointer"
-                          strokeWidth={1.5}
-                        />
-                      )}
-                    </Form.Label>
-                  </div>
-                  <Form.Control asChild>
-                    <input
-                      onChange={({ target: { value } }) => {
-                        handleInput({ target: { name: "password", value } });
-                        setPassword(value);
-                      }}
-                      value={password}
-                      className="primary-input"
-                      
-                      type={pwdVisible ? "text" : "password"}
-                    />
-                  </Form.Control>
-
-                  <Form.Message className="field-invalid" match="valueMissing">
-                    Please enter a password
-                  </Form.Message>
-
-                  {password != confirmPassword && (
-                    <Form.Message className="field-invalid">
-                      Passwords do not match
-                    </Form.Message>
-                  )}
-                </Form.Field>
-              </div>
-
-              <div className="basis-1/2">
-                <Form.Field
-                  name="confirmpassword"
-                  serverInvalid={password != confirmPassword}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Form.Label className="data-[invalid]:label-invalid flex">
-                      Confirm password{" "}
-                      <span className="ml-1 mr-1 font-medium text-destructive">
-                        *
-                      </span>
-                      {confirmPwdVisible && (
-                        <Eye
-                          onClick={() =>
-                            setConfirmPwdVisible(!confirmPwdVisible)
-                          }
-                          className="h-5 cursor-pointer"
-                          strokeWidth={1.5}
-                        />
-                      )}
-                      {!confirmPwdVisible && (
-                        <EyeOff
-                          onClick={() =>
-                            setConfirmPwdVisible(!confirmPwdVisible)
-                          }
-                          className="h-5 cursor-pointer"
-                          strokeWidth={1.5}
-                        />
-                      )}
-                    </Form.Label>
-                  </div>
-                  <Form.Control asChild>
-                    <input
-                      onChange={(input) => {
-                        setConfirmPassword(input.target.value);
-                      }}
-                      value={confirmPassword}
-                      className="primary-input"
-                      
-                      type={confirmPwdVisible ? "text" : "password"}
-                    />
-                  </Form.Control>
-                  <Form.Message className="field-invalid" match="valueMissing">
-                    Please confirm your password
-                  </Form.Message>
-                </Form.Field>
-              </div>
-            </div>
-            <div className="flex gap-8">
-              <Form.Field name="is_active">
-                <div>
-                  <Form.Label className="data-[invalid]:label-invalid mr-3">
-                    Active
-                  </Form.Label>
-                  <Form.Control asChild>
-                    <Checkbox
-                      value={isActive}
-                      checked={isActive}
-                      id="is_active"
-                      className="relative top-0.5"
-                      onCheckedChange={(value) => {
-                        handleInput({ target: { name: "is_active", value } });
-                        setIsActive(value);
-                      }}
-                    />
-                  </Form.Control>
-                </div>
-              </Form.Field>
-              {userData?.is_superuser && (
-                <Form.Field name="is_superuser">
-                  <div>
-                    <Form.Label className="data-[invalid]:label-invalid mr-3">
-                      Superuser
-                    </Form.Label>
-                    <Form.Control asChild>
-                      <Checkbox
-                        checked={isSuperUser}
-                        value={isSuperUser}
-                        id="is_superuser"
-                        className="relative top-0.5"
-                        onCheckedChange={(value) => {
-                          handleInput({
-                            target: { name: "is_superuser", value },
-                          });
-                          setIsSuperUser(value);
-                        }}
-                      />
-                    </Form.Control>
-                  </div>
-                </Form.Field>
-              )}
-            </div>
           </div>
 
           <div className="float-right">
+
             <Button
               variant="outline"
               onClick={() => {
@@ -351,7 +124,9 @@ export default function KnowledgeModal({
             <Form.Submit asChild>
               <Button className="mt-8">{confirmationText}</Button>
             </Form.Submit>
+
           </div>
+
         </Form.Root>
       </BaseModal.Content>
     </BaseModal>

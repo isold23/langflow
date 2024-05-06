@@ -376,6 +376,19 @@ export type UserManagementType = {
   onConfirm: (index, data) => void;
 };
 
+export type KnowledgeManagementType = {
+  title: string;
+  titleHeader: string;
+  cancelText: string;
+  confirmationText: string;
+  children: ReactElement;
+  icon: string;
+  data?: any;
+  index?: number;
+  asChild?: boolean;
+  onConfirm: (index, data) => void;
+};
+
 export type loginInputStateType = {
   username: string;
   password: string;

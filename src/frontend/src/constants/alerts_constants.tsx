@@ -21,6 +21,7 @@ export const API_ERROR_ALERT =
 export const USER_DEL_ERROR_ALERT = "Error on delete user";
 export const USER_EDIT_ERROR_ALERT = "Error on edit user";
 export const USER_ADD_ERROR_ALERT = "Error when adding new user";
+export const KNOWLEDGE_ADD_ERROR_ALERT = "Error when adding new knowledge";
 export const SIGNIN_ERROR_ALERT = "Error signing in";
 export const DEL_KEY_ERROR_ALERT = "Error on delete key";
 export const UPLOAD_ERROR_ALERT = "Error uploading file";
@@ -56,5 +57,6 @@ export const USER_ADD_SUCCESS_ALERT = "Success! New user added!";
 export const DEL_KEY_SUCCESS_ALERT = "Success! Key deleted!";
 export const FLOW_BUILD_SUCCESS_ALERT = `Flow built successfully`;
 export const SAVE_SUCCESS_ALERT = "Changes saved successfully!";
+export const KNOWLEDGE_ADD_SUCCESS_ALERT = "Success! New knowledge added!";
 
 // Generic Node

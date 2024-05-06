@@ -134,6 +134,18 @@ export type Users = {
   updated_at: Date;
 };
 
+export type Knowledges = {
+  id: string;
+  knowledgename: string;
+  usergroup: string;
+  userrole: number;
+  is_active: boolean;
+  is_superuser: boolean;
+  profile_image: string;
+  create_at: Date;
+  updated_at: Date;
+};
+
 export type Component = {
   name: string;
   description: string;

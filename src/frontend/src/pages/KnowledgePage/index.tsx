@@ -8,6 +8,10 @@ import SidebarNav from "../../components/sidebarComponent";
 import { Button } from "../../components/ui/button";
 import { CONSOLE_ERROR_MSG } from "../../constants/alerts_constants";
 import {
+  KNOWLEDGE_ADD_ERROR_ALERT,
+  KNOWLEDGE_ADD_SUCCESS_ALERT,
+} from "../../constants/alerts_constants";
+import {
   KNOWLEDGE_LIBRARY_TITLE,
   KNOWLEDGE_LIBRARY_DESC,
 } from "../../constants/constants";
@@ -72,9 +76,7 @@ export default function HomePage(): JSX.Element {
 
   const navigate = useNavigate();
 
-  function handleNewUser({/*user: UserInputType*/ }) {
-    {/** 
-  
+  function handleNewKnowledge({knowledge: KnowledgeInputType }) {
     addUser(user)
       .then((res) => {
         updateUser(res["id"], {
@@ -83,17 +85,16 @@ export default function HomePage(): JSX.Element {
         }).then((res) => {
           resetFilter();
           setSuccessData({
-            title: USER_ADD_SUCCESS_ALERT,
+            title: KNOWLEDGE_ADD_SUCCESS_ALERT,
           });
         });
       })
       .catch((error) => {
         setErrorData({
-          title: USER_ADD_ERROR_ALERT,
+          title: KNOWLEDGE_ADD_ERROR_ALERT,
           list: [error.response.data.detail],
         });
       });
-      */}
   }
 
   // Personal flows display
@@ -109,8 +110,8 @@ export default function HomePage(): JSX.Element {
             cancelText="Cancel"
             confirmationText="Save"
             icon={"UserPlus2"}
-            onConfirm={(index, user) => {
-              handleNewUser(user);
+            onConfirm={(index, knowledge) => {
+              handleNewKnowledge(user);
             }}
             asChild
           >
