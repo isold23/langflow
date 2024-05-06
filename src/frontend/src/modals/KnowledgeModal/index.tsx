@@ -94,7 +94,7 @@ export default function KnowledgeModal({
               <Form.Control asChild>
                 <input
                   onChange={({ target: { value } }) => {
-                    handleInput({ target: { name: "Knowledgename", value } });
+                    handleInput({ target: { name: "knowledgename", value } });
                     setKnowledgeName(value);
                   }}
                   value={knowledgename}

@@ -28,6 +28,7 @@ def create_knowledge(
     knowledge: KnowledgeCreate,
     current_user: User = Depends(get_current_active_user),
 ):
+    print("*************************")
     """Create a new knowledge."""
     if knowledge.user_id is None:
         knowledge.user_id = current_user.id
