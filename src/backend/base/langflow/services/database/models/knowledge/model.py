@@ -134,7 +134,7 @@ class Knowledge(KnowledgeBase, table=True):
         return record
 
 
-class KnowledgeCreate(SQLModel):
+class KnowledgeCreate(KnowledgeBase):
     user_id: Optional[UUID] = None
     usergroup: Optional[str] = None
     knowledgename: Optional[str] = None
