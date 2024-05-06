@@ -144,7 +144,7 @@ class KnowledgeCreate(KnowledgeBase):
     '''
 class KnowledgeRead(KnowledgeBase):
     id: UUID
-    name: Optional[str] = Field()
+    knowledgename: Optional[str] = Field()
     user_id: Optional[UUID] = Field()
     usergroup: Optional[str] = Field()
 
