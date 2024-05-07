@@ -507,6 +507,18 @@ export async function resetPassword(user_id: string, user: resetPasswordType) {
   }
 }
 
+export async function readKnowledgesFromDatabase() {
+  try {
+    const response = await api.get(`${BASE_URL_API}knowledges/`);
+    if (response?.status !== 200) {
+      throw new Error(`HTTP error! status: ${response?.status}`);
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 export async function addKnowledge(knowledge: KnowledgeInputType): Promise<Array<Knowledges>> {
   try {

@@ -7,10 +7,11 @@ import PageLayout from "../../components/pageLayout";
 import SidebarNav from "../../components/sidebarComponent";
 import { Button } from "../../components/ui/button";
 import { CONSOLE_ERROR_MSG } from "../../constants/alerts_constants";
+import KnowledgeComponentsComponent from "../KnowledgePage/components/components";
 import {
   KNOWLEDGE_ADD_ERROR_ALERT,
   KNOWLEDGE_ADD_SUCCESS_ALERT,
-} from "../../constants/alerts_constants";
+} from "../../constants/alerts_constants"
 import {
   KNOWLEDGE_LIBRARY_TITLE,
   KNOWLEDGE_LIBRARY_DESC,
@@ -93,7 +94,7 @@ export default function KnowledgePage(): JSX.Element {
     >
       <div className="flex h-full w-full space-y-8 lg:flex-row lg:space-x-8 lg:space-y-0">
         <div className="h-full w-full flex-1">
-          <Outlet />
+        <KnowledgeComponentsComponent key="flows" is_component={false}></KnowledgeComponentsComponent>
         </div>
       </div>
 
