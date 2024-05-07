@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class KnowledgeBase(SQLModel):
-    name: str = Field(index=True)
+    knowledgename: str = Field(index=True)
     description: Optional[str] = Field(index=True, nullable=True, default=None)
     icon: Optional[str] = Field(default=None, nullable=True)
     icon_bg_color: Optional[str] = Field(default=None, nullable=True)
@@ -112,7 +112,6 @@ class Knowledge(KnowledgeBase, table=True):
     data: Optional[Dict] = Field(default=None, sa_column=Column(JSON))
     user_id: Optional[UUID] = Field(index=True, foreign_key="user.id", nullable=True)
     usergroup: Optional[str] = Field(nullable=True, default=None)
-    knowledgename: Optional[str] = Field(nullable=True, default=None)
     '''
     indexmodel: Optional[str] = Field(nullable=True, default="Embedding-2")
     maxlen: Optional[int] = Field(nullable=True, default=3000)
@@ -125,7 +124,7 @@ class Knowledge(KnowledgeBase, table=True):
         data = {
             "id": serialized.pop("id"),
             "data": serialized.pop("data"),
-            "name": serialized.pop("name"),
+            "knowledgename": serialized.pop("knowledgename"),
             "description": serialized.pop("description"),
             "updated_at": serialized.pop("updated_at"),
         }
