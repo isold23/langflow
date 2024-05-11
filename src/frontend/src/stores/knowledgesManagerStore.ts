@@ -172,7 +172,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
       input.click();
     });
   },
-  addFlow: async (
+  addKnowledge: async (
     newProject: Boolean,
     flow?: FlowType,
     override?: boolean,
@@ -199,7 +199,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
             data: { ...state.data, ["saved_components"]: data },
           }));
         }, 200);
-        // addFlowToLocalState(newFlow);
+        // addKnowlegeToLocalState(newFlow);
         return;
       }
 
@@ -236,7 +236,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
         );
     }
   },
-  removeFlow: async (id: string) => {
+  removeKnowledge: async (id: string) => {
     return new Promise<void>((resolve) => {
       const index = get().flows.findIndex((flow) => flow.id === id);
       if (index >= 0) {
@@ -270,7 +270,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
       }
     });
   },
-  uploadFlow: async ({
+  uploadKnowledge: async ({
     newProject,
     file,
     isComponent = false,
@@ -296,11 +296,11 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
         } else {
           if (fileData.flows) {
             fileData.flows.forEach((flow: FlowType) => {
-              id = get().addFlow(newProject, flow, undefined, position);
+              id = get().addKnowlege(newProject, flow, undefined, position);
             });
             resolve("");
           } else {
-            id = await get().addFlow(newProject, fileData, undefined, position);
+            id = await get().addKnowlege(newProject, fileData, undefined, position);
             resolve(id);
           }
         }
@@ -325,7 +325,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
             ) {
               reject("You cannot upload a component as a flow or vice versa");
             } else {
-              id = await get().addFlow(newProject, fileData);
+              id = await get().addKnowlege(newProject, fileData);
               resolve(id);
             }
           }
@@ -337,7 +337,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   },
   saveComponent: (component: NodeDataType, override: boolean) => {
     component.node!.official = false;
-    return get().addFlow(
+    return get().addKnowlege(
       true,
       createFlowComponent(component, useDarkStore.getState().version),
       override

@@ -13,6 +13,7 @@ import {
 } from "../../../../constants/alerts_constants";
 import useAlertStore from "../../../../stores/alertStore";
 import useFlowsManagerStore from "../../../../stores/flowsManagerStore";
+import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
 import { FlowType } from "../../../../types/flow";
 
 export default function KnowledgeComponentsComponent({
@@ -20,9 +21,9 @@ export default function KnowledgeComponentsComponent({
 }: {
   is_component?: boolean;
 }) {
-  const addFlow = useFlowsManagerStore((state) => state.addFlow);
-  const uploadFlow = useFlowsManagerStore((state) => state.uploadFlow);
-  const removeFlow = useFlowsManagerStore((state) => state.removeFlow);
+  const addKnowledge = useKnowledgesManagerStore((state) => state.addKnowledge);
+  const uploadKnowledge = useKnowledgesManagerStore((state) => state.uploadKnowledge);
+  const removeKnowledge = useKnowledgesManagerStore((state) => state.removeKnowledge);
   const isLoading = useFlowsManagerStore((state) => state.isLoading);
   const setExamples = useFlowsManagerStore((state) => state.setExamples);
   const flows = useFlowsManagerStore((state) => state.flows);
@@ -68,7 +69,7 @@ export default function KnowledgeComponentsComponent({
     e.preventDefault();
     if (e.dataTransfer.types.some((types) => types === "Files")) {
       if (e.dataTransfer.files.item(0).type === "application/json") {
-        uploadFlow({
+        uploadKnowledge({
           newProject: true,
           file: e.dataTransfer.files.item(0)!,
           isComponent: is_component,
@@ -119,8 +120,8 @@ export default function KnowledgeComponentsComponent({
                     <span className="transition-colors hover:text-muted-foreground">
                       <button
                         onClick={() => {
-                          addFlow(true).then((id) => {
-                            navigate("/flow/" + id);
+                          addKnowledge(true).then((id) => {
+                            navigate("/knowledge/" + id);
                           });
                         }}
                         className="underline"
@@ -140,7 +141,7 @@ export default function KnowledgeComponentsComponent({
                 data?.map((item, idx) => (
                   <CollectionCardComponent
                     onDelete={() => {
-                      removeFlow(item.id);
+                      removeKnowledge(item.id);
                       setSuccessData({
                         title: `${
                           item.is_component ? "Component" : "Flow"

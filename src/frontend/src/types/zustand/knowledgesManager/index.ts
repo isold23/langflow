@@ -22,7 +22,7 @@ export type KnowledgesManagerStoreType = {
     viewport: Viewport
   ) => void;
   uploadFlows: () => Promise<void>;
-  uploadFlow: ({
+  uploadKnowledge: ({
     newProject,
     file,
     isComponent,
@@ -33,14 +33,14 @@ export type KnowledgesManagerStoreType = {
     isComponent?: boolean;
     position?: XYPosition;
   }) => Promise<string | never>;
-  addFlow: (
+  addKnowledge: (
     newProject: boolean,
     flow?: FlowType,
     override?: boolean,
     position?: XYPosition
   ) => Promise<string | undefined>;
   deleteComponent: (key: string) => Promise<void>;
-  removeFlow: (id: string) => Promise<void>;
+  removeKnowledge: (id: string) => Promise<void>;
   saveComponent: (
     component: any,
     override: boolean
