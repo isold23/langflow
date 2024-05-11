@@ -12,7 +12,7 @@ import {
   WRONG_FILE_ERROR_ALERT,
 } from "../../../../constants/alerts_constants";
 import useAlertStore from "../../../../stores/alertStore";
-import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
+import useFlowsManagerStore from "../../../../stores/flowsManagerStore";
 import { FlowType } from "../../../../types/flow";
 
 export default function KnowledgeComponentsComponent({
@@ -20,12 +20,12 @@ export default function KnowledgeComponentsComponent({
 }: {
   is_component?: boolean;
 }) {
-  const addFlow = useKnowledgesManagerStore((state) => state.addFlow);
-  const uploadFlow = useKnowledgesManagerStore((state) => state.uploadFlow);
-  const removeFlow = useKnowledgesManagerStore((state) => state.removeFlow);
-  const isLoading = useKnowledgesManagerStore((state) => state.isLoading);
-  const setExamples = useKnowledgesManagerStore((state) => state.setExamples);
-  const flows = useKnowledgesManagerStore((state) => state.flows);
+  const addFlow = useFlowsManagerStore((state) => state.addFlow);
+  const uploadFlow = useFlowsManagerStore((state) => state.uploadFlow);
+  const removeFlow = useFlowsManagerStore((state) => state.removeFlow);
+  const isLoading = useFlowsManagerStore((state) => state.isLoading);
+  const setExamples = useFlowsManagerStore((state) => state.setExamples);
+  const flows = useFlowsManagerStore((state) => state.flows);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const [pageSize, setPageSize] = useState(20);

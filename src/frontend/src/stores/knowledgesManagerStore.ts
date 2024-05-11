@@ -411,4 +411,4 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   },
 }));
 
-export default useFlowsManagerStore;
+export default useKnowledgesManagerStore;
