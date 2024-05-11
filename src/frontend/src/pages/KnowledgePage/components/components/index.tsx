@@ -12,7 +12,7 @@ import {
   WRONG_FILE_ERROR_ALERT,
 } from "../../../../constants/alerts_constants";
 import useAlertStore from "../../../../stores/alertStore";
-import useFlowsManagerStore from "../../../../stores/flowsManagerStore";
+import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
 import { FlowType } from "../../../../types/flow";
 
 export default function KnowledgeComponentsComponent({
@@ -20,12 +20,12 @@ export default function KnowledgeComponentsComponent({
 }: {
   is_component?: boolean;
 }) {
-  const addFlow = useFlowsManagerStore((state) => state.addFlow);
-  const uploadFlow = useFlowsManagerStore((state) => state.uploadFlow);
-  const removeFlow = useFlowsManagerStore((state) => state.removeFlow);
-  const isLoading = useFlowsManagerStore((state) => state.isLoading);
-  const setExamples = useFlowsManagerStore((state) => state.setExamples);
-  const flows = useFlowsManagerStore((state) => state.flows);
+  const addFlow = useKnowledgesManagerStore((state) => state.addFlow);
+  const uploadFlow = useKnowledgesManagerStore((state) => state.uploadFlow);
+  const removeFlow = useKnowledgesManagerStore((state) => state.removeFlow);
+  const isLoading = useKnowledgesManagerStore((state) => state.isLoading);
+  const setExamples = useKnowledgesManagerStore((state) => state.setExamples);
+  const flows = useKnowledgesManagerStore((state) => state.flows);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const [pageSize, setPageSize] = useState(20);
@@ -112,7 +112,7 @@ export default function KnowledgeComponentsComponent({
               <div className="flex-max-width h-full flex-col">
                 <div className="flex w-full flex-col gap-4">
                   <div className="grid w-full gap-4">
-                    Flows and components can be created using Langflow.
+                    Knowledges can be created using Langflow.
                   </div>
                   <div className="align-center flex w-full justify-center gap-1">
                     <span>New?</span>
@@ -135,7 +135,7 @@ export default function KnowledgeComponentsComponent({
               </div>
             </div>
           ) : (
-            <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-2">
+            <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-3">
               {isLoading === false && data?.length > 0 ? (
                 data?.map((item, idx) => (
                   <CollectionCardComponent
@@ -167,7 +167,7 @@ export default function KnowledgeComponentsComponent({
                               name="ExternalLink"
                               className="main-page-nav-button select-none"
                             />
-                            Edit Flow
+                            Edit Knowledge
                           </Button>
                         </Link>
                       ) : (
