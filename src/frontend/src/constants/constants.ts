@@ -602,7 +602,7 @@ export const CONTROL_NEW_USER = {
 };
 
 export const CONTROL_NEW_KNOWLEDGE = {
-  knowledgename: "",
+  name: "",
 };
 
 export const tabsCode = [];

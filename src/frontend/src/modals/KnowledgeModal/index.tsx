@@ -30,7 +30,7 @@ export default function KnowledgeModal({
   const [confirmPwdVisible, setConfirmPwdVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState(data?.password ?? "");
-  const [knowledgename, setKnowledgeName] = useState(data?.knowledgename ?? "");
+  const [name, setKnowledgeName] = useState(data?.name ?? "");
   const [usergroup, setUserGroup] = useState(data?.usergroup ?? "");
   const [userrole, setUserRole] = useState(data?.userrole ?? 1);
   const [confirmPassword, setConfirmPassword] = useState(data?.password ?? "");
@@ -49,7 +49,7 @@ export default function KnowledgeModal({
     if (!data) {
       resetForm();
     } else {
-      handleInput({ target: { name: "knowledgename", value: knowledgename } });
+      handleInput({ target: { name: "name", value: name } });
     }
   }, [open]);
 
@@ -78,7 +78,7 @@ export default function KnowledgeModal({
           }}
         >
           <div className="grid gap-5">
-            <Form.Field name="knowledgename">
+            <Form.Field name="name">
               <div
                 style={{
                   display: "flex",
@@ -94,10 +94,10 @@ export default function KnowledgeModal({
               <Form.Control asChild>
                 <input
                   onChange={({ target: { value } }) => {
-                    handleInput({ target: { name: "knowledgename", value } });
+                    handleInput({ target: { name: "name", value } });
                     setKnowledgeName(value);
                   }}
-                  value={knowledgename}
+                  value={name}
                   className="primary-input"
                   required
                   placeholder="Knowledgename"

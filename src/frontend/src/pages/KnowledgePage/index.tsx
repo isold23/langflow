@@ -50,7 +50,7 @@ export default function KnowledgePage(): JSX.Element {
     addKnowledge(knowledge)
       .then((res) => {
         updateKnowledge(res["id"], {
-          knowledgename: knowledge.knowledgename,
+          name: knowledge.name,
         }).then((res) => {
           setSuccessData({
             title: KNOWLEDGE_ADD_SUCCESS_ALERT,

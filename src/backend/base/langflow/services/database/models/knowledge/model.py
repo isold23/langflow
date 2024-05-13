@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class KnowledgeBase(SQLModel):
-    knowledgename: str = Field(index=True)
+    name: str = Field(index=True)
     description: Optional[str] = Field(index=True, nullable=True, default=None)
     icon: Optional[str] = Field(default=None, nullable=True)
     icon_bg_color: Optional[str] = Field(default=None, nullable=True)
@@ -124,7 +124,7 @@ class Knowledge(KnowledgeBase, table=True):
         data = {
             "id": serialized.pop("id"),
             "data": serialized.pop("data"),
-            "knowledgename": serialized.pop("knowledgename"),
+            "name": serialized.pop("name"),
             "description": serialized.pop("description"),
             "updated_at": serialized.pop("updated_at"),
         }
@@ -135,7 +135,7 @@ class Knowledge(KnowledgeBase, table=True):
 class KnowledgeCreate(KnowledgeBase):
     user_id: Optional[UUID] = None
     usergroup: Optional[str] = None
-    knowledgename: Optional[str] = None
+    name: Optional[str] = None
     '''
     indexmodel: Optional[str] = None
     maxlen: Optional[int] = None
@@ -143,12 +143,12 @@ class KnowledgeCreate(KnowledgeBase):
     '''
 class KnowledgeRead(KnowledgeBase):
     id: UUID
-    knowledgename: Optional[str] = Field()
+    name: Optional[str] = Field()
     user_id: Optional[UUID] = Field()
     usergroup: Optional[str] = Field()
 
 class KnowledgeUpdate(SQLModel):
     name: Optional[str] = None
-    knowledgename: Optional[str] = None
+    name: Optional[str] = None
     description: Optional[str] = None
     data: Optional[Dict] = None

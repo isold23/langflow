@@ -7,13 +7,13 @@ import {
   STARTER_FOLDER_NAME,
 } from "../constants/constants";
 import {
-  deleteFlowFromDatabase,
-  readFlowsFromDatabase,
+  deleteKnowledge,
+  readKnowledgesFromDatabase,
   saveFlowToDatabase,
   updateFlowInDatabase,
   uploadFlowsToDatabase,
 } from "../controllers/API";
-import { FlowType, NodeDataType } from "../types/flow";
+import { KnowledgeType, NodeDataType } from "../types/knowledge";
 import {
   KnowledgesManagerStoreType,
   UseUndoRedoOptions,
@@ -42,21 +42,21 @@ const future = {};
 
 const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) => ({
   examples: [],
-  setExamples: (examples: FlowType[]) => {
+  setExamples: (examples: KnowledgeType[]) => {
     set({ examples });
   },
   currentFlowId: "",
   setCurrentFlowId: (currentFlowId: string) => {
     set((state) => ({
       currentFlowId,
-      currentFlow: state.flows.find((flow) => flow.id === currentFlowId),
+      currentFlow: state.knowledges.find((flow) => flow.id === currentFlowId),
     }));
   },
-  flows: [],
-  setFlows: (flows: FlowType[]) => {
+  knowledges: [],
+  setFlows: (knowledges: KnowledgeType[]) => {
     set({
-      flows,
-      currentFlow: flows.find((flow) => flow.id === get().currentFlowId),
+      knowledges,
+      currentFlow: knowledges.find((flow) => flow.id === get().currentFlowId),
     });
   },
   currentFlow: undefined,
@@ -66,7 +66,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   refreshFlows: () => {
     return new Promise<void>((resolve, reject) => {
       set({ isLoading: true });
-      readFlowsFromDatabase()
+      readKnowledgesFromDatabase()
         .then((dbData) => {
           if (dbData) {
             const { data, flows } = processFlows(dbData, false);
@@ -104,11 +104,11 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
       );
     }
   },
-  saveFlow: (flow: FlowType, silent?: boolean) => {
+  saveFlow: (flow: KnowledgeType, silent?: boolean) => {
     set({ saveLoading: true }); // set saveLoading true immediately
     return get().saveFlowDebounce(flow, silent); // call the debounced function directly
   },
-  saveFlowDebounce: debounce((flow: FlowType, silent?: boolean) => {
+  saveFlowDebounce: debounce((flow: KnowledgeType, silent?: boolean) => {
     set({ saveLoading: true });
     return new Promise<void>((resolve, reject) => {
       updateFlowInDatabase(flow)
@@ -121,7 +121,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
                 .setSuccessData({ title: "Changes saved successfully" });
             }
             get().setFlows(
-              get().flows.map((flow) => {
+              get().knowledges.map((flow) => {
                 if (flow.id === updatedFlow.id) {
                   return updatedFlow;
                 }
@@ -174,7 +174,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   },
   addKnowledge: async (
     newProject: Boolean,
-    flow?: FlowType,
+    flow?: KnowledgeType,
     override?: boolean,
     position?: XYPosition
   ): Promise<string | undefined> => {
@@ -192,20 +192,20 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
         newFlow.id = id;
         //setTimeout  to prevent update state with wrong state
         setTimeout(() => {
-          const { data, flows } = processFlows([newFlow, ...get().flows]);
+          const { data, flows } = processFlows([newFlow, ...get().knowledges]);
           get().setFlows(flows);
           set({ isLoading: false });
           useTypesStore.setState((state) => ({
             data: { ...state.data, ["saved_components"]: data },
           }));
         }, 200);
-        // addKnowlegeToLocalState(newFlow);
+        // addFlowToLocalState(newFlow);
         return;
       }
 
       const newFlow = createNewFlow(flowData!, flow!);
 
-      const newName = addVersionToDuplicates(newFlow, get().flows);
+      const newName = addVersionToDuplicates(newFlow, get().knowledges);
 
       newFlow.name = newName;
       try {
@@ -214,7 +214,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
         newFlow.id = id;
 
         // Add the new flow to the list of flows.
-        const { data, flows } = processFlows([newFlow, ...get().flows]);
+        const { data, flows } = processFlows([newFlow, ...get().knowledges]);
         get().setFlows(flows);
         set({ isLoading: false });
         useTypesStore.setState((state) => ({
@@ -238,11 +238,11 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   },
   removeKnowledge: async (id: string) => {
     return new Promise<void>((resolve) => {
-      const index = get().flows.findIndex((flow) => flow.id === id);
+      const index = get().knowledges.findIndex((flow) => flow.id === id);
       if (index >= 0) {
-        deleteFlowFromDatabase(id).then(() => {
+        deleteKnowledge(id).then(() => {
           const { data, flows } = processFlows(
-            get().flows.filter((flow) => flow.id !== id)
+            get().knowledges.filter((flow) => flow.id !== id)
           );
           get().setFlows(flows);
           set({ isLoading: false });
@@ -256,21 +256,21 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   },
   deleteComponent: async (key: string) => {
     return new Promise<void>((resolve) => {
-      let componentFlow = get().flows.find(
+      let componentFlow = get().knowledges.find(
         (componentFlow) =>
           componentFlow.is_component && componentFlow.name === key
       );
 
       if (componentFlow) {
         get()
-          .removeFlow(componentFlow.id)
+          .removeKnowledge(componentFlow.id)
           .then(() => {
             resolve();
           });
       }
     });
   },
-  uploadKnowledge: async ({
+  uploadFlow: async ({
     newProject,
     file,
     isComponent = false,
@@ -295,12 +295,12 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
           reject("You cannot upload a component as a flow or vice versa");
         } else {
           if (fileData.flows) {
-            fileData.flows.forEach((flow: FlowType) => {
-              id = get().addKnowlege(newProject, flow, undefined, position);
+            fileData.flows.forEach((flow: KnowledgeType) => {
+              id = get().addKnowledge(newProject, flow, undefined, position);
             });
             resolve("");
           } else {
-            id = await get().addKnowlege(newProject, fileData, undefined, position);
+            id = await get().addKnowledge(newProject, fileData, undefined, position);
             resolve(id);
           }
         }
@@ -316,7 +316,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
           ) {
             const currentfile = (e.target as HTMLInputElement).files![0];
             let text = await currentfile.text();
-            let fileData: FlowType = await JSON.parse(text);
+            let fileData: KnowledgeType = await JSON.parse(text);
 
             if (
               (!fileData.is_component && isComponent === true) ||
@@ -325,7 +325,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
             ) {
               reject("You cannot upload a component as a flow or vice versa");
             } else {
-              id = await get().addKnowlege(newProject, fileData);
+              id = await get().addKnowledge(newProject, fileData);
               resolve(id);
             }
           }
@@ -337,7 +337,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   },
   saveComponent: (component: NodeDataType, override: boolean) => {
     component.node!.official = false;
-    return get().addKnowlege(
+    return get().addKnowledge(
       true,
       createFlowComponent(component, useDarkStore.getState().version),
       override

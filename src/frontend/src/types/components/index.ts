@@ -413,7 +413,7 @@ export type UserInputType = {
 };
 
 export type KnowledgeInputType = {
-  knowledgename: string;
+  name: string;
 };
 
 export type ApiKeyType = {

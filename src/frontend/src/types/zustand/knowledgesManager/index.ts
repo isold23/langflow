@@ -1,19 +1,19 @@
 import { Edge, Node, Viewport, XYPosition } from "reactflow";
-import { FlowType } from "../../flow";
+import { KnowledgeType } from "../../knowledge";
 
 export type KnowledgesManagerStoreType = {
-  flows: Array<FlowType>;
-  setFlows: (flows: FlowType[]) => void;
-  currentFlow: FlowType | undefined;
+  knowledges: Array<KnowledgeType>;
+  setFlows: (flows: KnowledgeType[]) => void;
+  currentFlow: KnowledgeType | undefined;
   currentFlowId: string;
   setCurrentFlowId: (currentFlowId: string) => void;
   saveLoading: boolean;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
   refreshFlows: () => Promise<void>;
-  saveFlow: (flow: FlowType, silent?: boolean) => Promise<void> | undefined;
+  saveFlow: (flow: KnowledgeType, silent?: boolean) => Promise<void> | undefined;
   saveFlowDebounce: (
-    flow: FlowType,
+    flow: KnowledgeType,
     silent?: boolean
   ) => Promise<void> | undefined;
   autoSaveCurrentFlow: (
@@ -22,7 +22,7 @@ export type KnowledgesManagerStoreType = {
     viewport: Viewport
   ) => void;
   uploadFlows: () => Promise<void>;
-  uploadKnowledge: ({
+  uploadFlow: ({
     newProject,
     file,
     isComponent,
@@ -35,7 +35,7 @@ export type KnowledgesManagerStoreType = {
   }) => Promise<string | never>;
   addKnowledge: (
     newProject: boolean,
-    flow?: FlowType,
+    flow?: KnowledgeType,
     override?: boolean,
     position?: XYPosition
   ) => Promise<string | undefined>;
@@ -48,8 +48,8 @@ export type KnowledgesManagerStoreType = {
   undo: () => void;
   redo: () => void;
   takeSnapshot: () => void;
-  examples: Array<FlowType>;
-  setExamples: (examples: FlowType[]) => void;
+  examples: Array<KnowledgeType>;
+  setExamples: (examples: KnowledgeType[]) => void;
 };
 
 export type UseUndoRedoOptions = {

@@ -22,11 +22,11 @@ export default function KnowledgeComponentsComponent({
   is_component?: boolean;
 }) {
   const addKnowledge = useKnowledgesManagerStore((state) => state.addKnowledge);
-  const uploadKnowledge = useKnowledgesManagerStore((state) => state.uploadKnowledge);
+  const uploadFlow = useKnowledgesManagerStore((state) => state.uploadFlow);
   const removeKnowledge = useKnowledgesManagerStore((state) => state.removeKnowledge);
-  const isLoading = useFlowsManagerStore((state) => state.isLoading);
-  const setExamples = useFlowsManagerStore((state) => state.setExamples);
-  const flows = useFlowsManagerStore((state) => state.flows);
+  const isLoading = useKnowledgesManagerStore((state) => state.isLoading);
+  const setExamples = useKnowledgesManagerStore((state) => state.setExamples);
+  const knowledges = useKnowledgesManagerStore((state) => state.knowledges);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const [pageSize, setPageSize] = useState(20);
@@ -37,7 +37,7 @@ export default function KnowledgeComponentsComponent({
 
   useEffect(() => {
     if (isLoading) return;
-    let all = flows
+    let all = knowledges
       .filter((f) => (f.is_component ?? false) === is_component)
       .sort((a, b) => {
         if (a?.updated_at && b?.updated_at) {
@@ -59,7 +59,7 @@ export default function KnowledgeComponentsComponent({
     const start = (pageIndex - 1) * pageSize;
     const end = start + pageSize;
     setData(all.slice(start, end));
-  }, [flows, isLoading, pageIndex, pageSize]);
+  }, [knowledges, isLoading, pageIndex, pageSize]);
 
   const [data, setData] = useState<FlowType[]>([]);
 
@@ -69,7 +69,7 @@ export default function KnowledgeComponentsComponent({
     e.preventDefault();
     if (e.dataTransfer.types.some((types) => types === "Files")) {
       if (e.dataTransfer.files.item(0).type === "application/json") {
-        uploadKnowledge({
+        uploadFlow({
           newProject: true,
           file: e.dataTransfer.files.item(0)!,
           isComponent: is_component,
@@ -121,7 +121,7 @@ export default function KnowledgeComponentsComponent({
                       <button
                         onClick={() => {
                           addKnowledge(true).then((id) => {
-                            navigate("/knowledge/" + id);
+                            navigate("/knowledges/" + id);
                           });
                         }}
                         className="underline"
@@ -154,7 +154,7 @@ export default function KnowledgeComponentsComponent({
                     disabled={isLoading}
                     button={
                       !is_component ? (
-                        <Link to={"/flow/" + item.id}>
+                        <Link to={"/knowledges/" + item.id}>
                           <Button
                             tabIndex={-1}
                             variant="outline"
@@ -194,7 +194,7 @@ export default function KnowledgeComponentsComponent({
               pageSize={pageSize}
               rowsCount={[10, 20, 50, 100]}
               totalRowsCount={
-                flows.filter((f) => (f.is_component ?? false) === is_component)
+                knowledges.filter((f) => (f.is_component ?? false) === is_component)
                   .length
               }
               paginate={(pageSize, pageIndex) => {

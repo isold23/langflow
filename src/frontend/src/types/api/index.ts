@@ -137,7 +137,6 @@ export type Users = {
 export type Knowledges = {
   id: string;
   name: string;
-  knowledgename: string;
   usergroup: string;
   userrole: number;
   is_active: boolean;
@@ -149,7 +148,6 @@ export type Knowledges = {
 
 export type changeKnowledge = {
   name?: string;
-  knowledgename?: string;
   usergroup?: string;
   userrole?: number;
   is_active?: boolean;
