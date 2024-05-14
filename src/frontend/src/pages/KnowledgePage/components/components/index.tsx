@@ -14,7 +14,7 @@ import {
 import useAlertStore from "../../../../stores/alertStore";
 import useFlowsManagerStore from "../../../../stores/flowsManagerStore";
 import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
-import { FlowType } from "../../../../types/flow";
+import { KnowledgeType } from "../../../../types/knowledge";
 
 export default function KnowledgeComponentsComponent({
   is_component = true,
@@ -61,7 +61,7 @@ export default function KnowledgeComponentsComponent({
     setData(all.slice(start, end));
   }, [knowledges, isLoading, pageIndex, pageSize]);
 
-  const [data, setData] = useState<FlowType[]>([]);
+  const [data, setData] = useState<KnowledgeType[]>([]);
 
   const name = is_component ? "Component" : "Flow";
 
