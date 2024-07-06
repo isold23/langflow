@@ -35,7 +35,10 @@ export default function ComponentsComponent({
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("MainPage useEffect isLoading: ", isLoading);
+    console.log("MainPage useEffect----------------1");
     if (isLoading) return;
+    console.log("MainPage useEffect----------------2 flows length: ", flows.length);
     let all = flows
       .filter((f) => (f.is_component ?? false) === is_component)
       .sort((a, b) => {
@@ -100,6 +103,7 @@ export default function ComponentsComponent({
     setPageSize(20);
   }
 
+  console.log("Flow isLoading: ", isLoading, "data length: ", data.length);
   return (
     <CardsWrapComponent
       onFileDrop={onFileDrop}

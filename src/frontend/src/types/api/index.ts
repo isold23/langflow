@@ -1,5 +1,6 @@
 import { Edge, Node, Viewport } from "reactflow";
 import { FlowType } from "../flow";
+import { KnowledgeType } from "../knowledge";
 //kind and class are just representative names to represent the actual structure of the object received by the API
 export type APIDataType = { [key: string]: APIKindType };
 export type APIObjectType = { [key: string]: APIKindType };
@@ -36,6 +37,35 @@ export type APIClassType = {
     | APITemplateType
     | boolean
     | FlowType
+    | CustomFieldsType
+    | boolean
+    | undefined;
+};
+
+export type APIKnowledgeType = {
+  base_classes: Array<string>;
+  description: string;
+  template: APITemplateType;
+  display_name: string;
+  icon?: string;
+  is_input?: boolean;
+  is_output?: boolean;
+  input_types?: Array<string>;
+  output_types?: Array<string>;
+  custom_fields?: CustomFieldsType;
+  beta?: boolean;
+  documentation: string;
+  error?: string;
+  official?: boolean;
+  frozen?: boolean;
+  flow?: KnowledgeType;
+  field_order?: string[];
+  [key: string]:
+    | Array<string>
+    | string
+    | APITemplateType
+    | boolean
+    | KnowledgeType
     | CustomFieldsType
     | boolean
     | undefined;

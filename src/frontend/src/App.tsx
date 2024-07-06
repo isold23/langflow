@@ -19,9 +19,10 @@ import Router from "./routes";
 import useAlertStore from "./stores/alertStore";
 import { useDarkStore } from "./stores/darkStore";
 import useFlowsManagerStore from "./stores/flowsManagerStore";
+import useKnowledgesManagerStore from "./stores/knowledgesManagerStore";
 import { useGlobalVariablesStore } from "./stores/globalVariables";
 import { useStoreStore } from "./stores/storeStore";
-import { useTypesStore } from "./stores/typesStore";
+import { useKnowledgeTypesStore, useTypesStore } from "./stores/typesStore";
 
 export default function App() {
   const removeFromTempNotificationList = useAlertStore(
@@ -40,6 +41,7 @@ export default function App() {
   const { isAuthenticated, login, setUserData, setAutoLogin, getUser } =
     useContext(AuthContext);
   const refreshFlows = useFlowsManagerStore((state) => state.refreshFlows);
+  const refreshKnowledges = useKnowledgesManagerStore((state) => state.refreshKnowledges);
   const setLoading = useAlertStore((state) => state.setLoading);
   const fetchApiData = useStoreStore((state) => state.fetchApiData);
   const getTypes = useTypesStore((state) => state.getTypes);
@@ -93,6 +95,7 @@ export default function App() {
       try {
         await getTypes();
         refreshFlows();
+        refreshKnowledges();
         const res = await getGlobalVariables();
         setGlobalVariables(res);
         checkHasStore();

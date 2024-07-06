@@ -25,6 +25,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Separator } from "../ui/separator";
 import MenuBar from "./components/menuBar";
+import useKnowledgesManagerStore from "../../stores/knowledgesManagerStore";
 
 export default function Header(): JSX.Element {
   const notificationCenter = useAlertStore((state) => state.notificationCenter);
@@ -32,8 +33,8 @@ export default function Header(): JSX.Element {
   const { logout, autoLogin, isAdmin, userData } = useContext(AuthContext);
   const navigate = useNavigate();
   const removeFlow = useFlowsManagerStore((store) => store.removeFlow);
+  const removeKnowledge = useKnowledgesManagerStore((store) => store.removeKnowledge);
   const hasStore = useStoreStore((state) => state.hasStore);
-  const hasKnowledge = useStoreStore((state) => state.hasStore);
   const { id } = useParams();
   const nodes = useFlowStore((state) => state.nodes);
 
@@ -44,6 +45,14 @@ export default function Header(): JSX.Element {
   async function checkForChanges(nodes: Node[]): Promise<void> {
     if (nodes.length === 0) {
       await removeFlow(id!);
+    }
+  }
+
+  async function checkForChangesKnowledge(nodes: Node[]): Promise<void> {
+    console.log("---------checkForChangesKnowledge------nodes.length: ", nodes.length);
+    if(nodes.length === 0) {
+      console.log("checkForChangesKnowledge removeKnowledge-----");
+      await removeKnowledge(id!);
     }
   }
 
@@ -102,26 +111,26 @@ export default function Header(): JSX.Element {
             </Button>
           </Link>
         )}
-        {hasKnowledge && (
-          <Link to="/knowledges">
+        {<Link to="/knowledges">
             <Button
               className="gap-2"
               variant={location.pathname === "/knowledges" ? "primary" : "secondary"}
               size="sm"
               onClick={() => {
-                checkForChanges(nodes);
+                console.log("onClick-------");
+                checkForChangesKnowledge(nodes);
               }}
               data-testid="button-store"
             >
               <IconComponent name="Database" className="h-4 w-4" />
-              <div className="flex-1">Knowledge</div>
+              <div className="flex-1">Knowledge1111111</div>
             </Button>
           </Link>
-        )}
+        }
       </div>
       <div className="header-end-division lg:w-[30%]">
         <div className="header-end-display">
-          {/* 
+          
           <a
             href="https://github.com/langflow-ai/langflow"
             target="_blank"
@@ -148,7 +157,7 @@ export default function Header(): JSX.Element {
           >
             <FaDiscord className="side-bar-button-size" />
           </a>
-          */}
+          
           <Separator orientation="vertical" />
           <button
             className="extra-side-bar-save-disable"

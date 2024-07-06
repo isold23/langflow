@@ -1,6 +1,6 @@
 import { ReactFlowJsonObject, XYPosition } from "reactflow";
 import { BuildStatus } from "../../constants/enums";
-import { APIClassType } from "../api/index";
+import { APIKnowledgeType } from "../api/index";
 
 export type KnowledgeType = {
   name: string;
@@ -30,7 +30,7 @@ export type NodeType = {
 export type NodeDataType = {
   showNode?: boolean;
   type: string;
-  node?: APIClassType;
+  node?: APIKnowledgeType;
   id: string;
   output_types?: string[];
   buildStatus?: BuildStatus;

@@ -32,6 +32,7 @@ export default function CollectionCardComponent({
   button?: JSX.Element;
   onDelete?: () => void;
 }) {
+  console.log("3 KnowledgeComponentsComponent---------------------");
   const addFlow = useFlowsManagerStore((state) => state.addFlow);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);

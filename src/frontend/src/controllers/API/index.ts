@@ -18,6 +18,7 @@ import {
 } from "../../types/api/index";
 import { KnowledgeInputType, UserInputType } from "../../types/components";
 import { FlowStyleType, FlowType } from "../../types/flow";
+import { KnowledgeType } from "../../types/knowledge";
 import { StoreComponentResponse } from "../../types/store";
 import { FlowPoolType } from "../../types/zustand/flow";
 import {
@@ -123,6 +124,8 @@ export async function saveFlowToDatabase(newFlow: {
   is_component?: boolean;
 }): Promise<FlowType> {
   try {
+    console.log("saveFlowToDatabase -------------------------------");
+
     const response = await api.post(`${BASE_URL_API}flows/`, {
       name: newFlow.name,
       data: newFlow.data,
@@ -150,6 +153,8 @@ export async function updateFlowInDatabase(
   updatedFlow: FlowType
 ): Promise<FlowType> {
   try {
+    console.log("updateFlowInDatabase -------------------------------");
+
     const response = await api.patch(`${BASE_URL_API}flows/${updatedFlow.id}`, {
       name: updatedFlow.name,
       data: updatedFlow.data,
@@ -174,6 +179,8 @@ export async function updateFlowInDatabase(
  */
 export async function readFlowsFromDatabase() {
   try {
+    console.log("readFlowsFromDatabase -------------------------------");
+
     const response = await api.get(`${BASE_URL_API}flows/`);
     if (response?.status !== 200) {
       throw new Error(`HTTP error! status: ${response?.status}`);
@@ -187,6 +194,8 @@ export async function readFlowsFromDatabase() {
 
 export async function downloadFlowsFromDatabase() {
   try {
+    console.log("downloadFlowsFromDatabase -------------------------------");
+
     const response = await api.get(`${BASE_URL_API}flows/download/`);
     if (response?.status !== 200) {
       throw new Error(`HTTP error! status: ${response?.status}`);
@@ -200,6 +209,8 @@ export async function downloadFlowsFromDatabase() {
 
 export async function uploadFlowsToDatabase(flows: FormData) {
   try {
+    console.log("uploadFlowsToDatabase -------------------------------");
+
     const response = await api.post(`${BASE_URL_API}flows/upload/`, flows);
 
     if (response?.status !== 201) {
@@ -221,6 +232,8 @@ export async function uploadFlowsToDatabase(flows: FormData) {
  */
 export async function deleteFlowFromDatabase(flowId: string) {
   try {
+    console.log("deleteFlowFromDatabase -------------------------------");
+
     const response = await api.delete(`${BASE_URL_API}flows/${flowId}`);
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -241,6 +254,8 @@ export async function deleteFlowFromDatabase(flowId: string) {
  */
 export async function getFlowFromDatabase(flowId: number) {
   try {
+    console.log("getFlowFromDatabase -------------------------------");
+
     const response = await api.get(`${BASE_URL_API}flows/${flowId}`);
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -260,6 +275,8 @@ export async function getFlowFromDatabase(flowId: number) {
  */
 export async function getFlowStylesFromDatabase() {
   try {
+    console.log("getFlowStylesFromDatabase -------------------------------");
+
     const response = await api.get(`${BASE_URL_API}flow_styles/`);
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -280,6 +297,8 @@ export async function getFlowStylesFromDatabase() {
  */
 export async function saveFlowStyleToDatabase(flowStyle: FlowStyleType) {
   try {
+    console.log("saveFlowStyleToDatabase -------------------------------");
+
     const response = await api.post(`${BASE_URL_API}flow_styles/`, flowStyle, {
       headers: {
         accept: "application/json",
@@ -513,6 +532,9 @@ export async function readKnowledgesFromDatabase() {
     if (response?.status !== 200) {
       throw new Error(`HTTP error! status: ${response?.status}`);
     }
+    console.log("readKnowledgesFromDatabase -------------------------------");
+    console.error(response.data);
+    console.log("readKnowledgesFromDatabase -------------------------------");
     return response.data;
   } catch (error) {
     console.error(error);
@@ -522,6 +544,8 @@ export async function readKnowledgesFromDatabase() {
 
 export async function addKnowledge(knowledge: KnowledgeInputType): Promise<Array<Knowledges>> {
   try {
+    console.log("addKnowledge -------------------------------");
+
     const res = await api.post(`${BASE_URL_API}knowledges/`, knowledge);
     if (res.status !== 201) {
       throw new Error(res.data.detail);
@@ -534,6 +558,8 @@ export async function addKnowledge(knowledge: KnowledgeInputType): Promise<Array
 
 export async function updateKnowledge(knowledge_id: string, knowledge: changeKnowledge) {
   try {
+    console.log("updateKnowledge -------------------------------");
+
     const res = await api.patch(`${BASE_URL_API}knowledges/${knowledge_id}`, knowledge);
     if (res.status === 200) {
       return res.data;
@@ -543,8 +569,76 @@ export async function updateKnowledge(knowledge_id: string, knowledge: changeKno
   }
 }
 
+export async function updateKnowledgeInDatabase(
+  updatedKnowledge: KnowledgeType
+): Promise<FlowType> {
+  try {
+    console.log("updateKnowledgeInDatabase -------------------------------");
+
+    const response = await api.patch(`${BASE_URL_API}knowledges/${updatedKnowledge.id}`, {
+      name: updatedKnowledge.name,
+      data: updatedKnowledge.data,
+      description: updatedKnowledge.description,
+    });
+
+    if (response?.status !== 200) {
+      throw new Error(`HTTP error! status: ${response?.status}`);
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function uploadKnowledgesToDatabase(knowledges: FormData) {
+  try {
+    console.log("uploadKnowledgesToDatabase -------------------------------");
+
+    const response = await api.post(`${BASE_URL_API}knowledges/upload/`, knowledges);
+
+    if (response?.status !== 201) {
+      throw new Error(`HTTP error! status: ${response?.status}`);
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function saveKnowledgeToDatabase(newFlow: {
+  name: string;
+  id: string;
+  data: ReactFlowJsonObject | null;
+  description: string;
+  style?: FlowStyleType;
+  is_component?: boolean;
+}): Promise<FlowType> {
+  console.log("saveKnowledgeToDatabase -------------------------------");
+
+  try {
+    const response = await api.post(`${BASE_URL_API}knowledges/`, {
+      name: newFlow.name,
+      data: newFlow.data,
+      description: newFlow.description,
+      is_component: newFlow.is_component,
+    });
+
+    if (response.status !== 201) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function deleteKnowledge(knowledge_id: string) {
   try {
+    console.log("deleteKnowledge -------------------------------");
+
     const res = await api.delete(`${BASE_URL_API}knowledges/${knowledge_id}`);
     if (res.status === 200) {
       return res.data;

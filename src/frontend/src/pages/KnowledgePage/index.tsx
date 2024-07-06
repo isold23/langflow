@@ -16,10 +16,8 @@ import {
   KNOWLEDGE_LIBRARY_TITLE,
   KNOWLEDGE_LIBRARY_DESC,
 } from "../../constants/constants";
-import NewFlowModal from "../../modals/NewFlowModal";
 import useAlertStore from "../../stores/alertStore";
-import useFlowsManagerStore from "../../stores/flowsManagerStore";
-import { downloadFlows } from "../../utils/reactflowUtils";
+import useKnowledgesManagerStore from "../../stores/knowledgesManagerStore";
 import KnowledgeModal from "../../modals/KnowledgeModal";
 import { addKnowledge, updateKnowledge } from "../../controllers/API";
 
@@ -27,17 +25,17 @@ import { Knowledges } from "../../types/api";
 import { KnowledgeInputType } from "../../types/components";
 
 export default function KnowledgePage(): JSX.Element {
-  const uploadFlow = useFlowsManagerStore((state) => state.uploadFlow);
-  const setCurrentFlowId = useFlowsManagerStore(
+  const uploadKnowledge = useKnowledgesManagerStore((state) => state.uploadKnowledge);
+  const setCurrentFlowId = useKnowledgesManagerStore(
     (state) => state.setCurrentFlowId
   );
-  const uploadFlows = useFlowsManagerStore((state) => state.uploadFlows);
+  const uploadKnowledges = useKnowledgesManagerStore((state) => state.uploadKnowledges);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const location = useLocation();
   const pathname = location.pathname;
   const [openModal, setOpenModal] = useState(false);
-  const is_component = pathname === "/components";
+  //const is_component = pathname === "/components";
 
   // Set a null id
   useEffect(() => {
@@ -64,7 +62,7 @@ export default function KnowledgePage(): JSX.Element {
         });
       });
   }
-
+  console.log("222222222211111111111")
   // Personal flows display
   return (
     <PageLayout
@@ -94,7 +92,7 @@ export default function KnowledgePage(): JSX.Element {
     >
       <div className="flex h-full w-full space-y-8 lg:flex-row lg:space-x-8 lg:space-y-0">
         <div className="h-full w-full flex-1">
-        <KnowledgeComponentsComponent key="flows" is_component={false}></KnowledgeComponentsComponent>
+        <KnowledgeComponentsComponent key="knowledges" ></KnowledgeComponentsComponent>
         </div>
       </div>
 

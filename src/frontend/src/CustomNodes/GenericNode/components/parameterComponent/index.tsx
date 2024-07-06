@@ -94,6 +94,7 @@ export default function ParameterComponent({
   const takeSnapshot = useFlowsManagerStore((state) => state.takeSnapshot);
 
   const handleRefreshButtonPress = async (name, data) => {
+    console.log("handleRefreshButtonPress-----------");
     setIsLoading(true);
     try {
       let newTemplate = await handleUpdateValues(name, data);
@@ -115,6 +116,7 @@ export default function ParameterComponent({
         list: [responseError.response.data.detail ?? "Unknown error"],
       });
     }
+    console.log("handleRefreshButtonPress-----------2");
     setIsLoading(false);
     renderTooltips();
   };
@@ -148,6 +150,7 @@ export default function ParameterComponent({
             list: [responseError.response.data.detail ?? "Unknown error"],
           });
         }
+        console.log("useEffect-------------***");
         setIsLoading(false);
         renderTooltips();
       }
@@ -178,6 +181,7 @@ export default function ParameterComponent({
           list: [responseError.response.data.detail.error ?? "Unknown error"],
         });
       }
+      console.log("handleOnNewValue-------------***");
       setIsLoading(false);
       // this de
     }

@@ -3,15 +3,15 @@ import { KnowledgeType } from "../../knowledge";
 
 export type KnowledgesManagerStoreType = {
   knowledges: Array<KnowledgeType>;
-  setFlows: (flows: KnowledgeType[]) => void;
-  currentFlow: KnowledgeType | undefined;
+  setKnowledges: (knowledges: KnowledgeType[]) => void;
+  currentKnowledge: KnowledgeType | undefined;
   currentFlowId: string;
   setCurrentFlowId: (currentFlowId: string) => void;
   saveLoading: boolean;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
-  refreshFlows: () => Promise<void>;
-  saveFlow: (flow: KnowledgeType, silent?: boolean) => Promise<void> | undefined;
+  refreshKnowledges: () => Promise<void>;
+  saveKnowledge: (knowledge: KnowledgeType, silent?: boolean) => Promise<void> | undefined;
   saveFlowDebounce: (
     flow: KnowledgeType,
     silent?: boolean
@@ -21,8 +21,8 @@ export type KnowledgesManagerStoreType = {
     edges: Edge[],
     viewport: Viewport
   ) => void;
-  uploadFlows: () => Promise<void>;
-  uploadFlow: ({
+  uploadKnowledges: () => Promise<void>;
+  uploadKnowledge: ({
     newProject,
     file,
     isComponent,

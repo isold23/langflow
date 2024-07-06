@@ -12,19 +12,18 @@ import {
   WRONG_FILE_ERROR_ALERT,
 } from "../../../../constants/alerts_constants";
 import useAlertStore from "../../../../stores/alertStore";
-import useFlowsManagerStore from "../../../../stores/flowsManagerStore";
 import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
 import { KnowledgeType } from "../../../../types/knowledge";
 
 export default function KnowledgeComponentsComponent({
-  is_component = true,
 }: {
-  is_component?: boolean;
 }) {
+  console.log("1 KnowledgeComponentsComponent---------------------");
   const addKnowledge = useKnowledgesManagerStore((state) => state.addKnowledge);
-  const uploadFlow = useKnowledgesManagerStore((state) => state.uploadFlow);
+  const uploadKnowledge = useKnowledgesManagerStore((state) => state.uploadKnowledge);
   const removeKnowledge = useKnowledgesManagerStore((state) => state.removeKnowledge);
-  const isLoading = useKnowledgesManagerStore((state) => state.isLoading);
+  //const isLoading = useKnowledgesManagerStore((state) => state.isLoading);
+  const [isLoading, setIsLoading] = useState(false);
   const setExamples = useKnowledgesManagerStore((state) => state.setExamples);
   const knowledges = useKnowledgesManagerStore((state) => state.knowledges);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
@@ -36,9 +35,11 @@ export default function KnowledgeComponentsComponent({
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("useEffect isLoading: ", isLoading);
+    console.log("useEffect----------------1");
     if (isLoading) return;
+    console.log("useEffect----------------2 knowledges length: ", knowledges.length);
     let all = knowledges
-      .filter((f) => (f.is_component ?? false) === is_component)
       .sort((a, b) => {
         if (a?.updated_at && b?.updated_at) {
           return (
@@ -56,28 +57,29 @@ export default function KnowledgeComponentsComponent({
           );
         }
       });
+    console.log("page ---------------- pageSize: ", pageSize, "pageIndex: ", pageIndex);
     const start = (pageIndex - 1) * pageSize;
     const end = start + pageSize;
+    console.log("page ----------------start: ", start, " end: ", end);
     setData(all.slice(start, end));
+    console.log("setData end...........");
   }, [knowledges, isLoading, pageIndex, pageSize]);
 
   const [data, setData] = useState<KnowledgeType[]>([]);
 
-  const name = is_component ? "Component" : "Flow";
-
   const onFileDrop = (e) => {
+    console.log("onFileDrop---------");
     e.preventDefault();
     if (e.dataTransfer.types.some((types) => types === "Files")) {
       if (e.dataTransfer.files.item(0).type === "application/json") {
-        uploadFlow({
+        uploadKnowledge({
           newProject: true,
           file: e.dataTransfer.files.item(0)!,
-          isComponent: is_component,
         })
           .then(() => {
             setSuccessData({
               title: `${
-                is_component ? "Component" : "Flow"
+                "Knowledge"
               } uploaded successfully`,
             });
           })
@@ -100,7 +102,9 @@ export default function KnowledgeComponentsComponent({
     setPageIndex(1);
     setPageSize(20);
   }
-
+  console.log("2 KnowledgeComponentsComponent---------------------");
+  console.log('isLoading: ', isLoading);
+  console.log('data length: ', data.length);
   return (
     <CardsWrapComponent
       onFileDrop={onFileDrop}
@@ -137,14 +141,15 @@ export default function KnowledgeComponentsComponent({
             </div>
           ) : (
             <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {isLoading === false && data?.length > 0 ? (
+              {
+              isLoading === false && data?.length > 0 ? (
                 data?.map((item, idx) => (
                   <CollectionCardComponent
                     onDelete={() => {
                       removeKnowledge(item.id);
                       setSuccessData({
                         title: `${
-                          item.is_component ? "Component" : "Flow"
+                          item.is_component ? "Component" : "Knowledge"
                         } deleted successfully!`,
                       });
                       resetFilter();
@@ -153,7 +158,6 @@ export default function KnowledgeComponentsComponent({
                     data={item}
                     disabled={isLoading}
                     button={
-                      !is_component ? (
                         <Link to={"/knowledges/" + item.id}>
                           <Button
                             tabIndex={-1}
@@ -161,7 +165,7 @@ export default function KnowledgeComponentsComponent({
                             size="sm"
                             className="whitespace-nowrap "
                             data-testid={
-                              "edit-flow-button-" + item.id + "-" + idx
+                              "edit-knowledge-button-" + item.id + "-" + idx
                             }
                           >
                             <IconComponent
@@ -171,9 +175,6 @@ export default function KnowledgeComponentsComponent({
                             Edit Knowledge
                           </Button>
                         </Link>
-                      ) : (
-                        <></>
-                      )
                     }
                   />
                 ))
@@ -194,8 +195,7 @@ export default function KnowledgeComponentsComponent({
               pageSize={pageSize}
               rowsCount={[10, 20, 50, 100]}
               totalRowsCount={
-                knowledges.filter((f) => (f.is_component ?? false) === is_component)
-                  .length
+                knowledges.length
               }
               paginate={(pageSize, pageIndex) => {
                 setPageIndex(pageIndex);
