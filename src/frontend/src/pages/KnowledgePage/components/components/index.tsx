@@ -145,7 +145,7 @@ export default function KnowledgeComponentsComponent({
               {
               isLoading === false && data?.length > 0 ? (
                 data?.map((item, idx) => (
-                  <CollectionCardComponent
+                  <CollectionKnowledgeComponent
                     onDelete={() => {
                       removeKnowledge(item.id);
                       setSuccessData({

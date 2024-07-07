@@ -20,7 +20,7 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default function CollectionCardComponent({
+export default function CollectionKnowledgeComponent ({
   data,
   authorized = true,
   disabled = false,
@@ -33,8 +33,8 @@ export default function CollectionCardComponent({
   button?: JSX.Element;
   onDelete?: () => void;
 }) {
-  console.log("3 CollectionCardComponent---------------------");
-  const addFlow = useFlowsManagerStore((state) => state.addFlow);
+  console.log("3 CollectionKnowledgeComponent---------------------");
+  const addFlow = useKnowledgesManagerStore((state) => state.addKnowledge);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const setValidApiKey = useStoreStore((state) => state.updateValidApiKey);

@@ -533,7 +533,7 @@ export async function readKnowledgesFromDatabase() {
       throw new Error(`HTTP error! status: ${response?.status}`);
     }
     console.log("readKnowledgesFromDatabase -------------------------------");
-    console.error(response.data);
+    console.log(response.data);
     console.log("readKnowledgesFromDatabase -------------------------------");
     return response.data;
   } catch (error) {
