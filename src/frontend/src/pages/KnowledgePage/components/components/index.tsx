@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PaginatorComponent from "../../../../components/PaginatorComponent";
 import CollectionCardComponent from "../../../../components/cardComponent";
+import CollectionKnowledgeComponent from "../../../../components/knowledgeComponent";
 import CardsWrapComponent from "../../../../components/cardsWrapComponent";
 import IconComponent from "../../../../components/genericIconComponent";
 import { SkeletonCardComponent } from "../../../../components/skeletonCardComponent";
@@ -172,7 +173,7 @@ export default function KnowledgeComponentsComponent({
                               name="ExternalLink"
                               className="main-page-nav-button select-none"
                             />
-                            Edit Knowledge
+                            Edit Knowledge2222
                           </Button>
                         </Link>
                     }
