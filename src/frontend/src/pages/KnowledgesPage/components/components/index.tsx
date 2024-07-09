@@ -16,7 +16,7 @@ import useAlertStore from "../../../../stores/alertStore";
 import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
 import { KnowledgeType } from "../../../../types/knowledge";
 
-export default function KnowledgeComponentsComponent({
+export default function KnowledgesComponentsComponent({
 }: {
 }) {
   console.log("1 KnowledgeComponentsComponent---------------------");

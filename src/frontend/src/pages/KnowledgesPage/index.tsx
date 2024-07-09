@@ -7,7 +7,7 @@ import PageLayout from "../../components/pageLayout";
 import SidebarNav from "../../components/sidebarComponent";
 import { Button } from "../../components/ui/button";
 import { CONSOLE_ERROR_MSG } from "../../constants/alerts_constants";
-import KnowledgeComponentsComponent from "../KnowledgePage/components/components";
+import KnowledgesComponentsComponent from "../KnowledgesPage/components/components";
 import {
   KNOWLEDGE_ADD_ERROR_ALERT,
   KNOWLEDGE_ADD_SUCCESS_ALERT,
@@ -24,7 +24,7 @@ import { addKnowledge, updateKnowledge } from "../../controllers/API";
 import { Knowledges } from "../../types/api";
 import { KnowledgeInputType } from "../../types/components";
 
-export default function KnowledgePage(): JSX.Element {
+export default function KnowledgesPage(): JSX.Element {
   const uploadKnowledge = useKnowledgesManagerStore((state) => state.uploadKnowledge);
   const setCurrentFlowId = useKnowledgesManagerStore(
     (state) => state.setCurrentFlowId
@@ -91,7 +91,7 @@ export default function KnowledgePage(): JSX.Element {
     >
       <div className="flex h-full w-full space-y-8 lg:flex-row lg:space-x-8 lg:space-y-0">
         <div className="h-full w-full flex-1">
-        <KnowledgeComponentsComponent key="knowledges" ></KnowledgeComponentsComponent>
+        <KnowledgesComponentsComponent key="knowledges" ></KnowledgesComponentsComponent>
         </div>
       </div>
     </PageLayout>

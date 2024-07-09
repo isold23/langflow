@@ -2,6 +2,19 @@ import { cloneDeep } from "lodash";
 import { Node } from "reactflow";
 import { FlowType, NodeDataType } from "../types/flow";
 import { isInputNode, isOutputNode } from "./reactflowUtils";
+import { KnowledgeType } from "../types/knowledge";
+
+export function cloneKnowledgeWithParent(
+  flow: KnowledgeType,
+  parent: string,
+  is_component: boolean
+) {
+  let childFLow = cloneDeep(flow);
+  childFLow.parent = parent;
+  childFLow.id = "";
+  childFLow.is_component = is_component;
+  return childFLow;
+}
 
 export default function cloneFLowWithParent(
   flow: FlowType,

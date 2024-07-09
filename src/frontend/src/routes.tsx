@@ -14,6 +14,7 @@ import ComponentsComponent from "./pages/MainPage/components/components";
 import ProfileSettingsPage from "./pages/ProfileSettingsPage";
 import StorePage from "./pages/StorePage";
 import KnowledgePage from "./pages/KnowledgePage";
+import KnowledgesPage from "./pages/KnowledgesPage";
 import ViewPage from "./pages/ViewPage";
 import DeleteAccountPage from "./pages/deleteAccountPage";
 import LoginPage from "./pages/loginPage";
@@ -69,6 +70,17 @@ const Router = () => {
 
       <Route
         path="/knowledges"
+        element={
+          <ProtectedRoute>
+            <StoreGuard>
+              <KnowledgesPage />
+            </StoreGuard>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/knowledge/:id/"
         element={
           <ProtectedRoute>
             <StoreGuard>

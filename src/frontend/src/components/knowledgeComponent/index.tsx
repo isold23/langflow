@@ -7,6 +7,7 @@ import useKnowledgesManagerStore from "../../stores/knowledgesManagerStore";
 import { useStoreStore } from "../../stores/storeStore";
 import { storeComponent } from "../../types/store";
 import cloneFLowWithParent from "../../utils/storeUtils";
+import { cloneKnowledgeWithParent } from "../../utils/storeUtils";
 import { cn } from "../../utils/utils";
 import ShadTooltip from "../ShadTooltipComponent";
 import IconComponent from "../genericIconComponent";
@@ -34,7 +35,7 @@ export default function CollectionKnowledgeComponent ({
   onDelete?: () => void;
 }) {
   console.log("3 CollectionKnowledgeComponent---------------------");
-  const addFlow = useKnowledgesManagerStore((state) => state.addKnowledge);
+  const addKnowledge = useKnowledgesManagerStore((state) => state.addKnowledge);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const setValidApiKey = useStoreStore((state) => state.updateValidApiKey);
@@ -53,6 +54,7 @@ export default function CollectionKnowledgeComponent ({
 
   useEffect(() => {
     if (data) {
+      console.log("------------------useEffect---////////")
       setLiked_by_user(data?.liked_by_user ?? false);
       setLikes_count(data?.liked_by_count ?? 0);
       setDownloads_count(data?.downloads_count ?? 0);
@@ -60,13 +62,14 @@ export default function CollectionKnowledgeComponent ({
   }, [data, data.liked_by_count, data.liked_by_user, data.downloads_count]);
 
   function handleInstall() {
+    console.log("------handleInstall--------");
     const temp = downloads_count;
     setDownloads_count((old) => Number(old) + 1);
     setLoading(true);
     getComponent(data.id)
       .then((res) => {
-        const newFlow = cloneFLowWithParent(res, res.id, data.is_component);
-        addFlow(true, newFlow)
+        const newFlow = cloneKnowledgeWithParent(res, res.id, data.is_component);
+        addKnowledge(true, newFlow)
           .then((id) => {
             setSuccessData({
               title: `${name} ${
@@ -128,7 +131,7 @@ export default function CollectionKnowledgeComponent ({
         });
     }
   }
-
+  console.log("----------------4444-----");
   return (
     <Card
       className={cn(

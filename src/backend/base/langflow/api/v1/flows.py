@@ -29,6 +29,8 @@ def create_flow(
     current_user: User = Depends(get_current_active_user),
 ):
     """Create a new flow."""
+    print("create_flow *************************")
+
     if flow.user_id is None:
         flow.user_id = current_user.id
         flow.usergroup = current_user.usergroup
@@ -50,6 +52,8 @@ def read_flows(
     settings_service: "SettingsService" = Depends(get_settings_service),
 ):
     """Read all flows."""
+    print("read_flows *************************")
+
     try:
         auth_settings = settings_service.auth_settings
         if auth_settings.AUTO_LOGIN:
@@ -109,6 +113,7 @@ def read_flow(
     settings_service: "SettingsService" = Depends(get_settings_service),
 ):
     """Read a flow."""
+    print("read_flow *************************")
     auth_settings = settings_service.auth_settings
     stmt = select(Flow).where(Flow.id == flow_id)
     if auth_settings.AUTO_LOGIN:
@@ -133,7 +138,7 @@ def update_flow(
     settings_service=Depends(get_settings_service),
 ):
     """Update a flow."""
-
+    print("update_flow *************************")
     db_flow = read_flow(
         session=session,
         flow_id=flow_id,
@@ -164,6 +169,7 @@ def delete_flow(
     settings_service=Depends(get_settings_service),
 ):
     """Delete a flow."""
+    print("delete_flow *************************")
     flow = read_flow(
         session=session,
         flow_id=flow_id,
@@ -185,6 +191,7 @@ def create_flows(
     current_user: User = Depends(get_current_active_user),
 ):
     """Create multiple new flows."""
+    print("create_flows *************************")
     db_flows = []
     for flow in flow_list.flows:
         flow.user_id = current_user.id
@@ -205,6 +212,7 @@ async def upload_file(
     current_user: User = Depends(get_current_active_user),
 ):
     """Upload flows from a file."""
+    print("upload_file *************************")
     contents = await file.read()
     data = orjson.loads(contents)
     if "flows" in data:
@@ -226,5 +234,6 @@ async def download_file(
     current_user: User = Depends(get_current_active_user),
 ):
     """Download all flows as a file."""
+    print("download_file *************************")
     flows = read_flows(current_user=current_user, session=session, settings_service=settings_service)
     return FlowListRead(flows=flows)
