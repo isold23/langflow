@@ -159,7 +159,7 @@ export default function KnowledgesComponentsComponent({
                     data={item}
                     disabled={isLoading}
                     button={
-                        <Link to={"/knowledge/" + item.id}>
+                        <Link to={"/knowledge/knowledgeconfig/" + item.id }>
                           <Button
                             tabIndex={-1}
                             variant="outline"

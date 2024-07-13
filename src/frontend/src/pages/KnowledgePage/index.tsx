@@ -2,15 +2,10 @@ import { Group, ToyBrick } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import DropdownButton from "../../components/DropdownButtonComponent";
 import IconComponent from "../../components/genericIconComponent";
 import PageLayout from "../../components/pageLayout";
 import SidebarNav from "../../components/sidebarComponent";
 import { Button } from "../../components/ui/button";
-import { CONSOLE_ERROR_MSG } from "../../constants/alerts_constants";
-import KnowledgeComponentsComponent from "../KnowledgePage/components/components";
-import KnowledgeConfigComponent from "./components/knowledgeconfig";
-import KnowledgeDatasetComponent from "./components/dataset";
 import {
   KNOWLEDGE_ADD_ERROR_ALERT,
   KNOWLEDGE_ADD_SUCCESS_ALERT,
@@ -24,28 +19,25 @@ import useKnowledgesManagerStore from "../../stores/knowledgesManagerStore";
 import KnowledgeModal from "../../modals/KnowledgeModal";
 import { addKnowledge, updateKnowledge } from "../../controllers/API";
 
-import { Knowledges } from "../../types/api";
 import { KnowledgeInputType } from "../../types/components";
 
 export default function KnowledgePage(): JSX.Element {
   const currentKnowledge = useKnowledgesManagerStore((state) => state.currentKnowledge);
-  const uploadKnowledge = useKnowledgesManagerStore((state) => state.uploadKnowledge);
   const setCurrentKnowledgeId = useKnowledgesManagerStore(
     (state) => state.setCurrentKnowledgeId
   );
-  const uploadKnowledges = useKnowledgesManagerStore((state) => state.uploadKnowledges);
-  const refreshKnowledges = useKnowledgesManagerStore((state) => state.refreshKnowledges);
   const setIsLoading = useKnowledgesManagerStore((state) => state.setIsLoading);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const location = useLocation();
   const { id } = useParams();
-  const [openModal, setOpenModal] = useState(false);
+  const pathname = location.pathname;
 
-  // Set a null id
+  console.log("----------KnowledgePage-------- pathname: ", pathname, "id: ", id);
+
   useEffect(() => {
     setCurrentKnowledgeId(id!);
-  }, [id]);
+  }, [id, pathname]);
 
   const navigate = useNavigate();
 
@@ -71,12 +63,12 @@ export default function KnowledgePage(): JSX.Element {
   const sidebarNavItems = [
     {
       title: "Config",
-      href: "/knowledge/"+[currentKnowledge?.id]+"/knowledgeconfig",
+      href: "/knowledge/knowledgeconfig/"+[currentKnowledge?.id],
       icon: <Group className="w-5 stroke-[1.5]" />,
     },
     {
       title: "Dataset",
-      href: "/knowledge/"+[currentKnowledge?.id]+"/dataset",
+      href: "/knowledge/dataset/"+[currentKnowledge?.id],
       icon: <ToyBrick className="mx-[0.08rem] w-[1.1rem] stroke-[1.5]" />,
     },
   ];
@@ -111,7 +103,7 @@ export default function KnowledgePage(): JSX.Element {
     >
       <div className="flex h-full w-full space-y-8 lg:flex-row lg:space-x-8 lg:space-y-0">
         <aside className="flex h-full flex-col space-y-6 lg:w-1/5">
-          <SidebarNav items={sidebarNavItems} />
+          <SidebarNav items={sidebarNavItems}/>
         </aside>
         <div className="h-full w-full flex-1">
           <Outlet />

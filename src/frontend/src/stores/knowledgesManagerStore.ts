@@ -56,11 +56,12 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   },
   currentKnowledgeId: "",
   setCurrentKnowledgeId: (currentKnowledgeId: string) => {
-    console.log("setCurrentKnowledgeId-------------------");
+    console.log("setCurrentKnowledgeId currentKnowledgeId: ", currentKnowledgeId);
     set((state) => ({
       currentKnowledgeId,
       currentKnowledge: state.knowledges.find((knowledge) => knowledge.id === currentKnowledgeId),
     }));
+    console.log("setCurrentKnowledgeId currentKnowledge: ", get().currentKnowledge);
   },
   knowledges: [],
   setKnowledges: (knowledges: KnowledgeType[]) => {

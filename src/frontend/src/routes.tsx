@@ -83,7 +83,7 @@ const Router = () => {
       </Route>
 
       <Route
-        path="/knowledge/:id"
+        path="/knowledge"
         element={
           <ProtectedRoute>
             <StoreGuard>
@@ -93,11 +93,11 @@ const Router = () => {
         }
       >
         <Route
-          path="knowledgeconfig"
+          path="knowledgeconfig/:id"
           element={<KnowledgeConfigComponent key="knowledgeconfig"/>}
         />
         <Route
-          path="dataset"
+          path="dataset/:id"
           element={<KnowledgeDatasetComponent key="dataset" />}
         />
       </Route>
