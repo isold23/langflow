@@ -5,18 +5,18 @@ export type KnowledgesManagerStoreType = {
   knowledges: Array<KnowledgeType>;
   setKnowledges: (knowledges: KnowledgeType[]) => void;
   currentKnowledge: KnowledgeType | undefined;
-  currentFlowId: string;
-  setCurrentFlowId: (currentFlowId: string) => void;
+  currentKnowledgeId: string;
+  setCurrentKnowledgeId: (currentKnowledgeId: string) => void;
   saveLoading: boolean;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
   refreshKnowledges: () => Promise<void>;
   saveKnowledge: (knowledge: KnowledgeType, silent?: boolean) => Promise<void> | undefined;
-  saveFlowDebounce: (
+  saveKnowledgeDebounce: (
     flow: KnowledgeType,
     silent?: boolean
   ) => Promise<void> | undefined;
-  autoSaveCurrentFlow: (
+  autoSaveCurrentKnowledge: (
     nodes: Node[],
     edges: Edge[],
     viewport: Viewport

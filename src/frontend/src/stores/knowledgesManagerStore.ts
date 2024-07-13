@@ -54,12 +54,12 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
     console.log("setExamples-------------------");
     set({ examples });
   },
-  currentFlowId: "",
-  setCurrentFlowId: (currentFlowId: string) => {
-    console.log("setCurrentFlowId-------------------");
+  currentKnowledgeId: "",
+  setCurrentKnowledgeId: (currentKnowledgeId: string) => {
+    console.log("setCurrentKnowledgeId-------------------");
     set((state) => ({
-      currentFlowId,
-      currentKnowledge: state.knowledges.find((flow) => flow.id === currentFlowId),
+      currentKnowledgeId,
+      currentKnowledge: state.knowledges.find((flow) => flow.id === currentKnowledgeId),
     }));
   },
   knowledges: [],
@@ -113,7 +113,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
         });
     });
   },
-  autoSaveCurrentFlow: (nodes: Node[], edges: Edge[], viewport: Viewport) => {
+  autoSaveCurrentKnowledge: (nodes: Node[], edges: Edge[], viewport: Viewport) => {
     console.log("autoSaveCurrentFlow-------------------");
     if (get().currentKnowledge) {
       get().saveKnowledge(
@@ -125,10 +125,10 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   saveKnowledge: (flow: KnowledgeType, silent?: boolean) => {
     console.log("saveKnowledge-------------------");
     set({ saveLoading: true }); // set saveLoading true immediately
-    return get().saveFlowDebounce(flow, silent); // call the debounced function directly
+    return get().saveKnowledgeDebounce(flow, silent); // call the debounced function directly
   },
-  saveFlowDebounce: debounce((knowledge: KnowledgeType, silent?: boolean) => {
-    console.log("saveFlowDebounce-------------------");
+  saveKnowledgeDebounce: debounce((knowledge: KnowledgeType, silent?: boolean) => {
+    console.log("saveKnowledgeDebounce-------------------");
     set({ saveLoading: true });
     return new Promise<void>((resolve, reject) => {
       updateKnowledgeInDatabase(knowledge)

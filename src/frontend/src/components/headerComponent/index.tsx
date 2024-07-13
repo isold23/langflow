@@ -123,7 +123,7 @@ export default function Header(): JSX.Element {
               data-testid="button-store"
             >
               <IconComponent name="Database" className="h-4 w-4" />
-              <div className="flex-1">Knowledge1111111</div>
+              <div className="flex-1">Knowledge</div>
             </Button>
           </Link>
         }

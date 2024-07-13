@@ -173,7 +173,7 @@ export default function KnowledgesComponentsComponent({
                               name="ExternalLink"
                               className="main-page-nav-button select-none"
                             />
-                            Edit Knowledge22222
+                            Edit Knowledge
                           </Button>
                         </Link>
                     }

@@ -26,8 +26,8 @@ import { KnowledgeInputType } from "../../types/components";
 
 export default function KnowledgesPage(): JSX.Element {
   const uploadKnowledge = useKnowledgesManagerStore((state) => state.uploadKnowledge);
-  const setCurrentFlowId = useKnowledgesManagerStore(
-    (state) => state.setCurrentFlowId
+  const setCurrentKnowledgeId = useKnowledgesManagerStore(
+    (state) => state.setCurrentKnowledgeId
   );
   const uploadKnowledges = useKnowledgesManagerStore((state) => state.uploadKnowledges);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
@@ -39,7 +39,7 @@ export default function KnowledgesPage(): JSX.Element {
 
   // Set a null id
   useEffect(() => {
-    setCurrentFlowId("");
+    setCurrentKnowledgeId("");
   }, [pathname]);
 
   const navigate = useNavigate();

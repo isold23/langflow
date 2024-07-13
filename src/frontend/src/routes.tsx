@@ -11,6 +11,8 @@ import ApiKeysPage from "./pages/ApiKeysPage";
 import FlowPage from "./pages/FlowPage";
 import HomePage from "./pages/MainPage";
 import ComponentsComponent from "./pages/MainPage/components/components";
+import KnowledgeConfigComponent from "./pages/KnowledgePage/components/knowledgeconfig";
+import KnowledgeDatasetComponent from "./pages/KnowledgePage/components/dataset";
 import ProfileSettingsPage from "./pages/ProfileSettingsPage";
 import StorePage from "./pages/StorePage";
 import KnowledgePage from "./pages/KnowledgePage";
@@ -88,8 +90,17 @@ const Router = () => {
             </StoreGuard>
           </ProtectedRoute>
         }
-      />
-
+      >
+        <Route
+          path="knowledgeconfig"
+          element={<KnowledgeConfigComponent key="knowledgeconfig"/>}
+        />
+        <Route
+          path="dataset"
+          element={<KnowledgeDatasetComponent key="dataset" />}
+        />
+      </Route>
+      
       <Route path="/flow/:id/">
         <Route
           path=""
