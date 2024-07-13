@@ -539,6 +539,7 @@ export const USER_PROJECTS_HEADER = "My Collection";
  *
  */
 export const ADMIN_HEADER_TITLE = "Admin Page";
+export const DATASET_HEADER_TITLE = "Knowledge Dataset";
 
 /**
  * Header description for admin page
@@ -547,6 +548,10 @@ export const ADMIN_HEADER_TITLE = "Admin Page";
  */
 export const ADMIN_HEADER_DESCRIPTION =
   "Navigate through this section to efficiently oversee all application users. From here, you can seamlessly manage user accounts.";
+
+export const DATASET_HEADER_DESCRIPTION =
+  "Navigate through this section to efficiently oversee all application users. From here, you can seamlessly manage user accounts.";
+
 
 export const BASE_URL_API = "/api/v1/";
 
