@@ -35,8 +35,7 @@ export default function KnowledgesPage(): JSX.Element {
   const location = useLocation();
   const pathname = location.pathname;
   const [openModal, setOpenModal] = useState(false);
-  //const is_component = pathname === "/components";
-
+  
   // Set a null id
   useEffect(() => {
     setCurrentKnowledgeId("");

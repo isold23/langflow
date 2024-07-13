@@ -59,7 +59,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
     console.log("setCurrentKnowledgeId-------------------");
     set((state) => ({
       currentKnowledgeId,
-      currentKnowledge: state.knowledges.find((flow) => flow.id === currentKnowledgeId),
+      currentKnowledge: state.knowledges.find((knowledge) => knowledge.id === currentKnowledgeId),
     }));
   },
   knowledges: [],
@@ -67,12 +67,12 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
     console.log("setKnowledges-------------------");
     set({
       knowledges,
-      currentKnowledge: knowledges.find((flow) => flow.id === get().currentFlowId),
+      currentKnowledge: knowledges.find((knowledge) => knowledge.id === get().currentKnowledgeId),
     });
   },
   currentKnowledge: undefined,
   saveLoading: false,
-  isLoading: true,
+  isLoading: false,
   setIsLoading: (isLoading: boolean) => {
     console.log("Knowledge isLoading: ", isLoading);
     set({ isLoading });
@@ -114,7 +114,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
     });
   },
   autoSaveCurrentKnowledge: (nodes: Node[], edges: Edge[], viewport: Viewport) => {
-    console.log("autoSaveCurrentFlow-------------------");
+    console.log("autoSaveCurrentKnowledge-------------------");
     if (get().currentKnowledge) {
       get().saveKnowledge(
         { ...get().currentKnowledge!, data: { nodes, edges, viewport } },

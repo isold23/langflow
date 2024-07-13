@@ -79,10 +79,11 @@ const Router = () => {
             </StoreGuard>
           </ProtectedRoute>
         }
-      />
+      >
+      </Route>
 
       <Route
-        path="/knowledge/:id/"
+        path="/knowledge/:id"
         element={
           <ProtectedRoute>
             <StoreGuard>

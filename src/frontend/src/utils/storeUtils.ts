@@ -6,13 +6,11 @@ import { KnowledgeType } from "../types/knowledge";
 
 export function cloneKnowledgeWithParent(
   flow: KnowledgeType,
-  parent: string,
-  is_component: boolean
+  parent: string
 ) {
   let childFLow = cloneDeep(flow);
   childFLow.parent = parent;
   childFLow.id = "";
-  childFLow.is_component = is_component;
   return childFLow;
 }
 

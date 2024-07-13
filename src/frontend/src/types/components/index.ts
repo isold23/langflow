@@ -415,6 +415,7 @@ export type UserInputType = {
 };
 
 export type KnowledgeInputType = {
+  id: string;
   name: string;
 };
 

@@ -558,7 +558,7 @@ export async function addKnowledge(knowledge: KnowledgeInputType): Promise<Array
 
 export async function updateKnowledge(knowledge_id: string, knowledge: changeKnowledge) {
   try {
-    console.log("updateKnowledge -------------------------------");
+    console.log("updateKnowledge id: ", knowledge_id, "value: ", knowledge);
 
     const res = await api.patch(`${BASE_URL_API}knowledges/${knowledge_id}`, knowledge);
     if (res.status === 200) {

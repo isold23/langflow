@@ -1,4 +1,5 @@
 import { Group, ToyBrick } from "lucide-react";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import DropdownButton from "../../components/DropdownButtonComponent";
@@ -27,22 +28,24 @@ import { Knowledges } from "../../types/api";
 import { KnowledgeInputType } from "../../types/components";
 
 export default function KnowledgePage(): JSX.Element {
+  const currentKnowledge = useKnowledgesManagerStore((state) => state.currentKnowledge);
   const uploadKnowledge = useKnowledgesManagerStore((state) => state.uploadKnowledge);
   const setCurrentKnowledgeId = useKnowledgesManagerStore(
     (state) => state.setCurrentKnowledgeId
   );
   const uploadKnowledges = useKnowledgesManagerStore((state) => state.uploadKnowledges);
+  const refreshKnowledges = useKnowledgesManagerStore((state) => state.refreshKnowledges);
+  const setIsLoading = useKnowledgesManagerStore((state) => state.setIsLoading);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const location = useLocation();
-  const pathname = location.pathname;
+  const { id } = useParams();
   const [openModal, setOpenModal] = useState(false);
-  //const is_component = pathname === "/components";
 
   // Set a null id
   useEffect(() => {
-    setCurrentKnowledgeId("");
-  }, [pathname]);
+    setCurrentKnowledgeId(id!);
+  }, [id]);
 
   const navigate = useNavigate();
 
@@ -68,17 +71,17 @@ export default function KnowledgePage(): JSX.Element {
   const sidebarNavItems = [
     {
       title: "Config",
-      href: "/knowledgeconfig",
+      href: "/knowledge/"+[currentKnowledge?.id]+"/knowledgeconfig",
       icon: <Group className="w-5 stroke-[1.5]" />,
     },
     {
       title: "Dataset",
-      href: "/dataset",
+      href: "/knowledge/"+[currentKnowledge?.id]+"/dataset",
       icon: <ToyBrick className="mx-[0.08rem] w-[1.1rem] stroke-[1.5]" />,
     },
   ];
 
-  console.log("----------KnowledgePage--------")
+  console.log("----------KnowledgePage-------- id: ", currentKnowledge?.id, " name: ", currentKnowledge?.name);
   // Personal flows display
   return (
     <PageLayout
@@ -94,6 +97,7 @@ export default function KnowledgePage(): JSX.Element {
             icon={"UserPlus2"}
             onConfirm={(index, knowledge) => {
               handleNewKnowledge(knowledge);
+              setIsLoading(true);
             }}
             asChild
           >

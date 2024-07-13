@@ -117,8 +117,8 @@ export default function Header(): JSX.Element {
               variant={location.pathname === "/knowledges" ? "primary" : "secondary"}
               size="sm"
               onClick={() => {
-                console.log("onClick-------");
-                checkForChangesKnowledge(nodes);
+                console.log("onClick-------0000000000000");
+                //checkForChangesKnowledge(nodes);
               }}
               data-testid="button-store"
             >

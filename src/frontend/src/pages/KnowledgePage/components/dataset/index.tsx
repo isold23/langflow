@@ -13,14 +13,14 @@ import {
 } from "../../../../constants/alerts_constants";
 import useAlertStore from "../../../../stores/alertStore";
 import useFlowsManagerStore from "../../../../stores/flowsManagerStore";
+import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
 import { FlowType } from "../../../../types/flow";
 
-export default function KnowledgeDatasetComponent({
-  is_component = true,
-}: {
-  is_component?: boolean;
-}) {
-    console.log("---------KnowledgeDatasetComponent------");
+export default function KnowledgeDatasetComponent() {
+  const setCurrentKnowledgeId = useKnowledgesManagerStore(
+    (state) => state.setCurrentKnowledgeId
+  );
+  console.log("---------KnowledgeDatasetComponent------");
   const addFlow = useFlowsManagerStore((state) => state.addFlow);
   const uploadFlow = useFlowsManagerStore((state) => state.uploadFlow);
   const removeFlow = useFlowsManagerStore((state) => state.removeFlow);
@@ -36,12 +36,11 @@ export default function KnowledgeDatasetComponent({
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("MainPage useEffect isLoading: ", isLoading);
-    console.log("MainPage useEffect----------------1");
+    console.log("KnowledgeDatasetComponent useEffect isLoading: ", isLoading);
+    console.log("KnowledgeDatasetComponent useEffect----------------1");
     if (isLoading) return;
-    console.log("MainPage useEffect----------------2 flows length: ", flows.length);
+    console.log("KnowledgeDatasetComponent useEffect----------------2 flows length: ", flows.length);
     let all = flows
-      .filter((f) => (f.is_component ?? false) === is_component)
       .sort((a, b) => {
         if (a?.updated_at && b?.updated_at) {
           return (
@@ -65,9 +64,7 @@ export default function KnowledgeDatasetComponent({
   }, [flows, isLoading, pageIndex, pageSize]);
 
   const [data, setData] = useState<FlowType[]>([]);
-
-  const name = is_component ? "Component" : "Flow";
-
+/*
   const onFileDrop = (e) => {
     e.preventDefault();
     if (e.dataTransfer.types.some((types) => types === "Files")) {
@@ -98,7 +95,7 @@ export default function KnowledgeDatasetComponent({
       }
     }
   };
-
+*/
   function resetFilter() {
     setPageIndex(1);
     setPageSize(20);
@@ -106,109 +103,10 @@ export default function KnowledgeDatasetComponent({
 
   console.log("Flow isLoading: ", isLoading, "data length: ", data.length);
   return (
-    <CardsWrapComponent
-      onFileDrop={onFileDrop}
-      dragMessage={`Drag your ${name} here`}
-    >
       <div className="flex h-full w-full flex-col justify-between">
         <div className="flex w-full flex-col gap-4">
-          {!isLoading && data.length === 0 ? (
-            <div className="mt-6 flex w-full items-center justify-center text-center">
-              <div className="flex-max-width h-full flex-col">
-                <div className="flex w-full flex-col gap-4">
-                  <div className="grid w-full gap-4">
-                    Flows and components can be created using Langflow.
-                  </div>
-                  <div className="align-center flex w-full justify-center gap-1">
-                    <span>New?</span>
-                    <span className="transition-colors hover:text-muted-foreground">
-                      <button
-                        onClick={() => {
-                          addFlow(true).then((id) => {
-                            navigate("/flow/" + id);
-                          });
-                        }}
-                        className="underline"
-                      >
-                        Start Here
-                      </button>
-                      .
-                    </span>
-                    <span className="animate-pulse">🚀</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-2">
-              {isLoading === false && data?.length > 0 ? (
-                data?.map((item, idx) => (
-                  <CollectionCardComponent
-                    onDelete={() => {
-                      removeFlow(item.id);
-                      setSuccessData({
-                        title: `${
-                          item.is_component ? "Component" : "Flow"
-                        } deleted successfully!`,
-                      });
-                      resetFilter();
-                    }}
-                    key={idx}
-                    data={item}
-                    disabled={isLoading}
-                    button={
-                      !is_component ? (
-                        <Link to={"/flow/" + item.id}>
-                          <Button
-                            tabIndex={-1}
-                            variant="outline"
-                            size="sm"
-                            className="whitespace-nowrap "
-                            data-testid={
-                              "edit-flow-button-" + item.id + "-" + idx
-                            }
-                          >
-                            <IconComponent
-                              name="ExternalLink"
-                              className="main-page-nav-button select-none"
-                            />
-                            Edit Flow
-                          </Button>
-                        </Link>
-                      ) : (
-                        <></>
-                      )
-                    }
-                  />
-                ))
-              ) : (
-                <>
-                  <SkeletonCardComponent />
-                  <SkeletonCardComponent />
-                </>
-              )}
-            </div>
-          )}
+          <h1>upload file-----------</h1>
         </div>
-        {!isLoading && data.length > 0 && (
-          <div className="relative py-6">
-            <PaginatorComponent
-              storeComponent={true}
-              pageIndex={pageIndex}
-              pageSize={pageSize}
-              rowsCount={[10, 20, 50, 100]}
-              totalRowsCount={
-                flows.filter((f) => (f.is_component ?? false) === is_component)
-                  .length
-              }
-              paginate={(pageSize, pageIndex) => {
-                setPageIndex(pageIndex);
-                setPageSize(pageSize);
-              }}
-            ></PaginatorComponent>
-          </div>
-        )}
       </div>
-    </CardsWrapComponent>
   );
 }

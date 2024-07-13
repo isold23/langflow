@@ -605,6 +605,11 @@ export const CONTROL_NEW_KNOWLEDGE = {
   name: "",
 };
 
+export const CONTROL_UPDATE_KNOWLEDGE = {
+  id: "",
+  name: "",
+};
+
 export const tabsCode = [];
 
 export function tabsArray(codes: string[], method: number) {

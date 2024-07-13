@@ -58,5 +58,7 @@ export const DEL_KEY_SUCCESS_ALERT = "Success! Key deleted!";
 export const FLOW_BUILD_SUCCESS_ALERT = `Flow built successfully`;
 export const SAVE_SUCCESS_ALERT = "Changes saved successfully!";
 export const KNOWLEDGE_ADD_SUCCESS_ALERT = "Success! New knowledge added!";
+export const KNOWLEDGE_UPDATE_SUCCESS_ALERT = "Success! knowledge updated!";
+
 
 // Generic Node

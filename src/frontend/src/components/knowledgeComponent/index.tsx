@@ -20,6 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { KnowledgeType } from "../../types/knowledge";
 
 export default function CollectionKnowledgeComponent ({
   data,
@@ -28,7 +29,7 @@ export default function CollectionKnowledgeComponent ({
   button,
   onDelete,
 }: {
-  data: storeComponent;
+  data: KnowledgeType;
   authorized?: boolean;
   disabled?: boolean;
   button?: JSX.Element;
@@ -36,39 +37,28 @@ export default function CollectionKnowledgeComponent ({
 }) {
   console.log("3 CollectionKnowledgeComponent---------------------");
   const addKnowledge = useKnowledgesManagerStore((state) => state.addKnowledge);
+  const saveKnowledge = useKnowledgesManagerStore((state) => state.saveKnowledge);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const setValidApiKey = useStoreStore((state) => state.updateValidApiKey);
   const isStore = false;
   const [loading, setLoading] = useState(false);
   const [loadingLike, setLoadingLike] = useState(false);
-  const [liked_by_user, setLiked_by_user] = useState(
-    data?.liked_by_user ?? false
-  );
-  const [likes_count, setLikes_count] = useState(data?.liked_by_count ?? 0);
-  const [downloads_count, setDownloads_count] = useState(
-    data?.downloads_count ?? 0
-  );
 
   const name = data.is_component ? "Component" : "Flow";
 
   useEffect(() => {
     if (data) {
-      console.log("------------------useEffect---////////")
-      setLiked_by_user(data?.liked_by_user ?? false);
-      setLikes_count(data?.liked_by_count ?? 0);
-      setDownloads_count(data?.downloads_count ?? 0);
+      console.log("------------------useEffect---//////// data: ", data);
     }
-  }, [data, data.liked_by_count, data.liked_by_user, data.downloads_count]);
+  }, [data]);
 
   function handleInstall() {
     console.log("------handleInstall--------");
-    const temp = downloads_count;
-    setDownloads_count((old) => Number(old) + 1);
     setLoading(true);
     getComponent(data.id)
       .then((res) => {
-        const newFlow = cloneKnowledgeWithParent(res, res.id, data.is_component);
+        const newFlow = cloneKnowledgeWithParent(res, res.id);
         addKnowledge(true, newFlow)
           .then((id) => {
             setSuccessData({
@@ -94,42 +84,7 @@ export default function CollectionKnowledgeComponent ({
           title: `Error ${isStore ? "downloading" : "installing"} the ${name}`,
           list: [err["response"]["data"]["detail"]],
         });
-        setDownloads_count(temp);
       });
-  }
-
-  function handleLike() {
-    setLoadingLike(true);
-    if (liked_by_user !== undefined || liked_by_user !== null) {
-      const temp = liked_by_user;
-      const tempNum = likes_count;
-      setLiked_by_user((prev) => !prev);
-      if (!temp) {
-        setLikes_count((prev) => Number(prev) + 1);
-      } else {
-        setLikes_count((prev) => Number(prev) - 1);
-      }
-      postLikeComponent(data.id)
-        .then((response) => {
-          setLoadingLike(false);
-          setLikes_count(response.data.likes_count);
-          setLiked_by_user(response.data.liked_by_user);
-        })
-        .catch((error) => {
-          setLoadingLike(false);
-          setLikes_count(tempNum);
-          setLiked_by_user(temp);
-          if (error.response.status === 403) {
-            setValidApiKey(false);
-          } else {
-            console.error(error);
-            setErrorData({
-              title: `Error liking ${name}.`,
-              list: [error["response"]["data"]["detail"]],
-            });
-          }
-        });
-    }
   }
   console.log("----------------4444-----");
   return (
@@ -155,45 +110,7 @@ export default function CollectionKnowledgeComponent ({
               <ShadTooltip content={data.name}>
                 <div className="w-full truncate">{data.name}</div>
               </ShadTooltip>
-              {data?.metadata !== undefined && (
-                <div className="flex gap-3">
-                  {data.private && (
-                    <ShadTooltip content="Private">
-                      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <IconComponent name="Lock" className="h-4 w-4" />
-                      </span>
-                    </ShadTooltip>
-                  )}
-                  {!data.is_component && (
-                    <ShadTooltip content="Components">
-                      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <IconComponent name="ToyBrick" className="h-4 w-4" />
-                        <span data-testid={`total-${data.name}`}>
-                          {data?.metadata?.total ?? 0}
-                        </span>
-                      </span>
-                    </ShadTooltip>
-                  )}
-                  <ShadTooltip content="Likes">
-                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <IconComponent name="Heart" className={cn("h-4 w-4 ")} />
-                      <span data-testid={`likes-${data.name}`}>
-                        {likes_count ?? 0}
-                      </span>
-                    </span>
-                  </ShadTooltip>
-                  <ShadTooltip content="Downloads">
-                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <IconComponent name="DownloadCloud" className="h-4 w-4" />
-                      <span data-testid={`downloads-${data.name}`}>
-                        {downloads_count ?? 0}
-                      </span>
-                    </span>
-                  </ShadTooltip>
-                </div>
-              )}
-
-              {onDelete && data?.metadata === undefined && (
+              {onDelete && (
                 <DeleteConfirmationModal
                   onConfirm={() => {
                     onDelete();
@@ -207,22 +124,6 @@ export default function CollectionKnowledgeComponent ({
               )}
             </CardTitle>
           </div>
-          {data.user_created && data.user_created.username && (
-            <span className="text-sm text-primary">
-              by <b>{data.user_created.username}</b>
-              {data.last_tested_version && (
-                <>
-                  {" "}
-                  |{" "}
-                  <span className="text-xs">
-                    {" "}
-                    ⛓︎ v{data.last_tested_version}
-                  </span>
-                </>
-              )}
-            </span>
-          )}
-
           <CardDescription className="pb-2 pt-2">
             <div className="truncate-doubleline">{data.description}</div>
           </CardDescription>
@@ -233,122 +134,7 @@ export default function CollectionKnowledgeComponent ({
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex w-full flex-wrap items-end justify-between gap-2">
             <div className="flex w-full flex-1 flex-wrap gap-2">
-              {data.tags &&
-                data.tags.length > 0 &&
-                data.tags.map((tag, index) => (
-                  <Badge
-                    key={index}
-                    variant="outline"
-                    size="xq"
-                    className="text-muted-foreground"
-                  >
-                    {tag.name}
-                  </Badge>
-                ))}
             </div>
-            {data.liked_by_count != undefined && (
-              <div className="flex gap-0.5">
-                {onDelete && data?.metadata !== undefined ? (
-                  <ShadTooltip
-                    content={
-                      authorized ? "Delete" : "Please review your API key."
-                    }
-                  >
-                    <DeleteConfirmationModal
-                      onConfirm={() => {
-                        onDelete();
-                      }}
-                    >
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className={
-                          "whitespace-nowrap" +
-                          (!authorized ? " cursor-not-allowed" : "")
-                        }
-                      >
-                        <IconComponent
-                          name="Trash2"
-                          className={cn(
-                            "h-5 w-5",
-                            !authorized ? " text-ring" : ""
-                          )}
-                        />
-                      </Button>
-                    </DeleteConfirmationModal>
-                  </ShadTooltip>
-                ) : (
-                  <ShadTooltip
-                    content={
-                      authorized ? "Like" : "Please review your API key."
-                    }
-                  >
-                    <Button
-                      disabled={loadingLike}
-                      variant="ghost"
-                      size="icon"
-                      className={
-                        "whitespace-nowrap" +
-                        (!authorized ? " cursor-not-allowed" : "")
-                      }
-                      onClick={() => {
-                        if (!authorized) {
-                          return;
-                        }
-                        handleLike();
-                      }}
-                      data-testid={`like-${data.name}`}
-                    >
-                      <IconComponent
-                        name="Heart"
-                        className={cn(
-                          "h-5 w-5",
-                          liked_by_user
-                            ? "fill-destructive stroke-destructive"
-                            : "",
-                          !authorized ? " text-ring" : ""
-                        )}
-                      />
-                    </Button>
-                  </ShadTooltip>
-                )}
-                <ShadTooltip
-                  content={
-                    authorized
-                      ? isStore
-                        ? "Download"
-                        : "Install Locally"
-                      : "Please review your API key."
-                  }
-                >
-                  <Button
-                    disabled={loading}
-                    variant="ghost"
-                    size="icon"
-                    className={
-                      "whitespace-nowrap" +
-                      (!authorized ? " cursor-not-allowed" : "") +
-                      (!loading ? " p-0.5" : "")
-                    }
-                    onClick={() => {
-                      if (loading || !authorized) {
-                        return;
-                      }
-                      handleInstall();
-                    }}
-                    data-testid={`install-${data.name}`}
-                  >
-                    <IconComponent
-                      name={loading ? "Loader2" : isStore ? "Download" : "Plus"}
-                      className={cn(
-                        loading ? "h-5 w-5 animate-spin" : "h-5 w-5",
-                        !authorized ? " text-ring" : ""
-                      )}
-                    />
-                  </Button>
-                </ShadTooltip>
-              </div>
-            )}
             {button && button}
           </div>
         </div>

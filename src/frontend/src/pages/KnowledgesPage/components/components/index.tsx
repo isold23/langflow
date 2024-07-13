@@ -23,8 +23,8 @@ export default function KnowledgesComponentsComponent({
   const addKnowledge = useKnowledgesManagerStore((state) => state.addKnowledge);
   const uploadKnowledge = useKnowledgesManagerStore((state) => state.uploadKnowledge);
   const removeKnowledge = useKnowledgesManagerStore((state) => state.removeKnowledge);
-  //const isLoading = useKnowledgesManagerStore((state) => state.isLoading);
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useKnowledgesManagerStore((state) => state.isLoading);
+  //const [isLoading, setIsLoading] = useState((state) => state.isLoading);
   const setExamples = useKnowledgesManagerStore((state) => state.setExamples);
   const knowledges = useKnowledgesManagerStore((state) => state.knowledges);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
@@ -36,10 +36,10 @@ export default function KnowledgesComponentsComponent({
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("useEffect isLoading: ", isLoading);
-    console.log("useEffect----------------1");
+    console.log("KnowledgesComponentsComponent useEffect isLoading: ", isLoading);
+    console.log("KnowledgesComponentsComponent useEffect----------------1");
     if (isLoading) return;
-    console.log("useEffect----------------2 knowledges length: ", knowledges.length);
+    console.log("KnowledgesComponentsComponent useEffect----------------2 knowledges length: ", knowledges.length);
     let all = knowledges
       .sort((a, b) => {
         if (a?.updated_at && b?.updated_at) {
@@ -58,12 +58,12 @@ export default function KnowledgesComponentsComponent({
           );
         }
       });
-    console.log("page ---------------- pageSize: ", pageSize, "pageIndex: ", pageIndex);
+    console.log("KnowledgesComponentsComponent page ---------------- pageSize: ", pageSize, "pageIndex: ", pageIndex);
     const start = (pageIndex - 1) * pageSize;
     const end = start + pageSize;
-    console.log("page ----------------start: ", start, " end: ", end);
+    console.log("KnowledgesComponentsComponent page ----------------start: ", start, " end: ", end);
     setData(all.slice(start, end));
-    console.log("setData end...........");
+    console.log("KnowledgesComponentsComponent setData end...........");
   }, [knowledges, isLoading, pageIndex, pageSize]);
 
   const [data, setData] = useState<KnowledgeType[]>([]);
