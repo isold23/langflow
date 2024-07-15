@@ -130,7 +130,7 @@ export default function Header(): JSX.Element {
       </div>
       <div className="header-end-division lg:w-[30%]">
         <div className="header-end-display">
-          
+          {/* 
           <a
             href="https://github.com/langflow-ai/langflow"
             target="_blank"
@@ -157,7 +157,7 @@ export default function Header(): JSX.Element {
           >
             <FaDiscord className="side-bar-button-size" />
           </a>
-          
+          */}
           <Separator orientation="vertical" />
           <button
             className="extra-side-bar-save-disable"

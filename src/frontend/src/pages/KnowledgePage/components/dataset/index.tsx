@@ -41,10 +41,11 @@ import useAlertStore from "../../../../stores/alertStore";
 import useFlowsManagerStore from "../../../../stores/flowsManagerStore";
 import { Users } from "../../../../types/api";
 import { UserInputType } from "../../../../types/components";
+import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
 
-export default function KnowledgeConfigComponent() {
+export default function KnowledgeDatasetComponent() {
+  const currentKnowledge = useKnowledgesManagerStore((state) => state.currentKnowledge);
   const [inputValue, setInputValue] = useState("");
-
   const [size, setPageSize] = useState(10);
   const [index, setPageIndex] = useState(1);
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -52,14 +53,13 @@ export default function KnowledgeConfigComponent() {
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const { userData } = useContext(AuthContext);
   const [totalRowsCount, setTotalRowsCount] = useState(0);
-  const setCurrentFlowId = useFlowsManagerStore(
-    (state) => state.setCurrentFlowId
-  );
+  const [name, setKnowledgeName] = useState(currentKnowledge?.name ?? "");
+  const [id, setKnowledgeID] = useState(currentKnowledge?.id ?? "");
 
   // set null id
   useEffect(() => {
-    setCurrentFlowId("");
-  }, []);
+    
+  }, [open]);
 
   const userList = useRef([]);
 
@@ -218,7 +218,7 @@ export default function KnowledgeConfigComponent() {
           <div className="main-page-nav-arrangement">
             <span className="main-page-nav-title">
               <IconComponent name="Shield" className="w-6" />
-              {DATASET_HEADER_TITLE}
+              {DATASET_HEADER_TITLE} - { name }
             </span>
           </div>
           <span className="admin-page-description-text">
