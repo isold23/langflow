@@ -378,6 +378,19 @@ export type UserManagementType = {
   onConfirm: (index, data) => void;
 };
 
+export type DatasetType = {
+  title: string;
+  titleHeader: string;
+  cancelText: string;
+  confirmationText: string;
+  children: ReactElement;
+  icon: string;
+  data?: any;
+  index?: number;
+  asChild?: boolean;
+  onConfirm: (index, data) => void;
+};
+
 export type KnowledgeManagementType = {
   title: string;
   titleHeader: string;
@@ -406,6 +419,18 @@ export type UserInputType = {
   username: string;
   usergroup: string;
   userrole: number;
+  password: string;
+  is_active?: boolean;
+  is_superuser?: boolean;
+  id?: string;
+  create_at?: string;
+  updated_at?: string;
+};
+
+export type DatasetInputType = {
+  username: string;
+  usergroup: string;
+  model: string;
   password: string;
   is_active?: boolean;
   is_superuser?: boolean;

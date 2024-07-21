@@ -22,22 +22,24 @@ import { addKnowledge, updateKnowledge } from "../../controllers/API";
 import { KnowledgeInputType } from "../../types/components";
 
 export default function KnowledgePage(): JSX.Element {
-  const currentKnowledge = useKnowledgesManagerStore((state) => state.currentKnowledge);
-  const setCurrentKnowledgeId = useKnowledgesManagerStore(
-    (state) => state.setCurrentKnowledgeId
-  );
-  const setIsLoading = useKnowledgesManagerStore((state) => state.setIsLoading);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const location = useLocation();
   const { id } = useParams();
   const pathname = location.pathname;
+  const setCurrentKnowledgeId = useKnowledgesManagerStore(
+    (state) => state.setCurrentKnowledgeId
+  );
+  const currentKnowledge = useKnowledgesManagerStore((state) => state.currentKnowledge);
+  const setIsLoading = useKnowledgesManagerStore((state) => state.setIsLoading);
+  const knowledges = useKnowledgesManagerStore((state) => state.knowledges);
 
   console.log("----------KnowledgePage-------- pathname: ", pathname, "id: ", id);
+  console.log("knowledges: ", knowledges);
 
   useEffect(() => {
     setCurrentKnowledgeId(id!);
-  }, [id, pathname]);
+  }, [id, pathname, open]);
 
   const navigate = useNavigate();
 

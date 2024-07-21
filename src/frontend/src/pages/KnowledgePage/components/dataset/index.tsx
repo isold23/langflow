@@ -36,11 +36,10 @@ import {
   updateUser,
 } from "../../../../controllers/API";
 import ConfirmationModal from "../../../../modals/ConfirmationModal";
-import UserManagementModal from "../../../../modals/UserManagementModal";
+import DatasetModal from "../../../../modals/DatasetModal";
 import useAlertStore from "../../../../stores/alertStore";
-import useFlowsManagerStore from "../../../../stores/flowsManagerStore";
 import { Users } from "../../../../types/api";
-import { UserInputType } from "../../../../types/components";
+import { DatasetInputType } from "../../../../types/components";
 import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
 
 export default function KnowledgeDatasetComponent() {
@@ -226,7 +225,7 @@ export default function KnowledgeDatasetComponent() {
           </span>
           <div className="flex w-full justify-between px-4">
             <div>
-              <UserManagementModal
+              <DatasetModal
                 title="New Dataset"
                 titleHeader={"Add a new dataset"}
                 cancelText="Cancel"
@@ -238,7 +237,7 @@ export default function KnowledgeDatasetComponent() {
                 asChild
               >
                 <Button variant="primary">New Dataset</Button>
-              </UserManagementModal>
+              </DatasetModal>
             </div>
           </div>
           {loadingUsers ? (
@@ -267,9 +266,9 @@ export default function KnowledgeDatasetComponent() {
                   >
                     <TableRow>
                       <TableHead className="h-10">Id</TableHead>
-                      <TableHead className="h-10">Username</TableHead>
+                      <TableHead className="h-10">Name</TableHead>
                       <TableHead className="h-10">Group</TableHead>
-                      <TableHead className="h-10">Role</TableHead>
+                      <TableHead className="h-10">Model</TableHead>
                       <TableHead className="h-10">Active</TableHead>
                       <TableHead className="h-10">Superuser</TableHead>
                       <TableHead className="h-10">Created At</TableHead>
@@ -279,7 +278,7 @@ export default function KnowledgeDatasetComponent() {
                   </TableHeader>
                   {!loadingUsers && (
                     <TableBody>
-                      {filterUserList.map((user: UserInputType, index) => (
+                      {filterUserList.map((user: DatasetInputType, index) => (
                         <TableRow key={index}>
                           <TableCell className="truncate py-2 font-medium">
                             <ShadTooltip content={user.id}>
@@ -301,9 +300,9 @@ export default function KnowledgeDatasetComponent() {
                             </ShadTooltip>
                           </TableCell>
                           <TableCell className="truncate py-2">
-                            <ShadTooltip content={user.userrole}>
+                            <ShadTooltip content={user.model}>
                               <span className="cursor-default">
-                                {user.userrole}
+                                {user.model}
                               </span>
                             </ShadTooltip>
                           </TableCell>
@@ -387,7 +386,7 @@ export default function KnowledgeDatasetComponent() {
                           </TableCell>
                           <TableCell className="flex w-[100px] py-2 text-right">
                             <div className="flex">
-                              <UserManagementModal
+                              <DatasetModal
                                 title="Edit"
                                 titleHeader={`${user.id}`}
                                 cancelText="Cancel"
@@ -405,7 +404,7 @@ export default function KnowledgeDatasetComponent() {
                                     className="h-4 w-4 cursor-pointer"
                                   />
                                 </ShadTooltip>
-                              </UserManagementModal>
+                              </DatasetModal>
 
                               <ConfirmationModal
                                 size="x-small"
