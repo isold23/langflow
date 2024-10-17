@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from langflow.services.database.models.variable import Variable
     from langflow.services.database.models.flow import Flow
     from langflow.services.database.models.knowledge import Knowledge
+    from langflow.services.database.models.dataset import Dataset
 
 
 class User(SQLModel, table=True):
@@ -35,6 +36,7 @@ class User(SQLModel, table=True):
     store_api_key: Optional[str] = Field(default=None, nullable=True)
     flows: list["Flow"] = Relationship(back_populates="user")
     knowledges: list["Knowledge"] = Relationship(back_populates="user")
+    datasets: list["Dataset"] = Relationship(back_populates="user")
     variables: list["Variable"] = Relationship(
         back_populates="user",
         sa_relationship_kwargs={"cascade": "delete"},

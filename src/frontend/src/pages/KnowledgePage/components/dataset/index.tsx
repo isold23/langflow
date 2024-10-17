@@ -269,10 +269,11 @@ export default function KnowledgeDatasetComponent() {
                       <TableHead className="h-10">Name</TableHead>
                       <TableHead className="h-10">Group</TableHead>
                       <TableHead className="h-10">Model</TableHead>
+                      <TableHead className="h-10">Embeddings</TableHead>
                       <TableHead className="h-10">Active</TableHead>
                       <TableHead className="h-10">Superuser</TableHead>
-                      <TableHead className="h-10">Created At</TableHead>
-                      <TableHead className="h-10">Updated At</TableHead>
+                      <TableHead className="h-10">Created</TableHead>
+                      <TableHead className="h-10">Updated</TableHead>
                       <TableHead className="h-10 w-[100px]  text-right"></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -303,6 +304,13 @@ export default function KnowledgeDatasetComponent() {
                             <ShadTooltip content={user.model}>
                               <span className="cursor-default">
                                 {user.model}
+                              </span>
+                            </ShadTooltip>
+                          </TableCell>
+                          <TableCell className="truncate py-2">
+                            <ShadTooltip content={user.embeddings}>
+                              <span className="cursor-default">
+                                {user.embeddings}
                               </span>
                             </ShadTooltip>
                           </TableCell>

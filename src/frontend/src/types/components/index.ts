@@ -431,6 +431,7 @@ export type DatasetInputType = {
   username: string;
   usergroup: string;
   model: string;
+  embeddings: string;
   password: string;
   is_active?: boolean;
   is_superuser?: boolean;
