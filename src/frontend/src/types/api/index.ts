@@ -176,6 +176,20 @@ export type Knowledges = {
   updated_at: Date;
 };
 
+export type Datasets = {
+  id: string;
+  username: string;
+  usergroup: string;
+  meta_file: string;
+  model: string;
+  userrole: number;
+  is_active: boolean;
+  is_superuser: boolean;
+  profile_image: string;
+  create_at: Date;
+  updated_at: Date;
+};
+
 export type changeKnowledge = {
   name?: string;
   usergroup?: string;

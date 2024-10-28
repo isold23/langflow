@@ -31,6 +31,7 @@ import {
 import { AuthContext } from "../../../../contexts/authContext";
 import {
   addUser,
+  addDataset,
   deleteUser,
   getUsersPage,
   updateUser,
@@ -188,8 +189,8 @@ export default function KnowledgeDatasetComponent() {
       });
   }
 
-  function handleNewUser(user: UserInputType) {
-    addUser(user)
+  function handleNewDataset(user: DatasetInputType) {
+    addDataset(user)
       .then((res) => {
         updateUser(res["id"], {
           is_active: user.is_active,
@@ -232,7 +233,7 @@ export default function KnowledgeDatasetComponent() {
                 confirmationText="Save"
                 icon={"UserPlus2"}
                 onConfirm={(index, user) => {
-                  handleNewUser(user);
+                  handleNewDataset(user);
                 }}
                 asChild
               >

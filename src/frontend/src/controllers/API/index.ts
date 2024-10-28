@@ -9,6 +9,7 @@ import {
   LoginType,
   Users,
   Knowledges,
+  Datasets,
   VertexBuildTypeAPI,
   VerticesOrderTypeAPI,
   changeUser,
@@ -16,7 +17,7 @@ import {
   sendAllProps,
   changeKnowledge,
 } from "../../types/api/index";
-import { KnowledgeInputType, UserInputType } from "../../types/components";
+import { DatasetInputType, KnowledgeInputType, UserInputType } from "../../types/components";
 import { FlowStyleType, FlowType } from "../../types/flow";
 import { KnowledgeType } from "../../types/knowledge";
 import { StoreComponentResponse } from "../../types/store";
@@ -468,6 +469,29 @@ export async function addUser(user: UserInputType): Promise<Array<Users>> {
       throw new Error(res.data.detail);
     }
     return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function addDataset(user: DatasetInputType): Promise<Array<Datasets>> {
+  try {
+    const res = await api.post(`${BASE_URL_API}datasets/`, user);
+    if (res.status !== 201) {
+      throw new Error(res.data.detail);
+    }
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function updateDataset(user_id: string, user: changeUser) {
+  try {
+    const res = await api.patch(`${BASE_URL_API}datasets/${user_id}`, user);
+    if (res.status === 200) {
+      return res.data;
+    }
   } catch (error) {
     throw error;
   }

@@ -438,6 +438,7 @@ export type DatasetInputType = {
   id?: string;
   create_at?: string;
   updated_at?: string;
+  documentname: string;
 };
 
 export type KnowledgeInputType = {

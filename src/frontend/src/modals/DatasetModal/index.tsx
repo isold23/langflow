@@ -5,7 +5,7 @@ import InputComponent from "../../components/inputComponent";
 import IconComponent from "../../components/genericIconComponent";
 import { CONTROL_NEW_USER } from "../../constants/constants";
 import { AuthContext } from "../../contexts/authContext";
-import useFlowsManagerStore from "../../stores/flowsManagerStore";
+import useDatasetsManagerStore from "../../stores/datasetsManagerStore";
 import {
   UserInputType,
   DatasetType,
@@ -30,7 +30,7 @@ export default function DatasetModal({
   const [open, setOpen] = useState(false);
   const [documentname, setDocumentName] = useState(data?.documentname ?? "");
   const [embeddings, setEmbeddings] = useState(data?.embeddings ?? "");
-  const uploadFlows = useFlowsManagerStore((state) => state.uploadFlows);
+  const uploadDatasets = useDatasetsManagerStore((state)=>state.uploadDatasets);
   const [model, setModel] = useState(data?.model ?? "");
   const [inputState, setInputState] = useState<UserInputType>(CONTROL_NEW_USER);
   const { userData } = useContext(AuthContext);
@@ -115,7 +115,7 @@ export default function DatasetModal({
                 <Button
                   variant="primary"
                   onClick={() => {
-                    uploadFlows();
+                    uploadDatasets();
                   }}
                 >
                   <IconComponent name="Upload" className="main-page-nav-button" />
