@@ -99,18 +99,19 @@ export default function DatasetModal({
               >
                 <Form.Control asChild>
                   <input
+                    id="dataset_uploadfile_documentname"
                     onChange={({ target: { value } }) => {
                       handleInput({ target: { name: "documentname", value } });
+                      console.log("documentname: ", value);
                       setDocumentName(value);
                     }}
-                    value={documentname}
+                    //value={documentname}
                     className="primary-input"
                     required
                     placeholder="LocalFile"
                   />
                 </Form.Control>
                 <Form.Message match="valueMissing" className="field-invalid">
-                  Select your documentname
                 </Form.Message>
                 <Button
                   variant="primary"

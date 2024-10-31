@@ -1,19 +1,19 @@
 import { Edge, Node, Viewport, XYPosition } from "reactflow";
-import { FlowType } from "../../flow";
+import { DatasetType } from "../../dataset";
 
 export type DatasetsManagerStoreType = {
-  flows: Array<FlowType>;
-  setFlows: (flows: FlowType[]) => void;
-  currentFlow: FlowType | undefined;
+  datasets: Array<DatasetType>;
+  setFlows: (flows: DatasetType[]) => void;
+  currentDataset: DatasetType | undefined;
   currentFlowId: string;
   setCurrentFlowId: (currentFlowId: string) => void;
   saveLoading: boolean;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
   refreshFlows: () => Promise<void>;
-  saveFlow: (flow: FlowType, silent?: boolean) => Promise<void> | undefined;
+  saveFlow: (flow: DatasetType, silent?: boolean) => Promise<void> | undefined;
   saveFlowDebounce: (
-    flow: FlowType,
+    flow: DatasetType,
     silent?: boolean
   ) => Promise<void> | undefined;
   autoSaveCurrentFlow: (
@@ -35,7 +35,7 @@ export type DatasetsManagerStoreType = {
   }) => Promise<string | never>;
   addFlow: (
     newProject: boolean,
-    flow?: FlowType,
+    flow?: DatasetType,
     override?: boolean,
     position?: XYPosition
   ) => Promise<string | undefined>;
@@ -48,8 +48,8 @@ export type DatasetsManagerStoreType = {
   undo: () => void;
   redo: () => void;
   takeSnapshot: () => void;
-  examples: Array<FlowType>;
-  setExamples: (examples: FlowType[]) => void;
+  examples: Array<DatasetType>;
+  setExamples: (examples: DatasetType[]) => void;
 };
 
 export type UseUndoRedoOptions = {

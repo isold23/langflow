@@ -11,9 +11,9 @@ import {
   readFlowsFromDatabase,
   saveFlowToDatabase,
   updateFlowInDatabase,
-  uploadFlowsToDatabase,
+  uploadDatasetsToDatabase,
 } from "../controllers/API";
-import { FlowType, NodeDataType } from "../types/flow";
+import { DatasetType, NodeDataType } from "../types/dataset";
 import {
   DatasetsManagerStoreType,
   UseUndoRedoOptions,
@@ -42,24 +42,24 @@ const future = {};
 
 const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => ({
   examples: [],
-  setExamples: (examples: FlowType[]) => {
+  setExamples: (examples: DatasetType[]) => {
     set({ examples });
   },
   currentFlowId: "",
   setCurrentFlowId: (currentFlowId: string) => {
     set((state) => ({
       currentFlowId,
-      currentFlow: state.flows.find((flow) => flow.id === currentFlowId),
+      currentDataset: state.datasets.find((flow) => flow.id === currentFlowId),
     }));
   },
-  flows: [],
-  setFlows: (flows: FlowType[]) => {
+  datasets: [],
+  setFlows: (datasets: DatasetType[]) => {
     set({
-      flows,
-      currentFlow: flows.find((flow) => flow.id === get().currentFlowId),
+      datasets,
+      currentDataset: datasets.find((flow) => flow.id === get().currentFlowId),
     });
   },
-  currentFlow: undefined,
+  currentDataset: undefined,
   saveLoading: false,
   isLoading: true,
   setIsLoading: (isLoading: boolean) => {
@@ -101,18 +101,18 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
     });
   },
   autoSaveCurrentFlow: (nodes: Node[], edges: Edge[], viewport: Viewport) => {
-    if (get().currentFlow) {
+    if (get().currentDataset) {
       get().saveFlow(
-        { ...get().currentFlow!, data: { nodes, edges, viewport } },
+        { ...get().currentDataset!, data: { nodes, edges, viewport } },
         true
       );
     }
   },
-  saveFlow: (flow: FlowType, silent?: boolean) => {
+  saveFlow: (flow: DatasetType, silent?: boolean) => {
     set({ saveLoading: true }); // set saveLoading true immediately
     return get().saveFlowDebounce(flow, silent); // call the debounced function directly
   },
-  saveFlowDebounce: debounce((flow: FlowType, silent?: boolean) => {
+  saveFlowDebounce: debounce((flow: DatasetType, silent?: boolean) => {
     set({ saveLoading: true });
     return new Promise<void>((resolve, reject) => {
       updateFlowInDatabase(flow)
@@ -125,7 +125,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
                 .setSuccessData({ title: "Changes saved successfully" });
             }
             get().setFlows(
-              get().flows.map((flow) => {
+              get().datasets.map((flow) => {
                 if (flow.id === updatedFlow.id) {
                   return updatedFlow;
                 }
@@ -149,21 +149,33 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   }, SAVE_DEBOUNCE_TIME),
   uploadDatasets: () => {
     return new Promise<void>((resolve) => {
+      console.log("********uploadDatasets**************");
       const input = document.createElement("input");
       input.type = "file";
       // add a change event listener to the file input
       input.onchange = (event: Event) => {
+        console.log("********uploadDatasets**************1");
+
         // check if the file type is application/json
-        if (
+        /*if (
           (event.target as HTMLInputElement).files![0].type ===
           "application/json"
-        ) {
+        )*/ 
+       if(true) {
           // get the file from the file input
           const file = (event.target as HTMLInputElement).files![0];
           // read the file as text
           const formData = new FormData();
           formData.append("file", file);
-          uploadFlowsToDatabase(formData).then(() => {
+          formData.append("userid", get().currentDataset?.user_id??"",);
+          formData.append("knowledgeid", get().currentDataset?.knowledge_id??"",)
+          console.log("file name: ", file.name, "userid: ", get().currentDataset?.user_id??"",
+          "knowledgeid: ", get().currentDataset?.knowledge_id??"");
+          const inputField = document.querySelector<HTMLInputElement>('#dataset_uploadfile_documentname'); 
+          if(inputField) {
+            inputField.value = file.name;
+          }
+          uploadDatasetsToDatabase(formData).then(() => {
             get()
               .refreshFlows()
               .then(() => {
@@ -178,7 +190,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   },
   addFlow: async (
     newProject: Boolean,
-    flow?: FlowType,
+    flow?: DatasetType,
     override?: boolean,
     position?: XYPosition
   ): Promise<string | undefined> => {
@@ -242,11 +254,11 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   },
   removeFlow: async (id: string) => {
     return new Promise<void>((resolve) => {
-      const index = get().flows.findIndex((flow) => flow.id === id);
+      const index = get().datasets.findIndex((flow) => flow.id === id);
       if (index >= 0) {
         deleteFlowFromDatabase(id).then(() => {
           const { data, flows } = processFlows(
-            get().flows.filter((flow) => flow.id !== id)
+            get().datasets.filter((flow) => flow.id !== id)
           );
           get().setFlows(flows);
           set({ isLoading: false });
@@ -260,7 +272,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   },
   deleteComponent: async (key: string) => {
     return new Promise<void>((resolve) => {
-      let componentFlow = get().flows.find(
+      let componentFlow = get().datasets.find(
         (componentFlow) =>
           componentFlow.is_component && componentFlow.name === key
       );
@@ -299,7 +311,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
           reject("You cannot upload a component as a flow or vice versa");
         } else {
           if (fileData.flows) {
-            fileData.flows.forEach((flow: FlowType) => {
+            fileData.flows.forEach((flow: DatasetType) => {
               id = get().addFlow(newProject, flow, undefined, position);
             });
             resolve("");
@@ -320,7 +332,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
           ) {
             const currentfile = (e.target as HTMLInputElement).files![0];
             let text = await currentfile.text();
-            let fileData: FlowType = await JSON.parse(text);
+            let fileData: DatasetType = await JSON.parse(text);
 
             if (
               (!fileData.is_component && isComponent === true) ||

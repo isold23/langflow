@@ -111,7 +111,9 @@ class Dataset(DatasetBase, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True, unique=True)
     data: Optional[Dict] = Field(default=None, sa_column=Column(JSON))
     user_id: Optional[UUID] = Field(index=True, foreign_key="user.id", nullable=True)
+    knowledge_id: Optional[UUID] = Field(index=True, foreign_key="knowledge.id", nullable=True)
     usergroup: Optional[str] = Field(nullable=True, default=None)
+    name: Optional[str] = Field(nullable=True, default=None)
     '''
     indexmodel: Optional[str] = Field(nullable=True, default="Embedding-2")
     maxlen: Optional[int] = Field(nullable=True, default=3000)
@@ -135,7 +137,9 @@ class Dataset(DatasetBase, table=True):
 class DatasetCreate(DatasetBase):
     user_id: Optional[UUID] = None
     usergroup: Optional[str] = None
+    knowledge_id: Optional[UUID] = None
     name: Optional[str] = None
+    
     '''
     indexmodel: Optional[str] = None
     maxlen: Optional[int] = None
@@ -145,10 +149,10 @@ class DatasetRead(DatasetBase):
     id: UUID
     name: Optional[str] = Field()
     user_id: Optional[UUID] = Field()
+    knowledge_id: Optional[UUID] = Field()
     usergroup: Optional[str] = Field()
 
 class DatasetUpdate(SQLModel):
-    name: Optional[str] = None
     name: Optional[str] = None
     description: Optional[str] = None
     data: Optional[Dict] = None

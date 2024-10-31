@@ -224,6 +224,22 @@ export async function uploadFlowsToDatabase(flows: FormData) {
   }
 }
 
+export async function uploadDatasetsToDatabase(datasets: FormData) {
+  try {
+    console.log("uploadDatasetsToDatabase -------------------------------");
+
+    const response = await api.post(`${BASE_URL_API}datasets/upload/`, datasets);
+
+    if (response?.status !== 201) {
+      throw new Error(`HTTP error! status: ${response?.status}`);
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 /**
  * Deletes a flow from the database.
  *

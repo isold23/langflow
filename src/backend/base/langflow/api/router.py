@@ -8,6 +8,7 @@ from langflow.api.v1 import (
     files_router,
     flows_router,
     knowledges_router,
+    datasets_router,
     login_router,
     monitor_router,
     store_router,
@@ -25,6 +26,7 @@ router.include_router(validate_router)
 router.include_router(store_router)
 router.include_router(flows_router)
 router.include_router(knowledges_router)
+router.include_router(datasets_router)
 router.include_router(users_router)
 router.include_router(api_key_router)
 router.include_router(login_router)

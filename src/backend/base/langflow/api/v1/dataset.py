@@ -212,7 +212,7 @@ async def upload_file(
     current_user: User = Depends(get_current_active_user),
 ):
     """Upload datasets from a file."""
-    print("upload_file *************************")
+    print("dataset upload_file *************************")
     contents = await file.read()
     data = orjson.loads(contents)
     if "datasets" in data:
@@ -225,7 +225,7 @@ async def upload_file(
 
     return create_datasets(session=session, dataset_list=dataset_list, current_user=current_user)
 
-
+"""
 @router.get("/download/", response_model=DatasetListRead, status_code=200)
 async def download_file(
     *,
@@ -234,7 +234,7 @@ async def download_file(
     current_user: User = Depends(get_current_active_user),
     current_knowledge: Knowledge = Depends(get_current_active_kenowledge),
 ):
-    """Download all datasets as a file."""
     print("download_file *************************")
     datasets = read_datasets(current_user=current_user, session=session, settings_service=settings_service)
     return DatasetListRead(datasets=datasets)
+"""
