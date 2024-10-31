@@ -607,6 +607,7 @@ export const CONTROL_NEW_USER = {
 };
 
 export const CONTROL_NEW_KNOWLEDGE = {
+  id: "",
   name: "",
 };
 

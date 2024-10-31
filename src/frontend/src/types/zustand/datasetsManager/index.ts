@@ -5,8 +5,8 @@ export type DatasetsManagerStoreType = {
   datasets: Array<DatasetType>;
   setFlows: (flows: DatasetType[]) => void;
   currentDataset: DatasetType | undefined;
-  currentFlowId: string;
-  setCurrentFlowId: (currentFlowId: string) => void;
+  currentDatasetId: string;
+  setCurrentDatasetId: (currentDatasetId: string) => void;
   saveLoading: boolean;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;

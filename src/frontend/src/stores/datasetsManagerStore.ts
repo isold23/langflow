@@ -45,18 +45,18 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   setExamples: (examples: DatasetType[]) => {
     set({ examples });
   },
-  currentFlowId: "",
-  setCurrentFlowId: (currentFlowId: string) => {
+  currentDatasetId: "",
+  setCurrentDatasetId: (currentDatasetId: string) => {
     set((state) => ({
-      currentFlowId,
-      currentDataset: state.datasets.find((flow) => flow.id === currentFlowId),
+      currentDatasetId,
+      currentDataset: state.datasets.find((flow) => flow.id === currentDatasetId),
     }));
   },
   datasets: [],
   setFlows: (datasets: DatasetType[]) => {
     set({
       datasets,
-      currentDataset: datasets.find((flow) => flow.id === get().currentFlowId),
+      currentDataset: datasets.find((flow) => flow.id === get().currentDatasetId),
     });
   },
   currentDataset: undefined,
@@ -94,7 +94,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
         .catch((e) => {
           set({ isLoading: false });
           useAlertStore.getState().setErrorData({
-            title: "Could not load flows from database",
+            title: "Could not load datasets from database",
           });
           reject(e);
         });
@@ -149,30 +149,27 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   }, SAVE_DEBOUNCE_TIME),
   uploadDatasets: () => {
     return new Promise<void>((resolve) => {
-      console.log("********uploadDatasets**************");
       const input = document.createElement("input");
       input.type = "file";
       // add a change event listener to the file input
       input.onchange = (event: Event) => {
-        console.log("********uploadDatasets**************1");
-
         // check if the file type is application/json
         /*if (
           (event.target as HTMLInputElement).files![0].type ===
           "application/json"
-        )*/ 
-       if(true) {
+        )*/
+        if (true) {
           // get the file from the file input
           const file = (event.target as HTMLInputElement).files![0];
           // read the file as text
           const formData = new FormData();
           formData.append("file", file);
-          formData.append("userid", get().currentDataset?.user_id??"",);
-          formData.append("knowledgeid", get().currentDataset?.knowledge_id??"",)
-          console.log("file name: ", file.name, "userid: ", get().currentDataset?.user_id??"",
-          "knowledgeid: ", get().currentDataset?.knowledge_id??"");
-          const inputField = document.querySelector<HTMLInputElement>('#dataset_uploadfile_documentname'); 
-          if(inputField) {
+          formData.append("userid", get().currentDataset?.user_id ?? "",);
+          formData.append("knowledgeid", get().currentDataset?.knowledge_id ?? "",)
+          console.log("file name: ", file.name, "userid: ", get().currentDataset?.user_id ?? "",
+            "knowledgeid: ", get().currentDataset?.knowledge_id ?? "");
+          const inputField = document.querySelector<HTMLInputElement>('#dataset_uploadfile_documentname');
+          if (inputField) {
             inputField.value = file.name;
           }
           uploadDatasetsToDatabase(formData).then(() => {
@@ -208,7 +205,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
         newFlow.id = id;
         //setTimeout  to prevent update state with wrong state
         setTimeout(() => {
-          const { data, flows } = processFlows([newFlow, ...get().flows]);
+          const { data, flows } = processFlows([newFlow, ...get().datasets]);
           get().setFlows(flows);
           set({ isLoading: false });
           useTypesStore.setState((state) => ({
@@ -221,7 +218,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
 
       const newFlow = createNewFlow(flowData!, flow!);
 
-      const newName = addVersionToDuplicates(newFlow, get().flows);
+      const newName = addVersionToDuplicates(newFlow, get().datasets);
 
       newFlow.name = newName;
       try {
@@ -230,7 +227,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
         newFlow.id = id;
 
         // Add the new flow to the list of flows.
-        const { data, flows } = processFlows([newFlow, ...get().flows]);
+        const { data, flows } = processFlows([newFlow, ...get().datasets]);
         get().setFlows(flows);
         set({ isLoading: false });
         useTypesStore.setState((state) => ({
@@ -360,7 +357,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
     );
   },
   takeSnapshot: () => {
-    const currentFlowId = get().currentFlowId;
+    const currentFlowId = get().currentDatasetId;
     // push the current graph to the past state
     const flowStore = useFlowStore.getState();
     const newState = {
@@ -371,7 +368,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
     if (
       pastLength > 0 &&
       JSON.stringify(past[currentFlowId][pastLength - 1]) ===
-        JSON.stringify(newState)
+      JSON.stringify(newState)
     )
       return;
     if (pastLength > 0) {
@@ -389,7 +386,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   },
   undo: () => {
     const newState = useFlowStore.getState();
-    const currentFlowId = get().currentFlowId;
+    const currentFlowId = get().currentDatasetId;
     const pastLength = past[currentFlowId]?.length ?? 0;
     const pastState = past[currentFlowId]?.[pastLength - 1] ?? null;
 
@@ -408,7 +405,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   },
   redo: () => {
     const newState = useFlowStore.getState();
-    const currentFlowId = get().currentFlowId;
+    const currentFlowId = get().currentDatasetId;
     const futureLength = future[currentFlowId]?.length ?? 0;
     const futureState = future[currentFlowId]?.[futureLength - 1] ?? null;
 
