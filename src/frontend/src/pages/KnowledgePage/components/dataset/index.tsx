@@ -42,6 +42,7 @@ import useAlertStore from "../../../../stores/alertStore";
 import { Users } from "../../../../types/api";
 import { DatasetInputType } from "../../../../types/components";
 import useKnowledgesManagerStore from "../../../../stores/knowledgesManagerStore";
+import { User } from "lucide-react";
 
 export default function KnowledgeDatasetComponent() {
   const currentKnowledge = useKnowledgesManagerStore((state) => state.currentKnowledge);
@@ -189,12 +190,12 @@ export default function KnowledgeDatasetComponent() {
       });
   }
 
-  function handleNewDataset(user: DatasetInputType) {
-    addDataset(user)
+  function handleNewDataset(dataset: DatasetInputType) {
+    addDataset(dataset)
       .then((res) => {
         updateUser(res["id"], {
-          is_active: user.is_active,
-          is_superuser: user.is_superuser,
+          is_active: dataset.is_active,
+          is_superuser: dataset.is_superuser,
         }).then((res) => {
           resetFilter();
           setSuccessData({
@@ -209,6 +210,8 @@ export default function KnowledgeDatasetComponent() {
         });
       });
   }
+
+  console.log("userid: ", userData?.id, "knowledgeId:", id);
 
   return (
     <div className="flex h-full w-full flex-col justify-between">
@@ -229,11 +232,13 @@ export default function KnowledgeDatasetComponent() {
               <DatasetModal
                 title="New Dataset"
                 titleHeader={"Add a new dataset"}
+                userId={userData?.id}
+                knowledgeId={id}
                 cancelText="Cancel"
                 confirmationText="Save"
                 icon={"UserPlus2"}
-                onConfirm={(index, user) => {
-                  handleNewDataset(user);
+                onConfirm={(index, dataset) => {
+                  handleNewDataset(dataset);
                 }}
                 asChild
               >
@@ -398,6 +403,8 @@ export default function KnowledgeDatasetComponent() {
                               <DatasetModal
                                 title="Edit"
                                 titleHeader={`${user.id}`}
+                                userId={`${user.id}`}
+                                knowledgeId={id}
                                 cancelText="Cancel"
                                 confirmationText="Save"
                                 icon={"UserPlus2"}

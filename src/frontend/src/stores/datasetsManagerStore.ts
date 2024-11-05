@@ -52,6 +52,15 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
       currentDataset: state.datasets.find((flow) => flow.id === currentDatasetId),
     }));
   },
+  currentUserId: "",
+  setCurrentUserId: (currentUserId: string) => {
+    set({ currentUserId });
+  },
+
+  currentKnowledgeId: "",
+  setCurrentKnowledgeId: (currentKnowledgeId: string) => {
+    set({ currentKnowledgeId });
+  },
   datasets: [],
   setFlows: (datasets: DatasetType[]) => {
     set({
@@ -63,12 +72,10 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   saveLoading: false,
   isLoading: true,
   setIsLoading: (isLoading: boolean) => {
-    console.log("Flow isLoading: ", isLoading);
     set({ isLoading });
   },
   refreshFlows: () => {
     return new Promise<void>((resolve, reject) => {
-      console.log("refreshFlows----------------");
       set({ isLoading: true });
       readFlowsFromDatabase()
         .then((dbData) => {
@@ -164,10 +171,10 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
           // read the file as text
           const formData = new FormData();
           formData.append("file", file);
-          formData.append("userid", get().currentDataset?.user_id ?? "",);
-          formData.append("knowledgeid", get().currentDataset?.knowledge_id ?? "",)
-          console.log("file name: ", file.name, "userid: ", get().currentDataset?.user_id ?? "",
-            "knowledgeid: ", get().currentDataset?.knowledge_id ?? "");
+          formData.append("userid", get().currentUserId?? "",);
+          formData.append("knowledgeid", get().currentKnowledgeId?? "",)
+          console.log("file name: ", file.name, "userid: ", get().currentUserId?? "",
+            "knowledgeid: ", get().currentKnowledgeId?? "");
           const inputField = document.querySelector<HTMLInputElement>('#dataset_uploadfile_documentname');
           if (inputField) {
             inputField.value = file.name;

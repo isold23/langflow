@@ -616,6 +616,20 @@ export const CONTROL_UPDATE_KNOWLEDGE = {
   name: "",
 };
 
+export const CONTROL_NEW_DATASET = {
+  username: "",
+  usergroup: "",
+  model: "",
+  embeddings: "",
+  documentname: "",
+  userrole: 1,
+  password: "",
+  is_active: false,
+  is_superuser: false,
+  userId: "",
+  knowledgeId: "",
+};
+
 export const tabsCode = [];
 
 export function tabsArray(codes: string[], method: number) {

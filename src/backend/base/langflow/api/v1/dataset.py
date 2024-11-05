@@ -2,8 +2,9 @@ from datetime import datetime
 from typing import List
 from uuid import UUID
 
+import os
 import orjson
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, Form
 from fastapi.encoders import jsonable_encoder
 from loguru import logger
 from sqlmodel import Session, select
@@ -204,27 +205,45 @@ def create_datasets(
     return db_datasets
 
 
-@router.post("/upload/", response_model=List[DatasetRead], status_code=201)
+@router.post("/upload/", status_code=200)
 async def upload_file(
     *,
     session: Session = Depends(get_session),
+    userid: str = Form(...),
+    knowledgeid: str = Form(...),
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_active_user),
 ):
-    """Upload datasets from a file."""
-    print("dataset upload_file *************************")
+    print("dataset upload_file userid: ", userid, "knowledgeid: ", knowledgeid, "file: ", file)
+
+    content = await file.read()
+    folder_path = "./metafile/" + userid +  "/" +  knowledgeid + "/"
+    try:
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+            print(f"create folder: {folder_path}")
+        file_path = folder_path + "/" + file.filename
+    
+        with open(file_path, 'wb') as file:
+            file.write(content)
+        print(f"save file: {file_path}")
+    except Exception as e:
+        print(f"save file failed: {e}")
+
+    return {"message": "File uploaded successfully."}
+    """
     contents = await file.read()
+
     data = orjson.loads(contents)
     if "datasets" in data:
         dataset_list = DatasetListCreate(**data)
     else:
         dataset_list = DatasetListCreate(datasets=[DatasetCreate(**dataset) for dataset in data])
-    # Now we set the user_id for all datasets
     for dataset in dataset_list.datasets:
         dataset.user_id = current_user.id
 
     return create_datasets(session=session, dataset_list=dataset_list, current_user=current_user)
-
+    """
 """
 @router.get("/download/", response_model=DatasetListRead, status_code=200)
 async def download_file(

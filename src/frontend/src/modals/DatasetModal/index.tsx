@@ -3,26 +3,28 @@ import { useContext, useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import InputComponent from "../../components/inputComponent";
 import IconComponent from "../../components/genericIconComponent";
-import { CONTROL_NEW_USER } from "../../constants/constants";
+import { CONTROL_NEW_DATASET } from "../../constants/constants";
 import { AuthContext } from "../../contexts/authContext";
 import useDatasetsManagerStore from "../../stores/datasetsManagerStore";
 import {
-  UserInputType,
+  DatasetInputType,
   DatasetType,
   inputHandlerEventType,
 } from "../../types/components";
+
 import { nodeIconsLucide } from "../../utils/styleUtils";
 import BaseModal from "../baseModal";
 
 export default function DatasetModal({
   title,
   titleHeader,
+  userId,
+  knowledgeId,
   cancelText,
   confirmationText,
   children,
   icon,
   data,
-  index,
   onConfirm,
   asChild,
 }: DatasetType) {
@@ -30,9 +32,12 @@ export default function DatasetModal({
   const [open, setOpen] = useState(false);
   const [documentname, setDocumentName] = useState(data?.documentname ?? "");
   const [embeddings, setEmbeddings] = useState(data?.embeddings ?? "");
-  const uploadDatasets = useDatasetsManagerStore((state)=>state.uploadDatasets);
+  const uploadDatasets = useDatasetsManagerStore((state) => state.uploadDatasets);
+  const setCurrentUserId = useDatasetsManagerStore((state) => state.setCurrentUserId);
+  const setCurrentKnowledgeId = useDatasetsManagerStore((state) => state.setCurrentKnowledgeId);
+
   const [model, setModel] = useState(data?.model ?? "");
-  const [inputState, setInputState] = useState<UserInputType>(CONTROL_NEW_USER);
+  const [inputState, setInputState] = useState<DatasetInputType>(CONTROL_NEW_DATASET);
   const { userData } = useContext(AuthContext);
 
   function handleInput({
@@ -48,6 +53,8 @@ export default function DatasetModal({
       handleInput({ target: { name: "document", value: documentname } });
       handleInput({ target: { name: "embeddings", value: embeddings } });
       handleInput({ target: { name: "model", value: model } });
+      handleInput({ target: { name: "userId", value: userId } });
+      handleInput({ target: { name: "knowledgeId", value: knowledgeId } });
     }
   }, [open]);
 
@@ -55,6 +62,8 @@ export default function DatasetModal({
     setEmbeddings("");
     setDocumentName("");
     setModel("");
+    setCurrentUserId(userId);
+    setCurrentKnowledgeId(knowledgeId);
   }
 
   return (
@@ -116,7 +125,7 @@ export default function DatasetModal({
                 <Button
                   variant="primary"
                   onClick={() => {
-                    uploadDatasets();
+                    uploadDatasets()
                   }}
                 >
                   <IconComponent name="Upload" className="main-page-nav-button" />

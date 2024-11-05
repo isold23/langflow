@@ -213,7 +213,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
       if (override) {
         get().deleteComponent(flow!.name);
         const newFlow = createNewKnowledge(flowData!, flow!);
-        const { id } = await saveFlowToDatabase(newFlow);
+        const { id } = await saveKnowledgeToDatabase(newFlow);
         newFlow.id = id;
         //setTimeout  to prevent update state with wrong state
         setTimeout(() => {
@@ -391,7 +391,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
   },
   takeSnapshot: () => {
     console.log("takeSnapshot-------------------");
-    const currentFlowId = get().currentFlowId;
+    const currentFlowId = get().currentKnowledgeId;
     // push the current graph to the past state
     const flowStore = useFlowStore.getState();
     const newState = {
@@ -422,7 +422,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
     console.log("undo-------------------");
 
     const newState = useFlowStore.getState();
-    const currentFlowId = get().currentFlowId;
+    const currentFlowId = get().currentKnowledgeId;
     const pastLength = past[currentFlowId]?.length ?? 0;
     const pastState = past[currentFlowId]?.[pastLength - 1] ?? null;
 
@@ -443,7 +443,7 @@ const useKnowledgesManagerStore = create<KnowledgesManagerStoreType>((set, get) 
     console.log("redo-------------------");
 
     const newState = useFlowStore.getState();
-    const currentFlowId = get().currentFlowId;
+    const currentFlowId = get().currentKnowledgeId;
     const futureLength = future[currentFlowId]?.length ?? 0;
     const futureState = future[currentFlowId]?.[futureLength - 1] ?? null;
 

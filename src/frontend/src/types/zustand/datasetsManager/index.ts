@@ -7,6 +7,13 @@ export type DatasetsManagerStoreType = {
   currentDataset: DatasetType | undefined;
   currentDatasetId: string;
   setCurrentDatasetId: (currentDatasetId: string) => void;
+
+  currentUserId: string;
+  setCurrentUserId: (currentUserId: string) => void;
+
+  currentKnowledgeId: string;
+  setCurrentKnowledgeId: (currentKnowledgeId: string) => void;
+
   saveLoading: boolean;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;

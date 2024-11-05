@@ -381,6 +381,8 @@ export type UserManagementType = {
 export type DatasetType = {
   title: string;
   titleHeader: string;
+  userId: string;
+  knowledgeId: string;
   cancelText: string;
   confirmationText: string;
   children: ReactElement;
@@ -439,6 +441,8 @@ export type DatasetInputType = {
   create_at?: string;
   updated_at?: string;
   documentname: string;
+  userId: string;
+  knowledgeId: string;
 };
 
 export type KnowledgeInputType = {
