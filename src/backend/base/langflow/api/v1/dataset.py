@@ -36,8 +36,6 @@ def create_dataset(
         dataset.usergroup = current_user.usergroup
     print(dataset)
     db_dataset = Dataset.model_validate(dataset, from_attributes=True)
-
-    
     db_dataset.updated_at = datetime.utcnow()
     print("----------------------------")
     print(db_dataset)
