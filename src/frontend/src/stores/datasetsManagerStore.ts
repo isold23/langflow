@@ -155,7 +155,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
         });
     });
   }, SAVE_DEBOUNCE_TIME),
-  uploadDatasets: () => {
+  uploadDatasets: (inputState) => {
     return new Promise<void>((resolve) => {
       const input = document.createElement("input");
       input.type = "file";
@@ -179,8 +179,7 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
           const inputField = document.querySelector<HTMLInputElement>('#dataset_uploadfile_documentname');
           if (inputField) {
             inputField.value = file.name;
-            const event = new Event('input', { bubbles: true });
-            inputField.dispatchEvent(event);
+            inputState.documentname = file.name;
           }
           uploadDatasetsToDatabase(formData).then(() => {
             get()

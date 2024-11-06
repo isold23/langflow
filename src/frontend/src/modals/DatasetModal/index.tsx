@@ -134,7 +134,7 @@ export default function DatasetModal({
                 <Button
                   variant="primary"
                   onClick={() => {
-                    uploadDatasets()
+                    uploadDatasets(inputState)
                   }}
                 >
                   <IconComponent name="Upload" className="main-page-nav-button" />

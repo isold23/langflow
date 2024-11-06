@@ -1,5 +1,6 @@
 import { Edge, Node, Viewport, XYPosition } from "reactflow";
 import { DatasetType } from "../../dataset";
+import { DatasetInputType } from "../../../types/components";
 
 export type DatasetsManagerStoreType = {
   datasets: Array<DatasetType>;
@@ -28,7 +29,7 @@ export type DatasetsManagerStoreType = {
     edges: Edge[],
     viewport: Viewport
   ) => void;
-  uploadDatasets: () => Promise<void>;
+  uploadDatasets: (inputState: DatasetInputType) => Promise<void>;
   uploadDataset: ({
     newProject,
     file,
