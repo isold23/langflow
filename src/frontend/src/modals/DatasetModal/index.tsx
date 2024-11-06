@@ -25,6 +25,7 @@ export default function DatasetModal({
   children,
   icon,
   data,
+  index,
   onConfirm,
   asChild,
 }: DatasetType) {
@@ -32,11 +33,10 @@ export default function DatasetModal({
   const [open, setOpen] = useState(false);
   const [documentname, setDocumentName] = useState(data?.documentname ?? "");
   const [embeddings, setEmbeddings] = useState(data?.embeddings ?? "");
+  const [model, setModel] = useState(data?.model ?? "");
   const uploadDatasets = useDatasetsManagerStore((state) => state.uploadDatasets);
   const setCurrentUserId = useDatasetsManagerStore((state) => state.setCurrentUserId);
   const setCurrentKnowledgeId = useDatasetsManagerStore((state) => state.setCurrentKnowledgeId);
-
-  const [model, setModel] = useState(data?.model ?? "");
   const [inputState, setInputState] = useState<DatasetInputType>(CONTROL_NEW_DATASET);
   const { userData } = useContext(AuthContext);
 
@@ -50,11 +50,14 @@ export default function DatasetModal({
     if (!data) {
       resetForm();
     } else {
-      handleInput({ target: { name: "document", value: documentname } });
+      console.log("data: ", data, "userId: ", userId, "knowledgeId: ", knowledgeId,
+        "documentname: ", documentname, "embeddings: ", embeddings, "model: ",model
+      );
+      handleInput({ target: { name: "documentname", value: documentname } });
       handleInput({ target: { name: "embeddings", value: embeddings } });
       handleInput({ target: { name: "model", value: model } });
-      handleInput({ target: { name: "userId", value: userId } });
-      handleInput({ target: { name: "knowledgeId", value: knowledgeId } });
+      //handleInput({ target: { name: "userId", value: userId } });
+      //handleInput({ target: { name: "knowledgeId", value: knowledgeId } });
     }
   }, [open]);
 
@@ -80,8 +83,13 @@ export default function DatasetModal({
       <BaseModal.Content>
         <Form.Root
           onSubmit={(event) => {
-            resetForm();
+            //resetForm();
+            inputState.userId = userId;
+            inputState.knowledgeId = knowledgeId;
+            console.log("88888 before submit: ", inputState);
+            
             onConfirm(1, inputState);
+            console.log("88888 after submit: ", inputState);
             setOpen(false);
             event.preventDefault();
           }}
@@ -110,11 +118,12 @@ export default function DatasetModal({
                   <input
                     id="dataset_uploadfile_documentname"
                     onChange={({ target: { value } }) => {
-                      handleInput({ target: { name: "documentname", value } });
-                      console.log("documentname: ", value);
+                      //handleInput({ target: { name: "documentname", value } });
+                      console.log("00000000000 documentname: ", value);
                       setDocumentName(value);
+                      inputState.documentname = value;
                     }}
-                    //value={documentname}
+                    value={documentname}
                     className="primary-input"
                     required
                     placeholder="LocalFile"
@@ -149,7 +158,9 @@ export default function DatasetModal({
               <Form.Control asChild>
                 <InputComponent
                   setSelectedOption={(e) => {
+                    console.log("88888 embeddings: ", e);
                     setEmbeddings(e);
+                    inputState.embeddings = e;
                   }}
                   selectedOption={embeddings}
                   password={false}
@@ -179,7 +190,9 @@ export default function DatasetModal({
               <Form.Control asChild>
                 <InputComponent
                   setSelectedOption={(e) => {
+                    console.log("88888 model: ", e);
                     setModel(e);
+                    inputState.model = e;
                   }}
                   selectedOption={model}
                   password={false}

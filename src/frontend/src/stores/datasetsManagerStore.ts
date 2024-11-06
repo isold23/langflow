@@ -9,6 +9,7 @@ import {
 import {
   deleteFlowFromDatabase,
   readFlowsFromDatabase,
+  readDatasetsFromDatabase,
   saveFlowToDatabase,
   updateFlowInDatabase,
   uploadDatasetsToDatabase,
@@ -74,10 +75,10 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
   setIsLoading: (isLoading: boolean) => {
     set({ isLoading });
   },
-  refreshFlows: () => {
+  refreshDatasets: () => {
     return new Promise<void>((resolve, reject) => {
       set({ isLoading: true });
-      readFlowsFromDatabase()
+      readDatasetsFromDatabase()
         .then((dbData) => {
           if (dbData) {
             const { data, flows } = processFlows(dbData, false);
@@ -178,10 +179,12 @@ const useDatasetsManagerStore = create<DatasetsManagerStoreType>((set, get) => (
           const inputField = document.querySelector<HTMLInputElement>('#dataset_uploadfile_documentname');
           if (inputField) {
             inputField.value = file.name;
+            const event = new Event('input', { bubbles: true });
+            inputField.dispatchEvent(event);
           }
           uploadDatasetsToDatabase(formData).then(() => {
             get()
-              .refreshFlows()
+              .refreshDatasets()
               .then(() => {
                 resolve();
               });

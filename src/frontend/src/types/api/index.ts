@@ -190,6 +190,16 @@ export type Datasets = {
   updated_at: Date;
 };
 
+export type changeDataset = {
+  username?: string;
+  usergroup?: string;
+  userrole?: number;
+  is_active?: boolean;
+  is_superuser?: boolean;
+  password?: string;
+  profile_image?: string;
+};
+
 export type changeKnowledge = {
   name?: string;
   usergroup?: string;

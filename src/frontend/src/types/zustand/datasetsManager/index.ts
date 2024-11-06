@@ -17,7 +17,7 @@ export type DatasetsManagerStoreType = {
   saveLoading: boolean;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
-  refreshFlows: () => Promise<void>;
+  refreshDatasets: () => Promise<void>;
   saveFlow: (flow: DatasetType, silent?: boolean) => Promise<void> | undefined;
   saveFlowDebounce: (
     flow: DatasetType,

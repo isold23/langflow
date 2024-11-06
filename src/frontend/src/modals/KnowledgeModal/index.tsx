@@ -49,6 +49,7 @@ export default function KnowledgeModal({
     if (!data) {
       resetForm();
     } else {
+      console.log("knowlendge data: ", data, "index: ", index, "name: ", name);
       handleInput({ target: { name: "name", value: name } });
     }
   }, [open]);

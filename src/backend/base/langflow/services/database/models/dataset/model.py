@@ -114,6 +114,9 @@ class Dataset(DatasetBase, table=True):
     knowledge_id: Optional[UUID] = Field(index=True, foreign_key="knowledge.id", nullable=True)
     usergroup: Optional[str] = Field(nullable=True, default=None)
     name: Optional[str] = Field(nullable=True, default=None)
+    documentname: Optional[str] = Field(nullable=True, default=None)
+    embeddings: Optional[str] = Field(nullable=True, default=None)
+    model: Optional[str] = Field(nullable=True, default=None)
     '''
     indexmodel: Optional[str] = Field(nullable=True, default="Embedding-2")
     maxlen: Optional[int] = Field(nullable=True, default=3000)
@@ -139,6 +142,9 @@ class DatasetCreate(DatasetBase):
     usergroup: Optional[str] = None
     knowledge_id: Optional[UUID] = None
     name: Optional[str] = None
+    documentname: Optional[str] = Field()
+    embeddings: Optional[str] = Field()
+    model: Optional[str] = Field()
     
     '''
     indexmodel: Optional[str] = None
@@ -151,6 +157,9 @@ class DatasetRead(DatasetBase):
     user_id: Optional[UUID] = Field()
     knowledge_id: Optional[UUID] = Field()
     usergroup: Optional[str] = Field()
+    documentname: Optional[str] = Field()
+    embeddings: Optional[str] = Field()
+    model: Optional[str] = Field()
 
 class DatasetUpdate(SQLModel):
     name: Optional[str] = None

@@ -35,6 +35,7 @@ import {
   deleteUser,
   getUsersPage,
   updateUser,
+  updateDataset,
 } from "../../../../controllers/API";
 import ConfirmationModal from "../../../../modals/ConfirmationModal";
 import DatasetModal from "../../../../modals/DatasetModal";
@@ -46,7 +47,7 @@ import { User } from "lucide-react";
 
 export default function KnowledgeDatasetComponent() {
   const currentKnowledge = useKnowledgesManagerStore((state) => state.currentKnowledge);
-  const [inputValue, setInputValue] = useState("");
+  //const [inputValue, setInputValue] = useState("");
   const [size, setPageSize] = useState(10);
   const [index, setPageIndex] = useState(1);
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -56,6 +57,8 @@ export default function KnowledgeDatasetComponent() {
   const [totalRowsCount, setTotalRowsCount] = useState(0);
   const [name, setKnowledgeName] = useState(currentKnowledge?.name ?? "");
   const [id, setKnowledgeID] = useState(currentKnowledge?.id ?? "");
+
+  const [open, setOpen] = useState(false);
 
   // set null id
   useEffect(() => {
@@ -108,18 +111,18 @@ export default function KnowledgeDatasetComponent() {
     getUsers();
   }
 
-  function handleFilterUsers(input: string) {
-    setInputValue(input);
+  // function handleFilterUsers(input: string) {
+  //   setInputValue(input);
 
-    if (input === "") {
-      setFilterUserList(userList.current);
-    } else {
-      const filteredList = userList.current.filter((user: Users) =>
-        user.username.toLowerCase().includes(input.toLowerCase())
-      );
-      setFilterUserList(filteredList);
-    }
-  }
+  //   if (input === "") {
+  //     setFilterUserList(userList.current);
+  //   } else {
+  //     const filteredList = userList.current.filter((user: Users) =>
+  //       user.username.toLowerCase().includes(input.toLowerCase())
+  //     );
+  //     setFilterUserList(filteredList);
+  //   }
+  // }
 
   function handleDeleteUser(user) {
     deleteUser(user.id)
@@ -191,9 +194,10 @@ export default function KnowledgeDatasetComponent() {
   }
 
   function handleNewDataset(dataset: DatasetInputType) {
+    console.log("handNewDataset----------------", dataset)
     addDataset(dataset)
       .then((res) => {
-        updateUser(res["id"], {
+        updateDataset(res["id"], {
           is_active: dataset.is_active,
           is_superuser: dataset.is_superuser,
         }).then((res) => {
@@ -211,7 +215,7 @@ export default function KnowledgeDatasetComponent() {
       });
   }
 
-  console.log("userid: ", userData?.id, "knowledgeId:", id);
+  console.log("3333 userid: ", userData?.id, "knowledgeId:", id);
 
   return (
     <div className="flex h-full w-full flex-col justify-between">
@@ -238,8 +242,10 @@ export default function KnowledgeDatasetComponent() {
                 confirmationText="Save"
                 icon={"UserPlus2"}
                 onConfirm={(index, dataset) => {
+                  console.log("--------dataset: ", dataset);
                   handleNewDataset(dataset);
-                }}
+                }
+              }
                 asChild
               >
                 <Button variant="primary">New Dataset</Button>
@@ -285,38 +291,38 @@ export default function KnowledgeDatasetComponent() {
                   </TableHeader>
                   {!loadingUsers && (
                     <TableBody>
-                      {filterUserList.map((user: DatasetInputType, index) => (
+                      {filterUserList.map((dataset: DatasetInputType, index) => (
                         <TableRow key={index}>
                           <TableCell className="truncate py-2 font-medium">
-                            <ShadTooltip content={user.id}>
-                              <span className="cursor-default">{user.id}</span>
+                            <ShadTooltip content={dataset.id}>
+                              <span className="cursor-default">{dataset.id}</span>
                             </ShadTooltip>
                           </TableCell>
                           <TableCell className="truncate py-2">
-                            <ShadTooltip content={user.username}>
+                            <ShadTooltip content={dataset.username}>
                               <span className="cursor-default">
-                                {user.username}
+                                {dataset.username}
                               </span>
                             </ShadTooltip>
                           </TableCell>
                           <TableCell className="truncate py-2">
-                            <ShadTooltip content={user.usergroup}>
+                            <ShadTooltip content={dataset.usergroup}>
                               <span className="cursor-default">
-                                {user.usergroup}
+                                {dataset.usergroup}
                               </span>
                             </ShadTooltip>
                           </TableCell>
                           <TableCell className="truncate py-2">
-                            <ShadTooltip content={user.model}>
+                            <ShadTooltip content={dataset.model}>
                               <span className="cursor-default">
-                                {user.model}
+                                {dataset.model}
                               </span>
                             </ShadTooltip>
                           </TableCell>
                           <TableCell className="truncate py-2">
-                            <ShadTooltip content={user.embeddings}>
+                            <ShadTooltip content={dataset.embeddings}>
                               <span className="cursor-default">
-                                {user.embeddings}
+                                {dataset.embeddings}
                               </span>
                             </ShadTooltip>
                           </TableCell>
@@ -324,18 +330,18 @@ export default function KnowledgeDatasetComponent() {
                             <ConfirmationModal
                               size="x-small"
                               title="Edit"
-                              titleHeader={`${user.username}`}
+                              titleHeader={`${dataset.username}`}
                               modalContentTitle="Attention!"
                               cancelText="Cancel"
                               confirmationText="Confirm"
                               icon={"UserCog2"}
-                              data={user}
+                              data={dataset}
                               index={index}
-                              onConfirm={(index, user) => {
+                              onConfirm={(index, dataset) => {
                                 handleDisableUser(
-                                  user.is_active,
-                                  user.id,
-                                  user
+                                  dataset.is_active,
+                                  dataset.id,
+                                  dataset
                                 );
                               }}
                             >
@@ -347,7 +353,7 @@ export default function KnowledgeDatasetComponent() {
                               </ConfirmationModal.Content>
                               <ConfirmationModal.Trigger>
                                 <div className="flex w-fit">
-                                  <CheckBoxDiv checked={user.is_active} />
+                                  <CheckBoxDiv checked={dataset.is_active} />
                                 </div>
                               </ConfirmationModal.Trigger>
                             </ConfirmationModal>
@@ -356,18 +362,18 @@ export default function KnowledgeDatasetComponent() {
                             <ConfirmationModal
                               size="x-small"
                               title="Edit"
-                              titleHeader={`${user.username}`}
+                              titleHeader={`${dataset.username}`}
                               modalContentTitle="Attention!"
                               cancelText="Cancel"
                               confirmationText="Confirm"
                               icon={"UserCog2"}
-                              data={user}
+                              data={dataset}
                               index={index}
-                              onConfirm={(index, user) => {
+                              onConfirm={(index, dataset) => {
                                 handleSuperUserEdit(
-                                  user.is_superuser,
-                                  user.id,
-                                  user
+                                  dataset.is_superuser,
+                                  dataset.id,
+                                  dataset
                                 );
                               }}
                             >
@@ -379,21 +385,21 @@ export default function KnowledgeDatasetComponent() {
                               </ConfirmationModal.Content>
                               <ConfirmationModal.Trigger>
                                 <div className="flex w-fit">
-                                  <CheckBoxDiv checked={user.is_superuser} />
+                                  <CheckBoxDiv checked={dataset.is_superuser} />
                                 </div>
                               </ConfirmationModal.Trigger>
                             </ConfirmationModal>
                           </TableCell>
                           <TableCell className="truncate py-2 ">
                             {
-                              new Date(user.create_at!)
+                              new Date(dataset.create_at!)
                                 .toISOString()
                                 .split("T")[0]
                             }
                           </TableCell>
                           <TableCell className="truncate py-2">
                             {
-                              new Date(user.updated_at!)
+                              new Date(dataset.updated_at!)
                                 .toISOString()
                                 .split("T")[0]
                             }
@@ -402,16 +408,16 @@ export default function KnowledgeDatasetComponent() {
                             <div className="flex">
                               <DatasetModal
                                 title="Edit"
-                                titleHeader={`${user.id}`}
-                                userId={`${user.id}`}
+                                titleHeader={`${dataset.id}`}
+                                userId={`${dataset.id}`}
                                 knowledgeId={id}
                                 cancelText="Cancel"
                                 confirmationText="Save"
                                 icon={"UserPlus2"}
-                                data={user}
+                                data={dataset}
                                 index={index}
                                 onConfirm={(index, editUser) => {
-                                  handleEditUser(user.id, editUser);
+                                  handleEditUser(dataset.id, editUser);
                                 }}
                               >
                                 <ShadTooltip content="Edit" side="top">
@@ -430,10 +436,10 @@ export default function KnowledgeDatasetComponent() {
                                 cancelText="Cancel"
                                 confirmationText="Delete"
                                 icon={"UserMinus2"}
-                                data={user}
+                                data={dataset}
                                 index={index}
-                                onConfirm={(index, user) => {
-                                  handleDeleteUser(user);
+                                onConfirm={(index, dataset) => {
+                                  handleDeleteUser(dataset);
                                 }}
                               >
                                 <ConfirmationModal.Content>

@@ -16,6 +16,7 @@ import {
   resetPasswordType,
   sendAllProps,
   changeKnowledge,
+  changeDataset,
 } from "../../types/api/index";
 import { DatasetInputType, KnowledgeInputType, UserInputType } from "../../types/components";
 import { FlowStyleType, FlowType } from "../../types/flow";
@@ -193,6 +194,21 @@ export async function readFlowsFromDatabase() {
   }
 }
 
+export async function readDatasetsFromDatabase() {
+  try {
+    console.log("readDatasetsFromDatabase -------------------------------");
+
+    const response = await api.get(`${BASE_URL_API}datasets/`);
+    if (response?.status !== 200) {
+      throw new Error(`HTTP error! status: ${response?.status}`);
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function downloadFlowsFromDatabase() {
   try {
     console.log("downloadFlowsFromDatabase -------------------------------");
@@ -224,13 +240,24 @@ export async function uploadFlowsToDatabase(flows: FormData) {
   }
 }
 
+export async function updateDataset(dataset_id: string, dataset: changeDataset) {
+  try {
+    const res = await api.patch(`${BASE_URL_API}datasets/${dataset_id}`, dataset);
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function uploadDatasetsToDatabase(datasets: FormData) {
   try {
     console.log("uploadDatasetsToDatabase -------------------------------");
 
     const response = await api.post(`${BASE_URL_API}datasets/upload/`, datasets);
 
-    if (response?.status !== 201) {
+    if (response?.status !== 200) {
       throw new Error(`HTTP error! status: ${response?.status}`);
     }
     return response.data;
@@ -490,24 +517,15 @@ export async function addUser(user: UserInputType): Promise<Array<Users>> {
   }
 }
 
-export async function addDataset(user: DatasetInputType): Promise<Array<Datasets>> {
+export async function addDataset(dataset: DatasetInputType): Promise<Array<Datasets>> {
   try {
-    const res = await api.post(`${BASE_URL_API}datasets/`, user);
+    console.log("addDatset----------------------", dataset);
+    const res = await api.post(`${BASE_URL_API}datasets/`, dataset);
     if (res.status !== 201) {
       throw new Error(res.data.detail);
     }
+    console.log("addDatset----------------------", dataset);
     return res.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function updateDataset(user_id: string, user: changeUser) {
-  try {
-    const res = await api.patch(`${BASE_URL_API}datasets/${user_id}`, user);
-    if (res.status === 200) {
-      return res.data;
-    }
   } catch (error) {
     throw error;
   }
@@ -792,7 +810,8 @@ export async function getStoreComponents({
   limit = 9999999,
   is_component = null,
   sort = "-count(liked_by)",
-  tags = [] || null,
+  //tags = [] || null,
+  tags = null,
   liked = null,
   isPrivate = null,
   search = null,
