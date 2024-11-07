@@ -617,6 +617,7 @@ export const CONTROL_UPDATE_KNOWLEDGE = {
 };
 
 export const CONTROL_NEW_DATASET = {
+  id: "",
   username: "",
   usergroup: "",
   model: "",

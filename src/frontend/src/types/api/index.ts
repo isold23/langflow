@@ -181,13 +181,17 @@ export type Datasets = {
   username: string;
   usergroup: string;
   meta_file: string;
+  documentname: string;
   model: string;
+  embeddings: string;
   userrole: number;
   is_active: boolean;
   is_superuser: boolean;
   profile_image: string;
   create_at: Date;
   updated_at: Date;
+  user_id: string;
+  knowledge_id: string;
 };
 
 export type changeDataset = {

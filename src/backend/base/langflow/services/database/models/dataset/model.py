@@ -117,11 +117,6 @@ class Dataset(DatasetBase, table=True):
     documentname: Optional[str] = Field(nullable=True, default=None)
     embeddings: Optional[str] = Field(nullable=True, default=None)
     model: Optional[str] = Field(nullable=True, default=None)
-    '''
-    indexmodel: Optional[str] = Field(nullable=True, default="Embedding-2")
-    maxlen: Optional[int] = Field(nullable=True, default=3000)
-    fileprocessmodel: Optional[str] = Field(nullable=True, default="FastAI-turbo")
-    '''
     user: "User" = Relationship(back_populates="datasets")
 
     def to_record(self):
@@ -132,6 +127,15 @@ class Dataset(DatasetBase, table=True):
             "name": serialized.pop("name"),
             "description": serialized.pop("description"),
             "updated_at": serialized.pop("updated_at"),
+            "documentname": serialized.pop("documentname"),
+            "embeddings": serialized.pop("embeddings"),
+            "model": serialized.pop("model"),
+            "user_id": serialized.pop("user_id"),
+            "usergroup": serialized.pop("usergroup"),
+            "knowledge_id": serialized.pop("knowledge_id"),
+            "icon": serialized.pop("icon"),
+            "icon_bg_color": serialized.pop("icon_bg_color"),
+            "folder": serialized.pop("folder"),
         }
         record = Record(data=data)
         return record
@@ -152,7 +156,7 @@ class DatasetCreate(DatasetBase):
     fileprocessmodel: Optional[str] = None
     '''
 class DatasetRead(DatasetBase):
-    id: UUID
+    id: UUID = Field(default_factory=uuid4)
     name: Optional[str] = Field()
     user_id: Optional[UUID] = Field()
     knowledge_id: Optional[UUID] = Field()
@@ -160,6 +164,17 @@ class DatasetRead(DatasetBase):
     documentname: Optional[str] = Field()
     embeddings: Optional[str] = Field()
     model: Optional[str] = Field()
+    '''
+    username: Optional[str] = Field()
+    usergroup: Optional[str] = Field()
+    userrole: Optional[int] = Field()
+    profile_image: Optional[str] = Field()
+    is_active: Optional[bool] = Field()
+    is_superuser: Optional[bool] = Field()
+    create_at: Optional[datetime] = Field()
+    updated_at: Optional[datetime] = Field()
+    last_login_at: Optional[datetime] = Field(nullable=True)
+    '''
 
 class DatasetUpdate(SQLModel):
     name: Optional[str] = None

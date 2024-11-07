@@ -201,6 +201,10 @@ class UsersResponse(BaseModel):
     users: List[UserRead]
 
 
+class DatasetsResponse(BaseModel):
+    total_count: int
+    datasets: List[DatasetRead]
+
 class ApiKeyResponse(BaseModel):
     id: str
     api_key: str

@@ -548,6 +548,23 @@ export async function getUsersPage(
   return [];
 }
 
+export async function getDatasetsPage(
+  skip: number,
+  limit: number
+): Promise<Array<Datasets>> {
+  try {
+    const res = await api.get(
+      `${BASE_URL_API}datasets/pagedataset/?skip=${skip}&limit=${limit}`
+    );
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (error) {
+    throw error;
+  }
+  return [];
+}
+
 export async function deleteUser(user_id: string) {
   try {
     const res = await api.delete(`${BASE_URL_API}users/${user_id}`);

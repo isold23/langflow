@@ -9,6 +9,7 @@ from sqlmodel import Session
 from langflow.graph.graph.base import Graph
 from langflow.services.chat.service import ChatService
 from langflow.services.database.models.flow import Flow
+from langflow.services.database.models.dataset import Dataset
 from langflow.services.store.schema import StoreComponentCreate
 from langflow.services.store.utils import get_lf_version_from_pypi
 
@@ -144,6 +145,8 @@ def get_file_path_value(file_path):
         return ""
     return file_path
 
+def validate_is_dataset(datasets: list["Dataset"]):
+    return datasets
 
 def validate_is_component(flows: list["Flow"]):
     for flow in flows:

@@ -7,9 +7,11 @@ import orjson
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, Form
 from fastapi.encoders import jsonable_encoder
 from loguru import logger
+from sqlmodel.sql.expression import SelectOfScalar
 from sqlmodel import Session, select
+from sqlalchemy import func
 
-from langflow.api.utils import remove_api_keys, validate_is_component
+from langflow.api.utils import remove_api_keys, validate_is_dataset
 from langflow.api.v1.schemas import DatasetListCreate, DatasetListRead
 from langflow.initial_setup.setup import STARTER_FOLDER_NAME
 from langflow.services.auth.utils import get_current_active_user
@@ -18,6 +20,7 @@ from langflow.services.database.models.user.model import User
 from langflow.services.database.models.knowledge import Knowledge;
 from langflow.services.deps import get_session, get_settings_service
 from langflow.services.settings.service import SettingsService
+from langflow.api.v1.schemas import DatasetsResponse
 
 # build router
 router = APIRouter(prefix="/datasets", tags=["Datasets"])
@@ -44,6 +47,28 @@ def create_dataset(
     session.refresh(db_dataset)
     return db_dataset
 
+@router.get("/pagedataset/", response_model=DatasetsResponse, status_code=200)
+def read_all_datasets(
+    *,
+    skip: int = 0,
+    limit: int = 10,
+    current_user: User = Depends(get_current_active_user),
+    session: Session = Depends(get_session),
+    settings_service: "SettingsService" = Depends(get_settings_service),
+) -> DatasetsResponse:
+    """Read all datasets."""
+    print("read_all_datasets *************************")
+
+    query: SelectOfScalar = select(Dataset).offset(skip).limit(limit)
+    datasets = session.exec(query).fetchall()
+
+    count_query = select(func.count()).select_from(Dataset)  # type: ignore
+    total_count = session.exec(count_query).first()
+
+    return DatasetsResponse(
+        total_count=total_count,  # type: ignore
+        datasets=[DatasetRead(**dataset.model_dump()) for dataset in datasets],
+    )
 
 @router.get("/", response_model=list[DatasetRead], status_code=200)
 def read_datasets(
@@ -83,8 +108,11 @@ def read_datasets(
                         (Dataset.user_id == None) | (Dataset.user_id == current_user.id)  # noqa
                     )
                 ).all()
+        print("00000000000000000000")
+        print(datasets)
+        datasets = validate_is_dataset(datasets)  # type: ignore
+        print("00000000000000000000")
 
-        datasets = validate_is_component(datasets)  # type: ignore
         dataset_ids = [dataset.id for dataset in datasets]
         # with the session get the datasets that DO NOT have a user_id
         try:
@@ -102,7 +130,6 @@ def read_datasets(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
     return [jsonable_encoder(dataset) for dataset in datasets]
-
 
 @router.get("/{dataset_id}", response_model=DatasetRead, status_code=200)
 def read_dataset(

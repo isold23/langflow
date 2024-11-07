@@ -34,6 +34,7 @@ import {
   addDataset,
   deleteUser,
   getUsersPage,
+  getDatasetsPage,
   updateUser,
   updateDataset,
 } from "../../../../controllers/API";
@@ -50,7 +51,7 @@ export default function KnowledgeDatasetComponent() {
   //const [inputValue, setInputValue] = useState("");
   const [size, setPageSize] = useState(10);
   const [index, setPageIndex] = useState(1);
-  const [loadingUsers, setLoadingUsers] = useState(true);
+  const [loadingDatasets, setLoadingDatasets] = useState(true);
   const setSuccessData = useAlertStore((state) => state.setSuccessData);
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const { userData } = useContext(AuthContext);
@@ -65,50 +66,51 @@ export default function KnowledgeDatasetComponent() {
     
   }, [open]);
 
-  const userList = useRef([]);
+  const datasetList = useRef([]);
 
   useEffect(() => {
     setTimeout(() => {
-      getUsers();
+      getDatasets();
     }, 500);
   }, []);
 
-  const [filterUserList, setFilterUserList] = useState(userList.current);
+  const [filterDatasetList, setFilterDatasetList] = useState(datasetList.current);
 
-  function getUsers() {
-    setLoadingUsers(true);
-    getUsersPage(index - 1, size)
-      .then((users) => {
-        setTotalRowsCount(users["total_count"]);
-        userList.current = users["users"];
-        setFilterUserList(users["users"]);
-        setLoadingUsers(false);
+  function getDatasets() {
+    setLoadingDatasets(true);
+    getDatasetsPage(index - 1, size)
+      .then((datasets) => {
+        console.log("getDatasetsPage datasets: ", datasets);
+        setTotalRowsCount(datasets["total_count"]);
+        datasetList.current = datasets["datasets"];
+        setFilterDatasetList(datasets["datasets"]);
+        setLoadingDatasets(false);
       })
       .catch((error) => {
-        setLoadingUsers(false);
+        setLoadingDatasets(false);
       });
   }
 
   function handleChangePagination(pageIndex: number, pageSize: number) {
-    setLoadingUsers(true);
+    setLoadingDatasets(true);
     setPageSize(pageSize);
     setPageIndex(pageIndex);
     getUsersPage(pageSize * (pageIndex - 1), pageSize)
-      .then((users) => {
-        setTotalRowsCount(users["total_count"]);
-        userList.current = users["users"];
-        setFilterUserList(users["users"]);
-        setLoadingUsers(false);
+      .then((datasets) => {
+        setTotalRowsCount(datasets["total_count"]);
+        datasetList.current = datasets["users"];
+        setFilterDatasetList(datasets["users"]);
+        setLoadingDatasets(false);
       })
       .catch((error) => {
-        setLoadingUsers(false);
+        setLoadingDatasets(false);
       });
   }
 
   function resetFilter() {
     setPageIndex(1);
     setPageSize(10);
-    getUsers();
+    getDatasets();
   }
 
   // function handleFilterUsers(input: string) {
@@ -252,11 +254,11 @@ export default function KnowledgeDatasetComponent() {
               </DatasetModal>
             </div>
           </div>
-          {loadingUsers ? (
+          {loadingDatasets ? (
             <div className="flex h-full w-full items-center justify-center">
               <LoadingComponent remSize={12} />
             </div>
-          ) : userList.current.length === 0 ? (
+          ) : datasetList.current.length === 0 ? (
             <>
               <div className="m-4 flex items-center justify-between text-sm">
                 No users registered.
@@ -267,31 +269,30 @@ export default function KnowledgeDatasetComponent() {
               <div
                 className={
                   "m-4 h-full overflow-x-hidden overflow-y-scroll rounded-md border-2 bg-background custom-scroll" +
-                  (loadingUsers ? " border-0" : "")
+                  (loadingDatasets ? " border-0" : "")
                 }
               >
                 <Table className={"table-fixed outline-1 "}>
                   <TableHeader
                     className={
-                      loadingUsers ? "hidden" : "table-fixed bg-muted outline-1"
+                      loadingDatasets ? "hidden" : "table-fixed bg-muted outline-1"
                     }
                   >
                     <TableRow>
                       <TableHead className="h-10">Id</TableHead>
-                      <TableHead className="h-10">Name</TableHead>
-                      <TableHead className="h-10">Group</TableHead>
+                      <TableHead className="h-10">UserId</TableHead>
+                      <TableHead className="h-10">UserGroup</TableHead>
+                      <TableHead className="h-10">KnowledgeId</TableHead>
+                      <TableHead className="h-10">Documentname</TableHead>
                       <TableHead className="h-10">Model</TableHead>
                       <TableHead className="h-10">Embeddings</TableHead>
-                      <TableHead className="h-10">Active</TableHead>
-                      <TableHead className="h-10">Superuser</TableHead>
-                      <TableHead className="h-10">Created</TableHead>
                       <TableHead className="h-10">Updated</TableHead>
                       <TableHead className="h-10 w-[100px]  text-right"></TableHead>
                     </TableRow>
                   </TableHeader>
-                  {!loadingUsers && (
+                  {!loadingDatasets && (
                     <TableBody>
-                      {filterUserList.map((dataset: DatasetInputType, index) => (
+                      {filterDatasetList.map((dataset: DatasetInputType, index) => (
                         <TableRow key={index}>
                           <TableCell className="truncate py-2 font-medium">
                             <ShadTooltip content={dataset.id}>
@@ -299,9 +300,9 @@ export default function KnowledgeDatasetComponent() {
                             </ShadTooltip>
                           </TableCell>
                           <TableCell className="truncate py-2">
-                            <ShadTooltip content={dataset.username}>
+                            <ShadTooltip content={dataset.user_id}>
                               <span className="cursor-default">
-                                {dataset.username}
+                                {dataset.user_id}
                               </span>
                             </ShadTooltip>
                           </TableCell>
@@ -309,6 +310,13 @@ export default function KnowledgeDatasetComponent() {
                             <ShadTooltip content={dataset.usergroup}>
                               <span className="cursor-default">
                                 {dataset.usergroup}
+                              </span>
+                            </ShadTooltip>
+                          </TableCell>
+                          <TableCell className="truncate py-2">
+                            <ShadTooltip content={dataset.knowledge_id}>
+                              <span className="cursor-default">
+                                {dataset.knowledge_id}
                               </span>
                             </ShadTooltip>
                           </TableCell>
@@ -326,82 +334,9 @@ export default function KnowledgeDatasetComponent() {
                               </span>
                             </ShadTooltip>
                           </TableCell>
-                          <TableCell className="relative left-1 truncate py-2 text-align-last-left">
-                            <ConfirmationModal
-                              size="x-small"
-                              title="Edit"
-                              titleHeader={`${dataset.username}`}
-                              modalContentTitle="Attention!"
-                              cancelText="Cancel"
-                              confirmationText="Confirm"
-                              icon={"UserCog2"}
-                              data={dataset}
-                              index={index}
-                              onConfirm={(index, dataset) => {
-                                handleDisableUser(
-                                  dataset.is_active,
-                                  dataset.id,
-                                  dataset
-                                );
-                              }}
-                            >
-                              <ConfirmationModal.Content>
-                                <span>
-                                  Are you completely confident about the changes
-                                  you are making to this user?
-                                </span>
-                              </ConfirmationModal.Content>
-                              <ConfirmationModal.Trigger>
-                                <div className="flex w-fit">
-                                  <CheckBoxDiv checked={dataset.is_active} />
-                                </div>
-                              </ConfirmationModal.Trigger>
-                            </ConfirmationModal>
-                          </TableCell>
-                          <TableCell className="relative left-1 truncate py-2 text-align-last-left">
-                            <ConfirmationModal
-                              size="x-small"
-                              title="Edit"
-                              titleHeader={`${dataset.username}`}
-                              modalContentTitle="Attention!"
-                              cancelText="Cancel"
-                              confirmationText="Confirm"
-                              icon={"UserCog2"}
-                              data={dataset}
-                              index={index}
-                              onConfirm={(index, dataset) => {
-                                handleSuperUserEdit(
-                                  dataset.is_superuser,
-                                  dataset.id,
-                                  dataset
-                                );
-                              }}
-                            >
-                              <ConfirmationModal.Content>
-                                <span>
-                                  Are you completely confident about the changes
-                                  you are making to this user?
-                                </span>
-                              </ConfirmationModal.Content>
-                              <ConfirmationModal.Trigger>
-                                <div className="flex w-fit">
-                                  <CheckBoxDiv checked={dataset.is_superuser} />
-                                </div>
-                              </ConfirmationModal.Trigger>
-                            </ConfirmationModal>
-                          </TableCell>
-                          <TableCell className="truncate py-2 ">
-                            {
-                              new Date(dataset.create_at!)
-                                .toISOString()
-                                .split("T")[0]
-                            }
-                          </TableCell>
                           <TableCell className="truncate py-2">
                             {
-                              new Date(dataset.updated_at!)
-                                .toISOString()
-                                .split("T")[0]
+                              dataset.updated_at
                             }
                           </TableCell>
                           <TableCell className="flex w-[100px] py-2 text-right">
