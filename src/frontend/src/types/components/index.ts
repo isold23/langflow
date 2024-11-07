@@ -437,12 +437,12 @@ export type DatasetInputType = {
   password: string;
   is_active?: boolean;
   is_superuser?: boolean;
-  id?: string;
+  id: string;
   create_at?: string;
   updated_at?: string;
   documentname: string;
-  userId: string;
-  knowledgeId: string;
+  user_id: string;
+  knowledge_id: string;
 };
 
 export type KnowledgeInputType = {

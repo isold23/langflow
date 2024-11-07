@@ -626,8 +626,8 @@ export const CONTROL_NEW_DATASET = {
   password: "",
   is_active: false,
   is_superuser: false,
-  userId: "",
-  knowledgeId: "",
+  user_id: "",
+  knowledge_id: "",
 };
 
 export const tabsCode = [];

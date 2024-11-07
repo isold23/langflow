@@ -84,8 +84,8 @@ export default function DatasetModal({
         <Form.Root
           onSubmit={(event) => {
             //resetForm();
-            inputState.userId = userId;
-            inputState.knowledgeId = knowledgeId;
+            inputState.user_id = userId;
+            inputState.knowledge_id = knowledgeId;
             console.log("88888 before submit: ", inputState);
             
             onConfirm(1, inputState);
