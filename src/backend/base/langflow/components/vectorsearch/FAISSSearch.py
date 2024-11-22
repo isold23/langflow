@@ -39,10 +39,14 @@ class FAISSSearchComponent(LCVectorStoreComponent):
         if not folder_path:
             raise ValueError("Folder path is required to save the FAISS index.")
         path = self.resolve_path(folder_path)
-        vector_store = FAISS.load_local(folder_path=Text(path), embeddings=embedding, index_name=index_name)
+        print("11111111111")
+        vector_store = FAISS.load_local(folder_path=Text(path), embeddings=embedding, index_name=index_name,
+                                        allow_dangerous_deserialization = True)
+        print("222222222")
         if not vector_store:
+            print("333333333")
             raise ValueError("Failed to load the FAISS index.")
-
+        print("44444444")
         return self.search_with_vector_store(
             vector_store=vector_store, input_value=input_value, search_type="similarity", k=number_of_results
         )

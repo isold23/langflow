@@ -38,10 +38,17 @@ class LCVectorStoreComponent(CustomComponent):
         """
 
         docs: List[Document] = []
+        print("55555")
+
         if input_value and isinstance(input_value, str) and hasattr(vector_store, "search"):
+            print("66666")
             docs = vector_store.search(query=input_value, search_type=search_type.lower(), k=k, **kwargs)
+            print("0000000000")
         else:
+            print("777777")
             raise ValueError("Invalid inputs provided.")
+        print("88888888")
         records = docs_to_records(docs)
+        print("99999999999")
         self.status = records
         return records

@@ -21,6 +21,7 @@ from langflow.services.database.models.knowledge import Knowledge;
 from langflow.services.deps import get_session, get_settings_service
 from langflow.services.settings.service import SettingsService
 from langflow.api.v1.schemas import DatasetsResponse
+#from langflow.services.embeddings.faiss_embedding import make_faiss_embedding
 
 # build router
 router = APIRouter(prefix="/datasets", tags=["Datasets"])
@@ -253,6 +254,8 @@ async def upload_file(
         with open(file_path, 'wb') as file:
             file.write(content)
         print(f"save file: {file_path}")
+        file_paths = [file_path]
+        #make_faiss_embedding(file_paths)
     except Exception as e:
         print(f"save file failed: {e}")
 
